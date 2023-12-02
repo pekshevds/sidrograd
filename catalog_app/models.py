@@ -2,6 +2,7 @@ from django.db import models
 from pytils.translit import slugify
 from server.base import Directory
 from image_app.models import Image
+from catalog_app.commons import secret_from_string
 
 
 class Category(Directory):
@@ -113,6 +114,7 @@ class Good(Directory):
     slug = models.SlugField(
         max_length=250,
         null=True,
+        blank=True,
         unique=True
     )
     """code_1c = models.CharField(
@@ -180,7 +182,9 @@ class Good(Directory):
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
-            self.slug = slugify(f"{self.name}-{self.id}")
+            self.slug = slugify(
+                f"{self.name}-{secret_from_string(str(self.id))}"
+            )
         return super().save(*args, **kwargs)
 
     class Meta:

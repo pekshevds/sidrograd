@@ -12,21 +12,24 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY")
+SECRET_KEY = config.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'sidrograd.annasoft.site', 'www.sidrograd.annasoft.site', ]
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'sidrograd.annasoft.site',
+                 'www.sidrograd.annasoft.site',]
 
 
 # Application definition
@@ -83,7 +86,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-TESTING = True
+TESTING = False
 
 if TESTING:
     DATABASES = {
@@ -95,11 +98,16 @@ if TESTING:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get("DB_ENGINE", ""),
-            'HOST': os.environ.get("DB_HOST", ""),
-            'NAME': os.environ.get("DB_NAME", ""),
-            'USER': os.environ.get("DB_USER", ""),
-            'PASSWORD': os.environ.get("DB_PASSWORD", ""),
+            # 'ENGINE': os.environ.get("DB_ENGINE", ""),
+            'ENGINE': config.DB_ENGINE,
+            # 'HOST': os.environ.get("DB_HOST", ""),
+            'HOST': config.DB_HOST,
+            # 'NAME': os.environ.get("DB_NAME", ""),
+            'NAME': config.DB_NAME,
+            # 'USER': os.environ.get("DB_USER", ""),
+            'USER': config.DB_USER,
+            # 'PASSWORD': os.environ.get("DB_PASSWORD", ""),
+            'PASSWORD': config.DB_PASSWORD,
         }
     }
 
