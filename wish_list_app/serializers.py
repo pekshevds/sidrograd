@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from catalog_app.serializers import GoodSerializer
-from auth_app.serializers import UserSerializer
+# from auth_app.serializers import UserSerializer
 
 
 class WishListSerializer(serializers.Serializer):
-    user = UserSerializer()
+    # user = UserSerializer()
     good = GoodSerializer()
