@@ -37,6 +37,20 @@ class CartAddView(APIView):
         response = {"data": serializer.data}
         return Response(response)
 
+    def post(self, request):
+        response = {"data": []}
+        data = request.data.get("data", None)
+        if not data:
+            return Response(response)
+
+        good = get_object_or_404(Good, id=request.GET.get("id", 0))
+        add_to_cart(user=request.user, good=good)
+
+        queryset = fetch_users_cart(request.user)
+        serializer = CartSerializer(queryset, many=True)
+        response = {"data": serializer.data}
+        return Response(response)
+
 
 class CartDeleteView(APIView):
     authentication_classes = [authentication.BasicAuthentication]
