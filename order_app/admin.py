@@ -35,5 +35,5 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'number', 'date', 'contract',
                     'client', 'customer', 'organization', 'author', 'comment',)
     search_fields = ('number',)
-    list_filter = ('client', 'customer', 'organization',)
-    date_hierarchy = 'date'
+    list_filter = ('client', 'customer', 'organization', 'author',)
+    # date_hierarchy = 'date'
