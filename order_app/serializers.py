@@ -1,10 +1,6 @@
 from rest_framework import serializers
 from catalog_app.serializers import GoodSerializer
-
-
-class ClientSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
-    name = serializers.CharField(max_length=150)
+from client_app.serializers import ClientSerializer
 
 
 class CustomerSerializer(serializers.Serializer):

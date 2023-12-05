@@ -4,13 +4,9 @@ from django.utils.dateformat import format
 from server.base import Directory
 from server.base import Document
 from catalog_app.models import Good
+from client_app.models import Client
+from auth_app.models import User
 from order_app.services import ganerate_new_number
-
-
-class Client(Directory):
-    class Meta:
-        verbose_name = "Клиент"
-        verbose_name_plural = "Клиенты"
 
 
 class Customer(Directory):
@@ -81,24 +77,39 @@ class Contract(Directory):
 
 
 class Order(Document):
+    author = models.ForeignKey(
+        User,
+        verbose_name="Автор",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT
+    )
     contract = models.ForeignKey(
         Contract,
         verbose_name="Договор",
+        null=True,
+        blank=True,
         on_delete=models.PROTECT
     )
     client = models.ForeignKey(
         Client,
         verbose_name="Клиент",
+        null=True,
+        blank=True,
         on_delete=models.PROTECT
     )
     customer = models.ForeignKey(
         Customer,
         verbose_name="Покупатель",
+        null=True,
+        blank=True,
         on_delete=models.PROTECT
     )
     organization = models.ForeignKey(
         Organization,
         verbose_name="Организация",
+        null=True,
+        blank=True,
         on_delete=models.PROTECT
     )
 
