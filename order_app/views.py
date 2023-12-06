@@ -8,13 +8,13 @@ from order_app.models import (
     ItemOrder
 )
 from order_app.serializers import (
-    SimpleContractSerializer,
     ContractSerializer,
     SimpleOrderSerializer,
     OrderSerializer,
     ItemOrderSerializer,
     SimpleItemOrderSerializer
 )
+from order_app.services.order import handle_order_list
 
 
 class ContractView(APIView):
@@ -35,9 +35,39 @@ class OrderView(APIView):
 
     def get(self, request):
         client = request.user.client
-        queryset = Order.objects.filter(client=client)
-        serializer = SimpleOrderSerializer(queryset, many=True)
+        order_id = request.GET.get("id", None)
+        if order_id:
+            queryset = Order.objects.filter(id=order_id, client=client)
+        else:
+            queryset = Order.objects.filter(client=client)
+        serializer = OrderSerializer(queryset, many=True)
         response = {"data": serializer.data}
+        return Response(response)
+
+    def post(self, request):
+        response = {"data": []}
+        data = request.data.get("data", None)
+        if not data:
+            return Response(response)
+        serializer = SimpleOrderSerializer(data=data, many=True)
+        if serializer.is_valid(raise_exception=True):
+            queryset = handle_order_list(order_list=data)
+            serializer = OrderSerializer(queryset, many=True)
+            response["data"] = serializer.data
+        return Response(response)
+
+
+class OrderDeleteView(APIView):
+    authentication_classes = [authentication.BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        client = request.user.client
+        order_id = request.GET.get("id", None)
+        if order_id:
+            queryset = Order.objects.filter(id=order_id, client=client)
+            queryset.delete()
+        response = {"data": []}
         return Response(response)
 
 
@@ -61,32 +91,6 @@ class OrderItemView(APIView):
         serializer = SimpleItemOrderSerializer(queryset, many=True)
         response = {"data": serializer.data}
         return Response(response)
-
-
-class OrderItemAddView(APIView):
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request):
-        response = {"data": []}
-        data = request.data.get("data", None)
-        if not data:
-            return Response(response)
-
-        """for item in data:
-            order = Order.objects.filter("id", item.get("order_id", None)).first()
-            if order:
-                order.items.all().delete()
-            else
-                order = Order.objects.create(request.user.)
-            for item_order in 
-                good_id = item.get("good_id", None)
-                quantity = item.get("quantity", 0)
-                good = get_object_or_404(Good, id=good_id)
-
-        serializer = ItemOrderSerializer(queryset, many=True)
-        response = {"data": serializer.data}
-        return Response(response)"""
 
 
 class OrderItemDeleteView(APIView):

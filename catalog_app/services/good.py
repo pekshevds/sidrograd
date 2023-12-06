@@ -16,7 +16,7 @@ def good_by_id(good_id: str) -> Good:
 
 
 def handle_good(good_dir: dir) -> Good:
-    good_id = good_dir.get('id', "")
+    good_id = good_dir.get('id', None)
     good_name = good_dir.get('name', "")
     good = good_by_id(good_id)
     if good is None:

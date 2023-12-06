@@ -36,17 +36,17 @@ class SimpleContractSerializer(serializers.Serializer):
 
 
 class ItemOrderSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
-    good = GoodSerializer()
+    id = serializers.UUIDField(read_only=True, required=False)
+    good = GoodSerializer(read_only=True, required=False)
     quantity = serializers.DecimalField(max_digits=15, decimal_places=3)
     price = serializers.DecimalField(max_digits=15, decimal_places=2)
     summ = serializers.DecimalField(max_digits=15, decimal_places=2)
 
 
 class SimpleItemOrderSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
-    order_id = serializers.UUIDField()
-    good_id = serializers.UUIDField()
+    id = serializers.UUIDField(read_only=True, required=False)
+    order_id = serializers.UUIDField(read_only=True, required=False)
+    good_id = serializers.UUIDField(read_only=True, required=False)
     quantity = serializers.DecimalField(max_digits=15, decimal_places=3)
     price = serializers.DecimalField(max_digits=15, decimal_places=2)
     summ = serializers.DecimalField(max_digits=15, decimal_places=2)
@@ -61,8 +61,9 @@ class OrderSerializer(serializers.Serializer):
 
 
 class SimpleOrderSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
-    number = serializers.IntegerField(read_only=True)
-    date = serializers.DateTimeField(format='%Y-%m-%d')
-    contract_id = serializers.UUIDField()
-    items = SimpleItemOrderSerializer(many=True)
+    number = serializers.IntegerField(read_only=True, required=False)
+    date = serializers.DateTimeField(
+        format='%Y-%m-%d', read_only=True, required=False
+    )
+    contract_id = serializers.UUIDField(required=False)
+    items = SimpleItemOrderSerializer(many=True, required=False)

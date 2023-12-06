@@ -19,7 +19,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
     list_display = ('name', 'number', 'date',
-                    'client', 'customer', 'organization',)
+                    'client', 'customer', 'organization', 'id',)
     search_fields = ('number',)
     list_filter = ('client', 'customer', 'organization',)
     date_hierarchy = 'date'
@@ -33,7 +33,8 @@ class ItemOrderInLine(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [ItemOrderInLine]
     list_display = ('__str__', 'number', 'date', 'contract',
-                    'client', 'customer', 'organization', 'author', 'comment',)
+                    'client', 'customer', 'organization',
+                    'author', 'comment', 'id',)
     search_fields = ('number',)
     list_filter = ('client', 'customer', 'organization', 'author',)
     # date_hierarchy = 'date'

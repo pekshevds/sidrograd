@@ -13,32 +13,32 @@ from catalog_app.models import (
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(TradeMark)
 class TradeMarkAdmin(admin.ModelAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(Gassing)
 class GassingAdmin(admin.ModelAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(Filtering)
 class FilteringAdmin(admin.ModelAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(Pasteurization)
 class PasteurizationAdmin(admin.ModelAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(Manufacturer)
 class ManufacturerAdmin(admin.ModelAdmin):
-    list_display = ("__str__",)
+    list_display = ("__str__", 'id',)
 
 
 class GoodsImageInLine(admin.TabularInline):

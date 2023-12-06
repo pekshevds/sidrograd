@@ -81,11 +81,15 @@ class Order(Document):
     author = models.ForeignKey(
         User,
         verbose_name="Автор",
+        null=True,
+        blank=True,
         on_delete=models.PROTECT
     )
     contract = models.ForeignKey(
         Contract,
         verbose_name="Договор",
+        null=True,
+        blank=True,
         on_delete=models.PROTECT
     )
     client = models.ForeignKey(
@@ -113,12 +117,13 @@ class Order(Document):
     def save(self, *args, **kwargs) -> None:
         if not self.number:
             self.number = ganerate_new_number(model=Order)
-        if not self.client:
-            self.client = self.contract.client
-        if not self.customer:
-            self.customer = self.contract.customer
-        if not self.organization:
-            self.organization = self.contract.organization
+        if self.contract:
+            if not self.client:
+                self.client = self.contract.client
+            if not self.customer:
+                self.customer = self.contract.customer
+            if not self.organization:
+                self.organization = self.contract.organization
         return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
@@ -139,11 +144,15 @@ class ItemOrder(models.Model):
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="items"
     )
     good = models.ForeignKey(
         Good,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
     )
     quantity = models.DecimalField(
         verbose_name="Количество",

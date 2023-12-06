@@ -11,7 +11,8 @@ class Base(models.Model):
     )
     comment = models.TextField(
         verbose_name="Комментарий",
-        null=True, blank=True
+        null=True,
+        blank=True
     )
     created_at = models.DateTimeField(
         verbose_name="Дата создания",
@@ -50,7 +51,8 @@ class Document(Base):
     )
     date = models.DateTimeField(
         verbose_name="Дата",
-        auto_now_add=True
+        null=True,
+        blank=True
     )
 
     def __str__(self) -> str:
