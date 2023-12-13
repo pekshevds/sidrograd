@@ -47,6 +47,13 @@ class Manufacturer(Directory):
         verbose_name_plural = "Производители"
 
 
+class Unit(Directory):
+
+    class Meta:
+        verbose_name = "Единица измерения"
+        verbose_name_plural = "Единицы измерения"
+
+
 class Good(Directory):
     full_name = models.CharField(
         verbose_name="Наименование полное",
@@ -117,14 +124,6 @@ class Good(Directory):
         blank=True,
         unique=True
     )
-    """code_1c = models.CharField(
-        verbose_name="Код из 1С:бухгалтерия 8",
-        max_length=11,
-        blank=True,
-        null=True,
-        default="",
-        db_column=True
-    )"""
     image = models.ForeignKey(
         Image,
         on_delete=models.PROTECT,
@@ -176,6 +175,14 @@ class Good(Directory):
         Manufacturer,
         on_delete=models.PROTECT,
         verbose_name="Производитель",
+        blank=True,
+        null=True
+    )
+
+    unit = models.ForeignKey(
+        Unit,
+        on_delete=models.PROTECT,
+        verbose_name="Единица измерения",
         blank=True,
         null=True
     )

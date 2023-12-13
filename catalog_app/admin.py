@@ -7,7 +7,8 @@ from catalog_app.models import (
     Gassing,
     Filtering,
     Pasteurization,
-    Manufacturer
+    Manufacturer,
+    Unit
 )
 
 
@@ -38,6 +39,11 @@ class PasteurizationAdmin(admin.ModelAdmin):
 
 @admin.register(Manufacturer)
 class ManufacturerAdmin(admin.ModelAdmin):
+    list_display = ("__str__", 'id',)
+
+
+@admin.register(Unit)
+class UnitAdmin(admin.ModelAdmin):
     list_display = ("__str__", 'id',)
 
 

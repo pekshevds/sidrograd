@@ -31,6 +31,11 @@ class ManufacturerSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
 
 
+class UnitSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+
+
 class GoodSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
@@ -56,6 +61,7 @@ class GoodSerializer(serializers.Serializer):
     pasteurization = PasteurizationSerializer(required=False, allow_null=True)
     filtering = FilteringSerializer(required=False, allow_null=True)
     manufacturer = ManufacturerSerializer(required=False, allow_null=True)
+    unit = UnitSerializer(required=False, allow_null=True)
 
 
 class SimpleGoodSerializer(serializers.Serializer):
@@ -83,3 +89,4 @@ class SimpleGoodSerializer(serializers.Serializer):
     pasteurization_id = serializers.UUIDField(required=False, allow_null=True)
     filtering_id = serializers.UUIDField(required=False, allow_null=True)
     manufacturer_id = serializers.UUIDField(required=False, allow_null=True)
+    unit_id = serializers.UUIDField(required=False, allow_null=True)
