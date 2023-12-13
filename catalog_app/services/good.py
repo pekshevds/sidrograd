@@ -9,6 +9,7 @@ from catalog_app.services.gassing import handle_gassing
 from catalog_app.services.pasteurization import handle_pasteurization
 from catalog_app.services.filtering import handle_filtering
 from catalog_app.services.manufacturer import handle_manufacturer
+from catalog_app.services.unit import handle_unit
 
 
 def good_by_id(good_id: str) -> Good:
@@ -76,6 +77,12 @@ def handle_good_list(good_list: None) -> [Good]:
                 temp_dir = good_item.get(key_name)
                 good.manufacturer = None if temp_dir is None else \
                     handle_manufacturer(temp_dir)
+                
+            key_name = 'unit'
+            if key_name in good_item:
+                temp_dir = good_item.get(key_name)
+                good.unit = None if temp_dir is None else \
+                    handle_unit(temp_dir)
 
             good.save()
             goods_id.append(good.id)

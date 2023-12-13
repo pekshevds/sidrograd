@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from catalog_app.models import (
     Manufacturer,
+    Unit,
     Filtering,
     Pasteurization,
     Gassing,
@@ -14,6 +15,7 @@ from catalog_app.models import (
 )
 from catalog_app.serializers import (
     ManufacturerSerializer,
+    UnitSerializer,
     FilteringSerializer,
     PasteurizationSerializer,
     GassingSerializer,
@@ -26,8 +28,7 @@ from catalog_app.services.good import handle_good_list
 
 class ManufacturerView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         id = request.GET.get("id")
@@ -41,10 +42,25 @@ class ManufacturerView(APIView):
         return Response(response)
 
 
+class UnitView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        id = request.GET.get("id")
+        if id:
+            queryset = Unit.objects.filter(id=id)
+            serializer = UnitSerializer(queryset, many=True)
+        else:
+            queryset = Unit.objects.all()
+            serializer = UnitSerializer(queryset, many=True)
+        response = {"data": serializer.data}
+        return Response(response)
+
+
 class FilteringView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         id = request.GET.get("id")
@@ -60,8 +76,7 @@ class FilteringView(APIView):
 
 class PasteurizationView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         id = request.GET.get("id")
@@ -77,8 +92,7 @@ class PasteurizationView(APIView):
 
 class GassingView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         id = request.GET.get("id")
@@ -94,8 +108,7 @@ class GassingView(APIView):
 
 class TradeMarkView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         id = request.GET.get("id", 0)
@@ -111,8 +124,7 @@ class TradeMarkView(APIView):
 
 class CategoryView(APIView):
 
-    authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         id = request.GET.get("id", 0)
@@ -129,7 +141,7 @@ class CategoryView(APIView):
 class GoodView(APIView):
 
     authentication_classes = [authentication.BasicAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         id = request.GET.get("id", 0)
