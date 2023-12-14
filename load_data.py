@@ -35,10 +35,10 @@ def load_unit(name: str) -> Unit:
 
 
 def load_category(name: str) -> None:
-    obj = find(units, name)
+    obj = find(categories, name)
     if not obj:
         obj = Category.objects.create(name=name)
-        units.append({
+        categories.append({
             'name': name,
             'obj': obj
         })
@@ -46,10 +46,10 @@ def load_category(name: str) -> None:
 
 
 def load_trade_mark(name: str) -> None:
-    obj = find(units, name)
+    obj = find(trade_marks, name)
     if not obj:
         obj = TradeMark.objects.create(name=name)
-        units.append({
+        trade_marks.append({
             'name': name,
             'obj': obj
         })
@@ -57,7 +57,7 @@ def load_trade_mark(name: str) -> None:
 
 
 def load_data():
-    with open("data.txt", mode="+r", encoding="oem") as file:
+    with open("data.txt", mode="+r", encoding="utf-16") as file:
         reader = csv.DictReader(file, fieldnames=[
             'unit', 'price', 'strength',
             'volume', 'category', 'trade_mark',
