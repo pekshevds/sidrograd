@@ -28,8 +28,8 @@ SECRET_KEY = config.SECRET_KEY
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
-                 'sidrograd.annasoft.site',
-                 'www.sidrograd.annasoft.site',]
+                 'back.sidrograd.annasoft.site',
+                 'www.back.sidrograd.annasoft.site',]
 
 
 # Application definition
@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-TESTING = False
+TESTING = True
 
 if TESTING:
     DATABASES = {
