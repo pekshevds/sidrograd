@@ -8,6 +8,10 @@ def category_by_id(id: str) -> Category:
     return Category.objects.filter(id=id).first()
 
 
+def category_by_id_list(id: [str]) -> [Category]:
+    return list(Category.objects.filter(id__in=id))
+
+
 def handle_category(category_dir: dir) -> Category:
     category_id = category_dir.get('id', "")
     category_name = category_dir.get('name', "")

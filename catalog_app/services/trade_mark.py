@@ -8,6 +8,10 @@ def trade_mark_by_id(tarde_mark_id: str) -> TradeMark:
     return TradeMark.objects.filter(id=tarde_mark_id).first()
 
 
+def trade_mark_by_id_list(id: [str]) -> [TradeMark]:
+    return list(TradeMark.objects.filter(id__in=id))
+
+
 def handle_trade_mark(trade_mark_dir: dir) -> TradeMark:
     tarde_mark_id = trade_mark_dir.get('id', "")
     tarde_mark_name = trade_mark_dir.get('name', "")

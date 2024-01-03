@@ -16,11 +16,15 @@ class Base(models.Model):
     )
     created_at = models.DateTimeField(
         verbose_name="Дата создания",
-        auto_now_add=True
+        auto_now_add=True,
+        null=True,
+        blank=True
     )
     updated_at = models.DateTimeField(
         verbose_name="Дата изменения",
-        auto_now=True
+        auto_now=True,
+        null=True,
+        blank=True
     )
 
     class Meta:
@@ -31,6 +35,8 @@ class Directory(Base):
     name = models.CharField(
         verbose_name="Наименование",
         max_length=150,
+        null=True,
+        blank=True,
         db_index=True
     )
 

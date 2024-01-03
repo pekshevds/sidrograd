@@ -1,5 +1,4 @@
 from django.core.paginator import Paginator
-from django.db.models import Q
 from rest_framework import permissions, authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,7 +22,14 @@ from catalog_app.serializers import (
     CategorySerializer,
     GoodSerializer
 )
-from catalog_app.services.good import handle_good_list
+from catalog_app.services.good import (
+    handle_good_list,
+    fetch_goods_queryset_by_name_or_article,
+)
+
+from catalog_app.services.category import category_by_id_list
+from catalog_app.services.trade_mark import trade_mark_by_id_list
+from catalog_app.services.good import fetch_goods_queryset_by_filters
 
 
 class ManufacturerView(APIView):
@@ -151,14 +157,31 @@ class GoodView(APIView):
         else:
             page_number = request.GET.get("page", 1)
             count = request.GET.get("count", 25)
-            filter = request.GET.get("filter")
-            if filter:
-                queryset = Good.objects.filter(
-                    Q(name__icontains=filter) |
-                    Q(art__icontains=filter)
-                    )
+            queryset = None
+
+            search = request.GET.get("search")
+            if search:
+                queryset = fetch_goods_queryset_by_name_or_article(search)
             else:
+                categories = None
+                category_id = request.GET.get("category_id")
+                if category_id:
+                    categories = category_by_id_list(category_id.split(","))
+
+                trade_marks = None
+                trade_mark_id = request.GET.get("trade_mark_id")
+                if trade_mark_id:
+                    trade_marks = trade_mark_by_id_list(
+                        trade_mark_id.split(",")
+                    )
+                queryset = fetch_goods_queryset_by_filters(
+                    categories,
+                    trade_marks
+                )
+
+            if queryset is None:
                 queryset = Good.objects.all()
+
             paginator = Paginator(queryset, count)
             serializer = GoodSerializer(
                 paginator.get_page(page_number), many=True
