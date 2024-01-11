@@ -27,9 +27,14 @@ from catalog_app.services.good import (
     fetch_goods_queryset_by_name_or_article,
 )
 
+from catalog_app.services.good import fetch_goods_queryset_by_filters
 from catalog_app.services.category import category_by_id_list
 from catalog_app.services.trade_mark import trade_mark_by_id_list
-from catalog_app.services.good import fetch_goods_queryset_by_filters
+from catalog_app.services.manufacturer import manufacturer_by_id_list
+from catalog_app.services.filtering import filtering_by_id_list
+from catalog_app.services.gassing import gassing_by_id_list
+from catalog_app.services.pasteurization import pasteurization_by_id_list
+from catalog_app.services.unit import unit_by_id_list
 
 
 class ManufacturerView(APIView):
@@ -174,9 +179,50 @@ class GoodView(APIView):
                     trade_marks = trade_mark_by_id_list(
                         trade_mark_id.split(",")
                     )
+
+                manufacturers = None
+                manufacturer_id = request.GET.get("manufacturer_id")
+                if manufacturer_id:
+                    manufacturers = manufacturer_by_id_list(
+                        manufacturer_id.split(",")
+                    )
+
+                filterings = None
+                filtering_id = request.GET.get("filtering_id")
+                if filtering_id:
+                    filterings = filtering_by_id_list(
+                        filtering_id.split(",")
+                    )
+
+                gassings = None
+                gassing_id = request.GET.get("gassing_id")
+                if gassing_id:
+                    gassings = gassing_by_id_list(
+                        gassing_id.split(",")
+                    )
+
+                pasteurizations = None
+                pasteurization_id = request.GET.get("pasteurization_id")
+                if pasteurization_id:
+                    pasteurizations = pasteurization_by_id_list(
+                        pasteurization_id.split(",")
+                    )
+
+                units = None
+                unit_id = request.GET.get("unit_id")
+                if unit_id:
+                    units = unit_by_id_list(
+                        unit_id.split(",")
+                    )
+
                 queryset = fetch_goods_queryset_by_filters(
                     categories,
-                    trade_marks
+                    trade_marks,
+                    manufacturers,
+                    filterings,
+                    gassings,
+                    pasteurizations,
+                    units
                 )
 
             if queryset is None:

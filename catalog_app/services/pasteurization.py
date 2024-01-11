@@ -8,6 +8,10 @@ def pasteurization_by_id(pasteurization_id: str) -> Pasteurization:
     return Pasteurization.objects.filter(id=pasteurization_id).first()
 
 
+def pasteurization_by_id_list(id: [str]) -> [Pasteurization]:
+    return list(Pasteurization.objects.filter(id__in=id))
+
+
 def handle_pasteurization(pasteurization_dir: dir) -> Pasteurization:
     pasteurization_id = pasteurization_dir.get('id', "")
     pasteurization_name = pasteurization_dir.get('name', "")

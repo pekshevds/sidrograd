@@ -8,6 +8,10 @@ def unit_by_id(id: str) -> Unit:
     return Unit.objects.filter(id=id).first()
 
 
+def unit_by_id_list(id: [str]) -> [Unit]:
+    return list(Unit.objects.filter(id__in=id))
+
+
 def handle_unit(item_dir: dir) -> Unit:
     item_id = item_dir.get('id', "")
     item = unit_by_id(id=item_id)

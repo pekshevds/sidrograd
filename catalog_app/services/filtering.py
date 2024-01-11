@@ -8,6 +8,10 @@ def filtering_by_id(filtering_id: str) -> Filtering:
     return Filtering.objects.filter(id=filtering_id).first()
 
 
+def filtering_by_id_list(id: [str]) -> [Filtering]:
+    return list(Filtering.objects.filter(id__in=id))
+
+
 def handle_filtering(filtering_dir: dir) -> Filtering:
     filtering_id = filtering_dir.get('id', "")
     filtering_name = filtering_dir.get('name', "")

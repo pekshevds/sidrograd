@@ -3,7 +3,12 @@ from django.db import transaction
 from catalog_app.models import (
     Good,
     Category,
-    TradeMark
+    TradeMark,
+    Manufacturer,
+    Filtering,
+    Gassing,
+    Pasteurization,
+    Unit
 )
 
 from catalog_app.services.category import handle_category
@@ -111,14 +116,35 @@ def fetch_goods_queryset_by_trade_mark(trade_marks: [TradeMark]):
 
 def fetch_goods_queryset_by_filters(
         categories: [Category],
-        trade_marks: [TradeMark]
+        trade_marks: [TradeMark],
+        manufacturers: [Manufacturer],
+        filterings: [Filtering],
+        gassings: [Gassing],
+        pasteurizations: [Pasteurization],
+        units: [Unit]
         ):
+
     filters = Q()
     if categories:
         filters.add(Q(category__in=categories), Q.AND)
 
     if trade_marks:
         filters.add(Q(trade_mark__in=trade_marks), Q.AND)
+
+    if manufacturers:
+        filters.add(Q(manufacturer__in=manufacturers), Q.AND)
+
+    if filterings:
+        filters.add(Q(filtering__in=filterings), Q.AND)
+
+    if gassings:
+        filters.add(Q(gassing__in=gassings), Q.AND)
+
+    if pasteurizations:
+        filters.add(Q(pasteurization__in=pasteurizations), Q.AND)
+
+    if units:
+        filters.add(Q(unit__in=units), Q.AND)
 
     queryset = Good.objects.filter(filters)
     return queryset

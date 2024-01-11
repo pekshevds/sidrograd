@@ -8,6 +8,10 @@ def gassing_by_id(gassing_id: str) -> Gassing:
     return Gassing.objects.filter(id=gassing_id).first()
 
 
+def gassing_by_id_list(id: [str]) -> [Gassing]:
+    return list(Gassing.objects.filter(id__in=id))
+
+
 def handle_gassing(gassing_dir: dir) -> Gassing:
     gassing_id = gassing_dir.get('id', "")
     gassing_name = gassing_dir.get('name', "")
