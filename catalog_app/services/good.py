@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.db.models import Q
 from django.db import transaction
 from catalog_app.models import (
@@ -8,7 +9,9 @@ from catalog_app.models import (
     Filtering,
     Gassing,
     Pasteurization,
-    Unit
+    Unit,
+    Volume,
+    Strength
 )
 
 from catalog_app.services.category import handle_category
@@ -18,6 +21,8 @@ from catalog_app.services.pasteurization import handle_pasteurization
 from catalog_app.services.filtering import handle_filtering
 from catalog_app.services.manufacturer import handle_manufacturer
 from catalog_app.services.unit import handle_unit
+from catalog_app.services.volume import handle_volume
+from catalog_app.services.strength import handle_strength
 
 
 def good_by_id(good_id: str) -> Good:
@@ -35,11 +40,22 @@ def handle_good(good_dir: dir) -> Good:
     good.price = good_dir.get('price', good.price)
     good.balance = good_dir.get('balance', good.balance)
     good.art = good_dir.get('art', good.art)
-    good.volume = good_dir.get('volume', good.volume)
-    good.strength = good_dir.get('strength', good.strength)
     good.in_package = good_dir.get('in_package', good.in_package)
     good.expiration_date = good_dir.get('expiration_date',
                                         good.expiration_date)
+
+    key_name = 'volume'
+    if key_name in good_dir:
+        temp_dir = good_dir.get(key_name)
+        good.volume = None if temp_dir is None else \
+            handle_volume(temp_dir)
+
+    key_name = 'strength'
+    if key_name in good_dir:
+        temp_dir = good_dir.get(key_name)
+        good.strength = None if temp_dir is None else \
+            handle_strength(temp_dir)
+
     key_name = 'category'
     if key_name in good_dir:
         temp_dir = good_dir.get(key_name)
@@ -121,8 +137,10 @@ def fetch_goods_queryset_by_filters(
         filterings: [Filtering],
         gassings: [Gassing],
         pasteurizations: [Pasteurization],
-        units: [Unit]
-        ):
+        units: [Unit],
+        volumes: [Volume],
+        strengths: [Strength]
+        ) -> [QuerySet, None]:
 
     filters = Q()
     if categories:
@@ -146,5 +164,12 @@ def fetch_goods_queryset_by_filters(
     if units:
         filters.add(Q(unit__in=units), Q.AND)
 
-    queryset = Good.objects.filter(filters)
-    return queryset
+    if volumes:
+        filters.add(Q(volume__in=volumes), Q.AND)
+
+    if strengths:
+        filters.add(Q(strength__in=strengths), Q.AND)
+
+    if len(filters) > 0:
+        return Good.objects.filter(filters)
+    return None

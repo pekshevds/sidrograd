@@ -8,8 +8,20 @@ from catalog_app.models import (
     Filtering,
     Pasteurization,
     Manufacturer,
-    Unit
+    Unit,
+    Strength,
+    Volume
 )
+
+
+@admin.register(Volume)
+class VolumeAdmin(admin.ModelAdmin):
+    list_display = ("__str__", 'id',)
+
+
+@admin.register(Strength)
+class StrengthAdmin(admin.ModelAdmin):
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(Category)

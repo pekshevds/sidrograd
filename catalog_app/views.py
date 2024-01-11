@@ -10,7 +10,9 @@ from catalog_app.models import (
     Gassing,
     TradeMark,
     Category,
-    Good
+    Good,
+    Volume,
+    Strength
 )
 from catalog_app.serializers import (
     ManufacturerSerializer,
@@ -20,7 +22,9 @@ from catalog_app.serializers import (
     GassingSerializer,
     TradeMarkSerializer,
     CategorySerializer,
-    GoodSerializer
+    GoodSerializer,
+    VolumeSerializer,
+    StrengthSerializer
 )
 from catalog_app.services.good import (
     handle_good_list,
@@ -35,6 +39,46 @@ from catalog_app.services.filtering import filtering_by_id_list
 from catalog_app.services.gassing import gassing_by_id_list
 from catalog_app.services.pasteurization import pasteurization_by_id_list
 from catalog_app.services.unit import unit_by_id_list
+from catalog_app.services.volume import volume_by_id_list
+from catalog_app.services.strength import strength_by_id_list
+
+
+class StrengthView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        id = request.GET.get("id")
+        if id:
+            queryset = Strength.objects.filter(id=id)
+            serializer = StrengthSerializer(queryset, many=True)
+        else:
+            queryset = Strength.objects.all()
+            serializer = StrengthSerializer(queryset, many=True)
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
+        return Response(response)
+
+
+class VolumeView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        id = request.GET.get("id")
+        if id:
+            queryset = Volume.objects.filter(id=id)
+            serializer = VolumeSerializer(queryset, many=True)
+        else:
+            queryset = Volume.objects.all()
+            serializer = VolumeSerializer(queryset, many=True)
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
+        return Response(response)
 
 
 class ManufacturerView(APIView):
@@ -49,7 +93,10 @@ class ManufacturerView(APIView):
         else:
             queryset = Manufacturer.objects.all()
             serializer = ManufacturerSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -65,7 +112,10 @@ class UnitView(APIView):
         else:
             queryset = Unit.objects.all()
             serializer = UnitSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -81,7 +131,10 @@ class FilteringView(APIView):
         else:
             queryset = Filtering.objects.all()
             serializer = FilteringSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -97,7 +150,10 @@ class PasteurizationView(APIView):
         else:
             queryset = Pasteurization.objects.all()
             serializer = PasteurizationSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -113,7 +169,10 @@ class GassingView(APIView):
         else:
             queryset = Gassing.objects.all()
             serializer = GassingSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -129,7 +188,10 @@ class TradeMarkView(APIView):
         else:
             queryset = TradeMark.objects.all()
             serializer = TradeMarkSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -145,7 +207,10 @@ class CategoryView(APIView):
         else:
             queryset = Category.objects.all()
             serializer = CategorySerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
         return Response(response)
 
 
@@ -215,6 +280,20 @@ class GoodView(APIView):
                         unit_id.split(",")
                     )
 
+                volumes = None
+                volume_id = request.GET.get("volume_id")
+                if volume_id:
+                    volumes = volume_by_id_list(
+                        volume_id.split(",")
+                    )
+
+                strengths = None
+                strength_id = request.GET.get("strength_id")
+                if strength_id:
+                    strengths = strength_by_id_list(
+                        strength_id.split(",")
+                    )
+
                 queryset = fetch_goods_queryset_by_filters(
                     categories,
                     trade_marks,
@@ -222,7 +301,9 @@ class GoodView(APIView):
                     filterings,
                     gassings,
                     pasteurizations,
-                    units
+                    units,
+                    volumes,
+                    strengths
                 )
 
             if queryset is None:
@@ -234,12 +315,17 @@ class GoodView(APIView):
             )
         response = {
             "data": serializer.data,
-            "count": len(queryset)
+            "count": len(queryset),
+            "params": request.GET
             }
         return Response(response)
 
     def post(self, request):
-        response = {"data": []}
+        response = {
+            "data": [],
+            "count": 0,
+            "params": {}
+            }
         data = request.data.get("data", None)
         if not data:
             return Response(response)
@@ -248,4 +334,5 @@ class GoodView(APIView):
             queryset = handle_good_list(good_list=data)
             serializer = GoodSerializer(queryset, many=True)
             response["data"] = serializer.data
+            response["count"] = len(queryset)
         return Response(response)

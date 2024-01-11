@@ -36,6 +36,18 @@ class UnitSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
 
 
+class VolumeSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+    value = serializers.DecimalField(max_digits=15, decimal_places=3)
+
+
+class StrengthSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+    value = serializers.DecimalField(max_digits=15, decimal_places=3)
+
+
 class GoodSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
@@ -47,10 +59,6 @@ class GoodSerializer(serializers.Serializer):
         max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False)
-    volume = serializers.DecimalField(
-        max_digits=15, decimal_places=3, required=False)
-    strength = serializers.DecimalField(
-        max_digits=15, decimal_places=3, required=False)
     in_package = serializers.DecimalField(
         max_digits=15, decimal_places=0, required=False)
     expiration_date = serializers.DecimalField(
@@ -62,6 +70,8 @@ class GoodSerializer(serializers.Serializer):
     filtering = FilteringSerializer(required=False, allow_null=True)
     manufacturer = ManufacturerSerializer(required=False, allow_null=True)
     unit = UnitSerializer(required=False, allow_null=True)
+    volume = VolumeSerializer(required=False, allow_null=True)
+    strength = StrengthSerializer(required=False, allow_null=True)
 
 
 class SimpleGoodSerializer(serializers.Serializer):
@@ -75,10 +85,6 @@ class SimpleGoodSerializer(serializers.Serializer):
         max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False)
-    volume = serializers.DecimalField(
-        max_digits=15, decimal_places=3, required=False)
-    strength = serializers.DecimalField(
-        max_digits=15, decimal_places=3, required=False)
     in_package = serializers.DecimalField(
         max_digits=15, decimal_places=0, required=False)
     expiration_date = serializers.DecimalField(
@@ -90,3 +96,5 @@ class SimpleGoodSerializer(serializers.Serializer):
     filtering_id = serializers.UUIDField(required=False, allow_null=True)
     manufacturer_id = serializers.UUIDField(required=False, allow_null=True)
     unit_id = serializers.UUIDField(required=False, allow_null=True)
+    volume_id = serializers.UUIDField(required=False, allow_null=True)
+    strength_id = serializers.UUIDField(required=False, allow_null=True)

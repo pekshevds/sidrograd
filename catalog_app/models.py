@@ -54,6 +54,36 @@ class Unit(Directory):
         verbose_name_plural = "Единицы измерения"
 
 
+class Volume(Directory):
+    value = models.DecimalField(
+        verbose_name="Значение",
+        max_digits=15,
+        decimal_places=3,
+        blank=True,
+        null=True,
+        default=0
+    )
+
+    class Meta:
+        verbose_name = "Объем, л"
+        verbose_name_plural = "Классификатор объемов"
+
+
+class Strength(Directory):
+    value = models.DecimalField(
+        verbose_name="Значение",
+        max_digits=15,
+        decimal_places=3,
+        blank=True,
+        null=True,
+        default=0
+    )
+
+    class Meta:
+        verbose_name = "Крепость, %"
+        verbose_name_plural = "Классификатор крепостей"
+
+
 class Good(Directory):
     full_name = models.CharField(
         verbose_name="Наименование полное",
@@ -86,21 +116,19 @@ class Good(Directory):
         null=True,
         default=0
     )
-    volume = models.DecimalField(
+    volume = models.ForeignKey(
+        Volume,
+        on_delete=models.PROTECT,
         verbose_name="Объем, л",
-        max_digits=15,
-        decimal_places=3,
         blank=True,
-        null=True,
-        default=0
+        null=True
     )
-    strength = models.DecimalField(
+    strength = models.ForeignKey(
+        Strength,
+        on_delete=models.PROTECT,
         verbose_name="Крепость, %",
-        max_digits=15,
-        decimal_places=3,
         blank=True,
-        null=True,
-        default=0
+        null=True
     )
     in_package = models.DecimalField(
         verbose_name="В упаковке, шт",

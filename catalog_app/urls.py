@@ -7,13 +7,17 @@ from catalog_app.views import (
     GassingView,
     TradeMarkView,
     CategoryView,
-    GoodView
+    GoodView,
+    VolumeView,
+    StrengthView
 )
 
 
 app_name = 'catalog_app'
 
 urlpatterns = [
+    path('volume/', VolumeView.as_view(), name="volume"),
+    path('strength/', StrengthView.as_view(), name="strength"),
     path('unit/', UnitView.as_view(), name="init"),
     path('manufacturer/', ManufacturerView.as_view(), name="manufacturer"),
     path('filtering/', FilteringView.as_view(), name="filtering"),
