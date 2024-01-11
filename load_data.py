@@ -1,4 +1,6 @@
-from catalog_app.models import Unit, Category, TradeMark, Good
+from catalog_app.models import (
+    Unit, Category, TradeMark, Good, Volume, Strength
+)
 from django.db import transaction
 import csv
 
@@ -7,6 +9,8 @@ units = []
 categories = []
 trade_marks = []
 goods = []
+volums = []
+strengths = []
 
 
 def find_good(art: str) -> Good:
@@ -21,6 +25,28 @@ def find(content: list[dict], target: str) -> object:
     if result:
         return result[0].get('obj')
     return None
+
+
+def load_volume(name: str) -> Volume:
+    obj = find(volums, name)
+    if not obj:
+        obj = Volume.objects.create(name=name, value=float(name))
+        volums.append({
+            'name': name,
+            'obj': obj
+        })
+    return obj
+
+
+def load_strength(name: str) -> Strength:
+    obj = find(strengths, name)
+    if not obj:
+        obj = Strength.objects.create(name=name, value=float(name))
+        strengths.append({
+            'name': name,
+            'obj': obj
+        })
+    return obj
 
 
 def load_unit(name: str) -> Unit:
@@ -80,10 +106,10 @@ def load_data():
                         art=row['art'],
                         price=float(row['price']
                                     .replace(',', '.').replace(' ', '')),
-                        strength=float(row['strength']
-                                       .replace(',', '.').replace(' ', '')),
-                        volume=float(row['volume']
-                                     .replace(',', '.').replace(' ', '')),
+                        strength=load_strength(row['strength']
+                                               .replace(',', '.').replace(' ', '')),
+                        volume=load_volume(row['volume']
+                                           .replace(',', '.').replace(' ', '')),
                         unit=unit,
                         category=category,
                         trade_mark=trade_mark
