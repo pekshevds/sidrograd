@@ -9,7 +9,8 @@ from catalog_app.views import (
     CategoryView,
     GoodView,
     VolumeView,
-    StrengthView
+    StrengthView,
+    DataView
 )
 
 
@@ -26,4 +27,5 @@ urlpatterns = [
     path('trade-mark/', TradeMarkView.as_view(), name="trade-mark"),
     path('category/', CategoryView.as_view(), name="category"),
     path('good/', GoodView.as_view(), name="good"),
+    path('data/', DataView.as_view(), name="data"),
 ]

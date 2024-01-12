@@ -24,7 +24,8 @@ from catalog_app.serializers import (
     CategorySerializer,
     GoodSerializer,
     VolumeSerializer,
-    StrengthSerializer
+    StrengthSerializer,
+    SimpleGoodSerializer
 )
 from catalog_app.services.good import (
     handle_good_list,
@@ -335,4 +336,58 @@ class GoodView(APIView):
             serializer = GoodSerializer(queryset, many=True)
             response["data"] = serializer.data
             response["count"] = len(queryset)
+        return Response(response)
+
+
+class DataView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        category = CategorySerializer(
+            Category.objects.all(), many=True
+            )
+        trade_mark = TradeMarkSerializer(
+            TradeMark.objects.all(), many=True
+            )
+        gassing = GassingSerializer(
+            Gassing.objects.all(),  many=True
+            )
+        pasteurization = PasteurizationSerializer(
+            Pasteurization.objects.all(), many=True
+            )
+        filtering = FilteringSerializer(
+            Filtering.objects.all(), many=True
+            )
+        manufacturer = ManufacturerSerializer(
+            Manufacturer.objects.all(), many=True
+            )
+        unit = UnitSerializer(
+            Unit.objects.all(), many=True
+            )
+        strength = StrengthSerializer(
+            Strength.objects.all(), many=True
+            )
+        volume = VolumeSerializer(
+            Volume.objects.all(), many=True
+            )
+        # good = SimpleGoodSerializer(Good.objects.all(), many=True)
+        good = GoodSerializer(
+            Good.objects.all(), many=True
+            )
+        response = {
+            "data": {
+                "category": category.data,
+                "trade_mark": trade_mark.data,
+                "gassing": gassing.data,
+                "pasteurization": pasteurization.data,
+                "filtering": filtering.data,
+                "manufacturer": manufacturer.data,
+                "unit": unit.data,
+                "strength": strength.data,
+                "volume": volume.data,
+                "good": good.data
+            },
+            "params": request.GET
+            }
         return Response(response)
