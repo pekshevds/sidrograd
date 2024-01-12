@@ -29,6 +29,7 @@ class GassingSerializer(serializers.Serializer):
 class ManufacturerSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    description = serializers.CharField(required=False, allow_blank=True)
 
 
 class UnitSerializer(serializers.Serializer):
@@ -72,6 +73,7 @@ class GoodSerializer(serializers.Serializer):
     unit = UnitSerializer(required=False, allow_null=True)
     volume = VolumeSerializer(required=False, allow_null=True)
     strength = StrengthSerializer(required=False, allow_null=True)
+    description = serializers.CharField(required=False, allow_blank=True)
 
 
 class SimpleGoodSerializer(serializers.Serializer):
@@ -98,3 +100,4 @@ class SimpleGoodSerializer(serializers.Serializer):
     unit_id = serializers.UUIDField(required=False, allow_null=True)
     volume_id = serializers.UUIDField(required=False, allow_null=True)
     strength_id = serializers.UUIDField(required=False, allow_null=True)
+    description = serializers.CharField(required=False, allow_blank=True)

@@ -67,7 +67,8 @@ class GoodsImageInLine(admin.TabularInline):
 class GoodAdmin(admin.ModelAdmin):
     inlines = [GoodsImageInLine]
     list_display = (
-        "name", "art", "category",
+        "name", "full_name", "art", "category",
         "is_active", "balance", "price",
     )
+    exclude = ("full_name", )
     search_fields = ("name", "art",)

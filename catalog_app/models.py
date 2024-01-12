@@ -41,6 +41,11 @@ class Filtering(Directory):
 
 
 class Manufacturer(Directory):
+    description = models.TextField(
+        verbose_name="Описание",
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = "Производитель"
@@ -206,7 +211,6 @@ class Good(Directory):
         blank=True,
         null=True
     )
-
     unit = models.ForeignKey(
         Unit,
         on_delete=models.PROTECT,
@@ -214,12 +218,18 @@ class Good(Directory):
         blank=True,
         null=True
     )
+    description = models.TextField(
+        verbose_name="Описание",
+        null=True,
+        blank=True
+    )
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
             self.slug = slugify(
                 f"{self.name}-{secret_from_string(str(self.id))}"
             )
+        self.full_name = f"{self.category} {self.trade_mark} {self.name}"
         return super().save(*args, **kwargs)
 
     class Meta:
