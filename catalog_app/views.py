@@ -372,9 +372,7 @@ class DataView(APIView):
             Volume.objects.all(), many=True
             )
         # good = SimpleGoodSerializer(Good.objects.all(), many=True)
-        good = GoodSerializer(
-            Good.objects.all(), many=True
-            )
+        # good = GoodSerializer(Good.objects.all(), many=True)
         response = {
             "data": {
                 "category": category.data,
@@ -386,7 +384,7 @@ class DataView(APIView):
                 "unit": unit.data,
                 "strength": strength.data,
                 "volume": volume.data,
-                "good": good.data
+                # "good": good.data
             },
             "params": request.GET
             }
