@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from image_app.serializers import ImageSerializer
 
 
 class CategorySerializer(serializers.Serializer):
@@ -49,6 +50,10 @@ class StrengthSerializer(serializers.Serializer):
     value = serializers.DecimalField(max_digits=15, decimal_places=3)
 
 
+class GoodsImageSerializer(serializers.Serializer):
+    image = ImageSerializer(required=False, allow_null=True)
+
+
 class GoodSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
@@ -74,6 +79,10 @@ class GoodSerializer(serializers.Serializer):
     volume = VolumeSerializer(required=False, allow_null=True)
     strength = StrengthSerializer(required=False, allow_null=True)
     description = serializers.CharField(required=False, allow_blank=True)
+    preview = ImageSerializer(required=False, allow_null=True,
+                              source="image", read_only=True)
+    images = GoodsImageSerializer(required=False, allow_null=True,
+                                  many=True, read_only=True)
 
 
 class SimpleGoodSerializer(serializers.Serializer):
@@ -101,3 +110,7 @@ class SimpleGoodSerializer(serializers.Serializer):
     volume_id = serializers.UUIDField(required=False, allow_null=True)
     strength_id = serializers.UUIDField(required=False, allow_null=True)
     description = serializers.CharField(required=False, allow_blank=True)
+    preview = ImageSerializer(required=False, allow_null=True,
+                              source="image", read_only=True)
+    images = GoodsImageSerializer(required=False, allow_null=True,
+                                  many=True, read_only=True)
