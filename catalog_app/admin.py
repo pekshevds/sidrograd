@@ -11,13 +11,25 @@ from catalog_app.models import (
     Manufacturer,
     Unit,
     Strength,
-    Volume
+    Volume,
+    TypeOfFermentation,
+    Style
 )
 
 
 admin.site.site_header = "Панель администрирования Сидроград"
 admin.site.site_title = "Панель администрирования Сидроград"
 admin.site.index_title = "Добро пожаловать!"
+
+
+@admin.register(TypeOfFermentation)
+class TypeOfFermentationAdmin(admin.ModelAdmin):
+    list_display = ("__str__", 'id',)
+
+
+@admin.register(Style)
+class StyleAdmin(admin.ModelAdmin):
+    list_display = ("__str__", 'id',)
 
 
 @admin.register(Volume)

@@ -59,6 +59,20 @@ class Unit(Directory):
         verbose_name_plural = "Единицы измерения"
 
 
+class TypeOfFermentation(Directory):
+
+    class Meta:
+        verbose_name = "Тип ферментации"
+        verbose_name_plural = "Типы ферментации"
+
+
+class Style(Directory):
+
+    class Meta:
+        verbose_name = "Спиль"
+        verbose_name_plural = "Стили"
+
+
 class Volume(Directory):
     value = models.DecimalField(
         verbose_name="Значение",
@@ -72,6 +86,7 @@ class Volume(Directory):
     class Meta:
         verbose_name = "Объем, л"
         verbose_name_plural = "Классификатор объемов"
+        ordering = ["value"]
 
 
 class Strength(Directory):
@@ -87,6 +102,7 @@ class Strength(Directory):
     class Meta:
         verbose_name = "Крепость, %"
         verbose_name_plural = "Классификатор крепостей"
+        ordering = ["value"]
 
 
 class Good(Directory):
@@ -215,6 +231,20 @@ class Good(Directory):
         Unit,
         on_delete=models.PROTECT,
         verbose_name="Единица измерения",
+        blank=True,
+        null=True
+    )
+    type_of_fermentation = models.ForeignKey(
+        TypeOfFermentation,
+        on_delete=models.PROTECT,
+        verbose_name="Тип ферментации",
+        blank=True,
+        null=True
+    )
+    style = models.ForeignKey(
+        Style,
+        on_delete=models.PROTECT,
+        verbose_name="Стиль",
         blank=True,
         null=True
     )
