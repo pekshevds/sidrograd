@@ -38,6 +38,16 @@ class UnitSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
 
 
+class TypeOfFermentationSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+
+
+class StyleSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+
+
 class VolumeSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
@@ -76,6 +86,10 @@ class GoodSerializer(serializers.Serializer):
     filtering = FilteringSerializer(required=False, allow_null=True)
     manufacturer = ManufacturerSerializer(required=False, allow_null=True)
     unit = UnitSerializer(required=False, allow_null=True)
+    style = StyleSerializer(required=False, allow_null=True)
+    type_of_fermentation = TypeOfFermentationSerializer(
+        required=False, allow_null=True
+    )
     volume = VolumeSerializer(required=False, allow_null=True)
     strength = StrengthSerializer(required=False, allow_null=True)
     description = serializers.CharField(required=False, allow_blank=True)
@@ -107,6 +121,10 @@ class SimpleGoodSerializer(serializers.Serializer):
     filtering_id = serializers.UUIDField(required=False, allow_null=True)
     manufacturer_id = serializers.UUIDField(required=False, allow_null=True)
     unit_id = serializers.UUIDField(required=False, allow_null=True)
+    style_id = serializers.UUIDField(required=False, allow_null=True)
+    type_of_fermentationt_id = serializers.UUIDField(
+        required=False, allow_null=True
+    )
     volume_id = serializers.UUIDField(required=False, allow_null=True)
     strength_id = serializers.UUIDField(required=False, allow_null=True)
     description = serializers.CharField(required=False, allow_blank=True)

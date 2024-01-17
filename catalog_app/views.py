@@ -12,7 +12,9 @@ from catalog_app.models import (
     Category,
     Good,
     Volume,
-    Strength
+    Strength,
+    Style,
+    TypeOfFermentation
 )
 from catalog_app.serializers import (
     ManufacturerSerializer,
@@ -25,7 +27,9 @@ from catalog_app.serializers import (
     GoodSerializer,
     VolumeSerializer,
     StrengthSerializer,
-    SimpleGoodSerializer
+    SimpleGoodSerializer,
+    StyleSerializer,
+    TypeOfFermentationSerializer
 )
 from catalog_app.services.good import (
     handle_good_list,
@@ -42,6 +46,48 @@ from catalog_app.services.pasteurization import pasteurization_by_id_list
 from catalog_app.services.unit import unit_by_id_list
 from catalog_app.services.volume import volume_by_id_list
 from catalog_app.services.strength import strength_by_id_list
+from catalog_app.services.style import style_by_id_list
+from catalog_app.services.type_of_fermentation import (
+    type_of_fermentation_by_id_list
+)
+
+
+class StyleView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        id = request.GET.get("id")
+        if id:
+            queryset = Style.objects.filter(id=id)
+            serializer = StyleSerializer(queryset, many=True)
+        else:
+            queryset = Style.objects.all()
+            serializer = StyleSerializer(queryset, many=True)
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
+        return Response(response)
+
+
+class TypeOfFermentationView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        id = request.GET.get("id")
+        if id:
+            queryset = TypeOfFermentation.objects.filter(id=id)
+            serializer = TypeOfFermentationSerializer(queryset, many=True)
+        else:
+            queryset = TypeOfFermentation.objects.all()
+            serializer = TypeOfFermentationSerializer(queryset, many=True)
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
+        return Response(response)
 
 
 class StrengthView(APIView):
@@ -281,6 +327,21 @@ class GoodView(APIView):
                         unit_id.split(",")
                     )
 
+                styles = None
+                style_id = request.GET.get("style_id")
+                if style_id:
+                    styles = style_by_id_list(
+                        style_id.split(",")
+                    )
+
+                types_of_fermentation = None
+                type_of_fermentation_id = \
+                    request.GET.get("type_of_fermentation_id")
+                if type_of_fermentation_id:
+                    types_of_fermentation = type_of_fermentation_by_id_list(
+                        type_of_fermentation_id.split(",")
+                    )
+
                 volumes = None
                 volume_id = request.GET.get("volume_id")
                 if volume_id:
@@ -303,6 +364,8 @@ class GoodView(APIView):
                     gassings,
                     pasteurizations,
                     units,
+                    styles,
+                    types_of_fermentation,
                     volumes,
                     strengths
                 )
@@ -365,6 +428,12 @@ class DataView(APIView):
         unit = UnitSerializer(
             Unit.objects.all(), many=True
             )
+        style = StyleSerializer(
+            Style.objects.all(), many=True
+            )
+        type_of_fermentation = TypeOfFermentationSerializer(
+            TypeOfFermentation.objects.all(), many=True
+            )
         strength = StrengthSerializer(
             Strength.objects.all(), many=True
             )
@@ -382,6 +451,8 @@ class DataView(APIView):
                 "filtering": filtering.data,
                 "manufacturer": manufacturer.data,
                 "unit": unit.data,
+                "style": style.data,
+                "type_of_fermentation": type_of_fermentation.data,
                 "strength": strength.data,
                 "volume": volume.data,
                 # "good": good.data

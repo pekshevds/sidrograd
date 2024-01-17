@@ -11,7 +11,9 @@ from catalog_app.models import (
     Pasteurization,
     Unit,
     Volume,
-    Strength
+    Strength,
+    Style,
+    TypeOfFermentation
 )
 
 from catalog_app.services.category import handle_category
@@ -21,6 +23,9 @@ from catalog_app.services.pasteurization import handle_pasteurization
 from catalog_app.services.filtering import handle_filtering
 from catalog_app.services.manufacturer import handle_manufacturer
 from catalog_app.services.unit import handle_unit
+from catalog_app.services.style import handle_style
+from catalog_app.services.type_of_fermentation import \
+    handle_type_of_fermentation
 from catalog_app.services.volume import handle_volume
 from catalog_app.services.strength import handle_strength
 
@@ -98,6 +103,18 @@ def handle_good(good_dir: dir) -> Good:
         good.unit = None if temp_dir is None else \
             handle_unit(temp_dir)
 
+    key_name = 'style'
+    if key_name in good_dir:
+        temp_dir = good_dir.get(key_name)
+        good.unit = None if temp_dir is None else \
+            handle_style(temp_dir)
+
+    key_name = 'type_of_fermentation'
+    if key_name in good_dir:
+        temp_dir = good_dir.get(key_name)
+        good.unit = None if temp_dir is None else \
+            handle_type_of_fermentation(temp_dir)
+
     good.save()
     return good
 
@@ -138,6 +155,8 @@ def fetch_goods_queryset_by_filters(
         gassings: [Gassing],
         pasteurizations: [Pasteurization],
         units: [Unit],
+        styles: [Style],
+        types_of_fermentation: [TypeOfFermentation],
         volumes: [Volume],
         strengths: [Strength]
         ) -> [QuerySet, None]:
@@ -163,6 +182,12 @@ def fetch_goods_queryset_by_filters(
 
     if units:
         filters.add(Q(unit__in=units), Q.AND)
+
+    if styles:
+        filters.add(Q(style__in=styles), Q.AND)
+
+    if types_of_fermentation:
+        filters.add(Q(type_of_fermentation__in=types_of_fermentation), Q.AND)
 
     if volumes:
         filters.add(Q(volume__in=volumes), Q.AND)
