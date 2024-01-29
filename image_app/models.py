@@ -13,3 +13,4 @@ class Image(Directory):
     class Meta:
         verbose_name = "Изображение"
         verbose_name_plural = "Изображения"
+        ordering = ["-updated_at"]
