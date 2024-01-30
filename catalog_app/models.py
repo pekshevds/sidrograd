@@ -18,6 +18,7 @@ class Country(Directory):
     class Meta:
         verbose_name = "Страна"
         verbose_name_plural = "Классификатор стран мира"
+        ordering = ["name"]
 
 
 class Category(Directory):
