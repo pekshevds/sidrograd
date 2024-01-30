@@ -13,7 +13,8 @@ from catalog_app.models import (
     Volume,
     Strength,
     Style,
-    TypeOfFermentation
+    TypeOfFermentation,
+    Country
 )
 
 from catalog_app.services.category import handle_category
@@ -28,6 +29,7 @@ from catalog_app.services.type_of_fermentation import \
     handle_type_of_fermentation
 from catalog_app.services.volume import handle_volume
 from catalog_app.services.strength import handle_strength
+from catalog_app.services.country import handle_country
 
 
 def good_by_id(good_id: str) -> Good:
@@ -115,6 +117,12 @@ def handle_good(good_dir: dir) -> Good:
         good.unit = None if temp_dir is None else \
             handle_type_of_fermentation(temp_dir)
 
+    key_name = 'country'
+    if key_name in good_dir:
+        temp_dir = good_dir.get(key_name)
+        good.unit = None if temp_dir is None else \
+            handle_country(temp_dir)
+
     good.save()
     return good
 
@@ -158,7 +166,8 @@ def fetch_goods_queryset_by_filters(
         styles: [Style],
         types_of_fermentation: [TypeOfFermentation],
         volumes: [Volume],
-        strengths: [Strength]
+        strengths: [Strength],
+        countryes: [Country],
         ) -> [QuerySet, None]:
 
     filters = Q()
@@ -194,6 +203,9 @@ def fetch_goods_queryset_by_filters(
 
     if strengths:
         filters.add(Q(strength__in=strengths), Q.AND)
+
+    if countryes:
+        filters.add(Q(country__in=countryes), Q.AND)
 
     if len(filters) > 0:
         return Good.objects.filter(filters)

@@ -13,13 +13,19 @@ from catalog_app.models import (
     Strength,
     Volume,
     TypeOfFermentation,
-    Style
+    Style,
+    Country
 )
 
 
 admin.site.site_header = "Панель администрирования Сидроград"
 admin.site.site_title = "Панель администрирования Сидроград"
 admin.site.index_title = "Добро пожаловать!"
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "code", 'id',)
 
 
 @admin.register(TypeOfFermentation)
@@ -92,7 +98,7 @@ class GoodsImageInLine(admin.TabularInline):
 class GoodAdmin(admin.ModelAdmin):
     inlines = [GoodsImageInLine]
     list_display = (
-        "name", "full_name", "art", "category",
+        "name", "full_name", "art", "category", "country",
         "is_active", "balance", "price", "preview",
     )
     exclude = ("full_name", )

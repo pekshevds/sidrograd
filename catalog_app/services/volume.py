@@ -14,15 +14,14 @@ def volume_by_id_list(id: [str]) -> [Volume]:
 
 def handle_volume(item_dir: dir) -> Volume:
     item_id = item_dir.get('id', "")
-    item_name = item_dir.get('name', "")
-    item_value = item_dir.get('value', 0)
     item = volume_by_id(item_id)
     if item is None:
         item = Volume.objects.create(
-            id=item_id,
-            name=item_name,
-            value=item_value
+            id=item_id
         )
+    item.name = item_dir.get('name', "")
+    item.value = item_dir.get('value', 0)
+    item.save()
     return item
 
 

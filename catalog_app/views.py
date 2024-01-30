@@ -14,7 +14,8 @@ from catalog_app.models import (
     Volume,
     Strength,
     Style,
-    TypeOfFermentation
+    TypeOfFermentation,
+    Country
 )
 from catalog_app.serializers import (
     ManufacturerSerializer,
@@ -29,7 +30,8 @@ from catalog_app.serializers import (
     StrengthSerializer,
     SimpleGoodSerializer,
     StyleSerializer,
-    TypeOfFermentationSerializer
+    TypeOfFermentationSerializer,
+    CountrySerializer
 )
 from catalog_app.services.good import (
     handle_good_list,
@@ -47,9 +49,29 @@ from catalog_app.services.unit import unit_by_id_list
 from catalog_app.services.volume import volume_by_id_list
 from catalog_app.services.strength import strength_by_id_list
 from catalog_app.services.style import style_by_id_list
+from catalog_app.services.country import country_by_id_list
 from catalog_app.services.type_of_fermentation import (
     type_of_fermentation_by_id_list
 )
+
+
+class CountryView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        id = request.GET.get("id")
+        if id:
+            queryset = Country.objects.filter(id=id)
+            serializer = CountrySerializer(queryset, many=True)
+        else:
+            queryset = Country.objects.all()
+            serializer = CountrySerializer(queryset, many=True)
+        response = {
+            "data": serializer.data,
+            "params": request.GET
+            }
+        return Response(response)
 
 
 class StyleView(APIView):
@@ -356,6 +378,13 @@ class GoodView(APIView):
                         strength_id.split(",")
                     )
 
+                countryes = None
+                country_id = request.GET.get("country_id")
+                if country_id:
+                    countryes = country_by_id_list(
+                        country_id.split(",")
+                    )
+
                 queryset = fetch_goods_queryset_by_filters(
                     categories,
                     trade_marks,
@@ -367,7 +396,8 @@ class GoodView(APIView):
                     styles,
                     types_of_fermentation,
                     volumes,
-                    strengths
+                    strengths,
+                    countryes
                 )
 
             if queryset is None:

@@ -12,13 +12,15 @@ from catalog_app.views import (
     StrengthView,
     DataView,
     StyleView,
-    TypeOfFermentationView
+    TypeOfFermentationView,
+    CountryView
 )
 
 
 app_name = 'catalog_app'
 
 urlpatterns = [
+    path('country/', CountryView.as_view(), name="country"),
     path('style/', StyleView.as_view(), name="style"),
     path('type-of-fermentation/',
          TypeOfFermentationView.as_view(),

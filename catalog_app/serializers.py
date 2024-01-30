@@ -2,6 +2,13 @@ from rest_framework import serializers
 from image_app.serializers import ImageSerializer
 
 
+class CountrySerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+    code = serializers.CharField(
+        max_length=3, required=False, allow_blank=True)
+
+
 class CategorySerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
@@ -92,6 +99,7 @@ class GoodSerializer(serializers.Serializer):
     )
     volume = VolumeSerializer(required=False, allow_null=True)
     strength = StrengthSerializer(required=False, allow_null=True)
+    country = CountrySerializer(required=False, allow_null=True)
     description = serializers.CharField(required=False, allow_blank=True)
     preview = ImageSerializer(required=False, allow_null=True,
                               source="image", read_only=True)
@@ -127,6 +135,7 @@ class SimpleGoodSerializer(serializers.Serializer):
     )
     volume_id = serializers.UUIDField(required=False, allow_null=True)
     strength_id = serializers.UUIDField(required=False, allow_null=True)
+    country_id = serializers.UUIDField(required=False, allow_null=True)
     description = serializers.CharField(required=False, allow_blank=True)
     preview = ImageSerializer(required=False, allow_null=True,
                               source="image", read_only=True)

@@ -5,6 +5,21 @@ from image_app.models import Image
 from catalog_app.commons import secret_from_string
 
 
+class Country(Directory):
+    code = models.CharField(
+        verbose_name="Код оп ОКСМ",
+        max_length=3,
+        blank=True,
+        null=True,
+        default="",
+        db_index=True
+    )
+
+    class Meta:
+        verbose_name = "Страна"
+        verbose_name_plural = "Классификатор стран мира"
+
+
 class Category(Directory):
 
     class Meta:
@@ -245,6 +260,13 @@ class Good(Directory):
         Style,
         on_delete=models.PROTECT,
         verbose_name="Стиль",
+        blank=True,
+        null=True
+    )
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        verbose_name="Страна",
         blank=True,
         null=True
     )
