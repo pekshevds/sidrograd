@@ -102,7 +102,7 @@ class GoodAdmin(admin.ModelAdmin):
         "is_active", "balance", "price", "preview",
     )
     exclude = ("full_name", )
-    search_fields = ("name", "art",)
+    search_fields = ("art", "full_name",)
 
     def preview(self, obj):
         if obj.image:

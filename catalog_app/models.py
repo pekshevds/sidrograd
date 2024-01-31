@@ -127,7 +127,8 @@ class Good(Directory):
         max_length=1024,
         blank=True,
         null=True,
-        default=""
+        default="",
+        db_index=True
     )
     art = models.CharField(
         verbose_name="Артикул",

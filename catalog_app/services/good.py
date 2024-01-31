@@ -139,8 +139,9 @@ def handle_good_list(good_list: None) -> [Good]:
 
 def fetch_goods_queryset_by_name_or_article(search: str):
     queryset = Good.objects.filter(
-        Q(name__icontains=search) |
-        Q(art__icontains=search)
+        # Q(name__icontains=search) |
+        Q(art__icontains=search) |
+        Q(full_name__icontains=search)
         )
     return queryset
 

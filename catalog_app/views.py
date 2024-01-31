@@ -470,8 +470,10 @@ class DataView(APIView):
         volume = VolumeSerializer(
             Volume.objects.all(), many=True
             )
-        # good = SimpleGoodSerializer(Good.objects.all(), many=True)
-        # good = GoodSerializer(Good.objects.all(), many=True)
+        country = CountrySerializer(
+            Country.objects.all(), many=True
+            )
+        # countryes = [good.country for good in Good.objects.exclude(country=None)]
         response = {
             "data": {
                 "category": category.data,
@@ -485,6 +487,7 @@ class DataView(APIView):
                 "type_of_fermentation": type_of_fermentation.data,
                 "strength": strength.data,
                 "volume": volume.data,
+                "country": country.data,
                 # "good": good.data
             },
             "params": request.GET
