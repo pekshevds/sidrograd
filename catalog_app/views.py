@@ -21,7 +21,7 @@ from catalog_app.serializers import (
     ManufacturerSerializer,
     UnitSerializer,
     FilteringSerializer,
-    PasteurizationSerializer,
+    # PasteurizationSerializer,
     GassingSerializer,
     TradeMarkSerializer,
     CategorySerializer,
@@ -207,7 +207,7 @@ class FilteringView(APIView):
         return Response(response)
 
 
-class PasteurizationView(APIView):
+"""class PasteurizationView(APIView):
 
     permission_classes = [permissions.AllowAny]
 
@@ -223,7 +223,7 @@ class PasteurizationView(APIView):
             "data": serializer.data,
             "params": request.GET
             }
-        return Response(response)
+        return Response(response)"""
 
 
 class GassingView(APIView):

@@ -15,6 +15,11 @@ class OrganizationSerializer(serializers.Serializer):
     inn = serializers.CharField(max_length=12)
 
 
+class OrderStatusSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=150)
+    value = serializers.CharField(max_length=2)
+
+
 class ContractSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
@@ -58,9 +63,11 @@ class OrderSerializer(serializers.Serializer):
     date = serializers.DateTimeField(format='%Y-%m-%d')
     contract = ContractSerializer()
     items = ItemOrderSerializer(many=True)
+    status = OrderStatusSerializer(many=False, required=False)
 
 
 class SimpleOrderSerializer(serializers.Serializer):
+    id = serializers.UUIDField(read_only=True, required=False)
     number = serializers.IntegerField(read_only=True, required=False)
     date = serializers.DateTimeField(
         format='%Y-%m-%d', read_only=True, required=False

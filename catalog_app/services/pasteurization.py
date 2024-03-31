@@ -1,3 +1,4 @@
+from typing import List
 from django.db import transaction
 from catalog_app.models import (
     Pasteurization
@@ -8,7 +9,7 @@ def pasteurization_by_id(pasteurization_id: str) -> Pasteurization:
     return Pasteurization.objects.filter(id=pasteurization_id).first()
 
 
-def pasteurization_by_id_list(id: [str]) -> [Pasteurization]:
+def pasteurization_by_id_list(id: List[str]) -> List[Pasteurization]:
     return list(Pasteurization.objects.filter(id__in=id))
 
 
@@ -24,7 +25,8 @@ def handle_pasteurization(pasteurization_dir: dir) -> Pasteurization:
     return pasteurization
 
 
-def handle_pasteurization_list(pasteurization_list: None) -> [Pasteurization]:
+def handle_pasteurization_list(
+            pasteurization_list: None) -> List[Pasteurization]:
     pasteurization_id = []
     with transaction.atomic():
         for pasteurization_item in pasteurization_list:

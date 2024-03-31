@@ -1,3 +1,4 @@
+from typing import List
 from django.db.models.query import QuerySet
 from django.db.models import Q
 from django.db import transaction
@@ -8,7 +9,7 @@ from catalog_app.models import (
     Manufacturer,
     Filtering,
     Gassing,
-    Pasteurization,
+    # Pasteurization,
     Unit,
     Volume,
     Strength,
@@ -20,7 +21,7 @@ from catalog_app.models import (
 from catalog_app.services.category import handle_category
 from catalog_app.services.trade_mark import handle_trade_mark
 from catalog_app.services.gassing import handle_gassing
-from catalog_app.services.pasteurization import handle_pasteurization
+# from catalog_app.services.pasteurization import handle_pasteurization
 from catalog_app.services.filtering import handle_filtering
 from catalog_app.services.manufacturer import handle_manufacturer
 from catalog_app.services.unit import handle_unit
@@ -81,11 +82,11 @@ def handle_good(good_dir: dir) -> Good:
         good.gassing = None if temp_dir is None else \
             handle_gassing(temp_dir)
 
-    key_name = 'pasteurization'
+    """key_name = 'pasteurization'
     if key_name in good_dir:
         temp_dir = good_dir.get(key_name)
         good.pasteurization = None if temp_dir is None else \
-            handle_pasteurization(temp_dir)
+            handle_pasteurization(temp_dir)"""
 
     key_name = 'filtering'
     if key_name in good_dir:
@@ -127,7 +128,7 @@ def handle_good(good_dir: dir) -> Good:
     return good
 
 
-def handle_good_list(good_list: None) -> [Good]:
+def handle_good_list(good_list: None) -> List[Good]:
     goods_id = []
     with transaction.atomic():
         for good_item in good_list:
@@ -146,30 +147,30 @@ def fetch_goods_queryset_by_name_or_article(search: str):
     return queryset
 
 
-def fetch_goods_queryset_by_category(categories: [Category]):
+def fetch_goods_queryset_by_category(categories: List[Category]):
     queryset = Good.objects.filter(category__in=categories)
     return queryset
 
 
-def fetch_goods_queryset_by_trade_mark(trade_marks: [TradeMark]):
+def fetch_goods_queryset_by_trade_mark(trade_marks: List[TradeMark]):
     queryset = Good.objects.filter(trade_mark__in=trade_marks)
     return queryset
 
 
 def fetch_goods_queryset_by_filters(
-        categories: [Category],
-        trade_marks: [TradeMark],
-        manufacturers: [Manufacturer],
-        filterings: [Filtering],
-        gassings: [Gassing],
-        pasteurizations: [Pasteurization],
-        units: [Unit],
-        styles: [Style],
-        types_of_fermentation: [TypeOfFermentation],
-        volumes: [Volume],
-        strengths: [Strength],
-        countryes: [Country],
-        ) -> [QuerySet, None]:
+        categories: List[Category],
+        trade_marks: List[TradeMark],
+        manufacturers: List[Manufacturer],
+        filterings: List[Filtering],
+        gassings: List[Gassing],
+        # pasteurizations: List[Pasteurization],
+        units: List[Unit],
+        styles: List[Style],
+        types_of_fermentation: List[TypeOfFermentation],
+        volumes: List[Volume],
+        strengths: List[Strength],
+        countryes: List[Country],
+        ) -> QuerySet | None:
 
     filters = Q()
     if categories:
@@ -187,8 +188,8 @@ def fetch_goods_queryset_by_filters(
     if gassings:
         filters.add(Q(gassing__in=gassings), Q.AND)
 
-    if pasteurizations:
-        filters.add(Q(pasteurization__in=pasteurizations), Q.AND)
+    """if pasteurizations:
+        filters.add(Q(pasteurization__in=pasteurizations), Q.AND)"""
 
     if units:
         filters.add(Q(unit__in=units), Q.AND)

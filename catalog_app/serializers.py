@@ -19,9 +19,9 @@ class TradeMarkSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
 
 
-class PasteurizationSerializer(serializers.Serializer):
+"""class PasteurizationSerializer(serializers.Serializer):
     id = serializers.UUIDField()
-    name = serializers.CharField(max_length=150)
+    name = serializers.CharField(max_length=150)"""
 
 
 class FilteringSerializer(serializers.Serializer):
@@ -89,7 +89,7 @@ class GoodSerializer(serializers.Serializer):
     category = CategorySerializer(required=False, allow_null=True)
     trade_mark = TradeMarkSerializer(required=False, allow_null=True)
     gassing = GassingSerializer(required=False, allow_null=True)
-    pasteurization = PasteurizationSerializer(required=False, allow_null=True)
+    # pasteurization = PasteurizationSerializer(required=False, allow_null=True)
     filtering = FilteringSerializer(required=False, allow_null=True)
     manufacturer = ManufacturerSerializer(required=False, allow_null=True)
     unit = UnitSerializer(required=False, allow_null=True)
@@ -125,7 +125,7 @@ class SimpleGoodSerializer(serializers.Serializer):
     category_id = serializers.UUIDField(required=False, allow_null=True)
     trade_mark_id = serializers.UUIDField(required=False, allow_null=True)
     gassing_id = serializers.UUIDField(required=False, allow_null=True)
-    pasteurization_id = serializers.UUIDField(required=False, allow_null=True)
+    # pasteurization_id = serializers.UUIDField(required=False, allow_null=True)
     filtering_id = serializers.UUIDField(required=False, allow_null=True)
     manufacturer_id = serializers.UUIDField(required=False, allow_null=True)
     unit_id = serializers.UUIDField(required=False, allow_null=True)

@@ -228,7 +228,8 @@ class Good(Directory):
         on_delete=models.PROTECT,
         verbose_name="Пастеризация",
         blank=True,
-        null=True
+        null=True,
+        editable=False
     )
     filtering = models.ForeignKey(
         Filtering,

@@ -7,7 +7,7 @@ from catalog_app.models import (
     TradeMark,
     Gassing,
     Filtering,
-    Pasteurization,
+    # Pasteurization,
     Manufacturer,
     Unit,
     Strength,
@@ -27,6 +27,7 @@ admin.site.index_title = "Добро пожаловать!"
 class CountryAdmin(admin.ModelAdmin):
     list_display = ("__str__", "code", 'id',)
     ordering = ("-created_at",)
+    search_fields = ("name", "code",)
 
 
 @admin.register(TypeOfFermentation)
@@ -76,10 +77,10 @@ class FilteringAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
 
 
-@admin.register(Pasteurization)
+"""@admin.register(Pasteurization)
 class PasteurizationAdmin(admin.ModelAdmin):
     list_display = ("__str__", 'id',)
-    ordering = ("-created_at",)
+    ordering = ("-created_at",)"""
 
 
 @admin.register(Manufacturer)
