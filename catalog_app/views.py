@@ -446,9 +446,9 @@ class DataView(APIView):
         gassing = GassingSerializer(
             Gassing.objects.all(),  many=True
             )
-        pasteurization = PasteurizationSerializer(
+        """pasteurization = PasteurizationSerializer(
             Pasteurization.objects.all(), many=True
-            )
+            )"""
         filtering = FilteringSerializer(
             Filtering.objects.all(), many=True
             )
@@ -479,7 +479,7 @@ class DataView(APIView):
                 "category": category.data,
                 "trade_mark": trade_mark.data,
                 "gassing": gassing.data,
-                "pasteurization": pasteurization.data,
+                # "pasteurization": pasteurization.data,
                 "filtering": filtering.data,
                 "manufacturer": manufacturer.data,
                 "unit": unit.data,
