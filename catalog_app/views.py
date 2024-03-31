@@ -335,12 +335,12 @@ class GoodView(APIView):
                         gassing_id.split(",")
                     )
 
-                pasteurizations = None
+                """pasteurizations = None
                 pasteurization_id = request.GET.get("pasteurization_id")
                 if pasteurization_id:
                     pasteurizations = pasteurization_by_id_list(
                         pasteurization_id.split(",")
-                    )
+                    )"""
 
                 units = None
                 unit_id = request.GET.get("unit_id")
@@ -391,7 +391,7 @@ class GoodView(APIView):
                     manufacturers,
                     filterings,
                     gassings,
-                    pasteurizations,
+                    # pasteurizations,
                     units,
                     styles,
                     types_of_fermentation,
