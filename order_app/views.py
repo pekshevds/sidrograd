@@ -1,3 +1,4 @@
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -30,7 +31,7 @@ class OrderStatusView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         queryset = OrderStatus.objects.all()
         serializer = OrderStatusSerializer(queryset, many=True)
         response = {"data": serializer.data,
@@ -42,7 +43,7 @@ class ContractView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         client = request.user.client
         queryset = Contract.objects.filter(client=client)
         serializer = ContractSerializer(queryset, many=True)
@@ -55,7 +56,7 @@ class PutOrderStatusView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         order = order_by_id(order_id=request.GET.get("id"))
         status = status_by_value(request.GET.get("value"))
         success = False
@@ -65,7 +66,7 @@ class PutOrderStatusView(APIView):
                     "success": success}
         return Response(response)
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> Response:
         response = {"data": [],
                     "success": False}
         data = request.data.get("data")
@@ -80,7 +81,7 @@ class NewOrdersView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         queryset = new_orders()
         serializer = OrderSerializer(queryset, many=True)
         response = {"data": serializer.data,
@@ -92,7 +93,7 @@ class OrderView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         client = request.user.client
         order = order_by_id(order_id=request.GET.get("id"))
         if order:
@@ -104,7 +105,7 @@ class OrderView(APIView):
                     "success": True}
         return Response(response)
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> Response:
         response = {"data": [],
                     "success": False}
         data = request.data.get("data")
@@ -123,7 +124,7 @@ class OrderDeleteView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         order = get_object_or_404(Order, id=request.GET.get("id"))
         order.delete()
         response = {"data": [],
@@ -135,7 +136,7 @@ class OrderItemView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         order = get_object_or_404(Order, id=request.GET.get("id"))
         serializer = SimpleItemOrderSerializer(order.items, many=True)
         response = {"data": serializer.data,
@@ -147,7 +148,7 @@ class OrderItemDeleteView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         item = get_object_or_404(ItemOrder, id=request.GET.get("id"))
         order = item.order
         item.delete()

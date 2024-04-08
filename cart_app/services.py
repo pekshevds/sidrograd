@@ -1,8 +1,8 @@
-from django.db.models import Model
+from django.db.models import Model, QuerySet
 from cart_app.models import Cart
 
 
-def fetch_users_cart(user: Model) -> [Cart]:
+def fetch_users_cart(user: Model) -> QuerySet:
     """Возвращает выборку элементов корзины пользователя user"""
     return Cart.objects.filter(user=user)
 

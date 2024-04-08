@@ -1,3 +1,4 @@
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,10 +18,11 @@ class WishListView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         queryset = fetch_users_wish_list(request.user)
         serializer = WishListSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {"data": serializer.data,
+                    "success": True}
         return Response(response)
 
 
@@ -28,13 +30,13 @@ class WishListAddView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         good = get_object_or_404(Good, id=request.GET.get("good_id", None))
         add_to_wish_list(user=request.user, good=good)
-
         queryset = fetch_users_wish_list(request.user)
         serializer = WishListSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {"data": serializer.data,
+                    "success": True}
         return Response(response)
 
 
@@ -42,13 +44,13 @@ class WishListDeleteView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         good = get_object_or_404(Good, id=request.GET.get("good_id", None))
         delete_from_wish_list(user=request.user, good=good)
-
         queryset = fetch_users_wish_list(request.user)
         serializer = WishListSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {"data": serializer.data,
+                    "success": True}
         return Response(response)
 
 
@@ -56,10 +58,10 @@ class WishListClearView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         clear_wish_list(user=request.user)
-
         queryset = fetch_users_wish_list(request.user)
         serializer = WishListSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {"data": serializer.data,
+                    "success": True}
         return Response(response)

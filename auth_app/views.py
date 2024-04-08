@@ -1,3 +1,4 @@
+from django.http import HttpRequest
 from rest_framework import permissions, authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,7 +17,7 @@ class UserView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         username = request.GET.get("username", None)
         if username:
             queryset = User.objects.filter(username=username)
@@ -24,7 +25,8 @@ class UserView(APIView):
         else:
             queryset = User.objects.filter(is_superuser=False)
             serializer = UserSerializer(queryset, many=True)
-        response = {"data": serializer.data}
+        response = {"data": serializer.data,
+                    "success": True}
         return Response(response)
 
 
@@ -32,9 +34,10 @@ class UserInfoView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         serializer = UserSerializer([request.user], many=True)
-        response = {"data": serializer.data}
+        response = {"data": serializer.data,
+                    "success": True}
         return Response(response)
 
 
@@ -46,14 +49,17 @@ class PinView(APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Response:
         recipient = request.GET.get("recipient")
+        success = False
         if recipient:
             user = fetch_recipient(recipient)
             if user:
                 pin = add_pin(user)
                 send_pin_code(pin.pin_code, recipient)
-        return Response({"data": None})
+                success = True
+        return Response({"data": None,
+                         "success": success})
 
 
 class TokenView(APIView):
@@ -64,7 +70,7 @@ class TokenView(APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> Response:
         username = request.POST.get("username")
         pincode = request.POST.get("pincode")
         user = authenticate(username, pincode)
@@ -74,5 +80,7 @@ class TokenView(APIView):
                 use_pin_code(pincode)
                 return Response({"data": {
                     "token": token.key
-                }})
-        return Response({"data": None})
+                },
+                    "success": True})
+        return Response({"data": None,
+                         "success": False})
