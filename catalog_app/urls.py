@@ -13,7 +13,8 @@ from catalog_app.views import (
     DataView,
     StyleView,
     TypeOfFermentationView,
-    CountryView
+    CountryView,
+    PricesView
 )
 
 
@@ -36,4 +37,5 @@ urlpatterns = [
     path('category/', CategoryView.as_view(), name="category"),
     path('good/', GoodView.as_view(), name="good"),
     path('data/', DataView.as_view(), name="data"),
+    path('prices/', PricesView.as_view(), name="prices"),
 ]

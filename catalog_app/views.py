@@ -37,9 +37,10 @@ from catalog_app.serializers import (
 from catalog_app.services.good import (
     handle_good_list,
     fetch_goods_queryset_by_name_or_article,
+    fetch_goods_queryset_by_filters,
+    update_prices
 )
 
-from catalog_app.services.good import fetch_goods_queryset_by_filters
 from catalog_app.services.category import category_by_id_list
 from catalog_app.services.trade_mark import trade_mark_by_id_list
 from catalog_app.services.manufacturer import manufacturer_by_id_list
@@ -508,3 +509,16 @@ class DataView(APIView):
             "success": True
             }
         return Response(response)
+
+
+class PricesView(APIView):
+
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request: HttpRequest) -> Response:
+        response = {"success": True}
+        data = request.data.get("data", None)
+        if not data:
+            return Response(response)
+        return Response({"success": update_prices(data)})

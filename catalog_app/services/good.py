@@ -212,3 +212,14 @@ def fetch_goods_queryset_by_filters(
     if len(filters) > 0:
         return Good.objects.filter(filters)
     return None
+
+
+def update_prices(new_prices: list[dir]):
+    goods_for_update = []
+    for record in new_prices:
+        good = Good.objects.filter(art=record["barcode"]).first()
+        if good:
+            good.price = record["price"]
+            goods_for_update.append(good)
+    Good.objects.bulk_update(goods_for_update, ["price"], batch_size=100)
+    return True
