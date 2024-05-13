@@ -71,6 +71,7 @@ class CountryView(APIView):
             serializer = CountrySerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -91,6 +92,7 @@ class StyleView(APIView):
             serializer = StyleSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -111,6 +113,7 @@ class TypeOfFermentationView(APIView):
             serializer = TypeOfFermentationSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -131,6 +134,7 @@ class StrengthView(APIView):
             serializer = StrengthSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -151,6 +155,7 @@ class VolumeView(APIView):
             serializer = VolumeSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -171,6 +176,7 @@ class ManufacturerView(APIView):
             serializer = ManufacturerSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -191,6 +197,7 @@ class UnitView(APIView):
             serializer = UnitSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -211,6 +218,7 @@ class FilteringView(APIView):
             serializer = FilteringSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -250,6 +258,7 @@ class GassingView(APIView):
             serializer = GassingSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -270,6 +279,7 @@ class TradeMarkView(APIView):
             serializer = TradeMarkSerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
@@ -290,6 +300,7 @@ class CategoryView(APIView):
             serializer = CategorySerializer(queryset, many=True)
         response = {
             "data": serializer.data,
+            "count": len(queryset),
             "params": request.GET,
             "success": True
             }
