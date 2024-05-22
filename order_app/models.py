@@ -157,7 +157,7 @@ class Order(Document):
 
     def __str__(self) -> str:
         if self.date:
-            return f"Заказ №{self.number} от {format(self.date, 'd F Y')}"
+            return f"Заказ №{self.number} от {format(self.date, 'd.m.Y')}"
         return f"Заказ №{self.number}"
 
     class Meta:

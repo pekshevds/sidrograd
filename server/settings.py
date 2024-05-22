@@ -157,10 +157,11 @@ LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
+USE_L10N = False
+USE_TZ = False
 
-USE_TZ = True
-
-DATE_FORMAT = "d.m.Y"
+DATE_FORMAT = ('d.m.Y')
+DATE_INPUT_FORMATS = (('%d.%m.%Y'),)
 
 
 # Static files (CSS, JavaScript, Images)
