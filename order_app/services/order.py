@@ -65,6 +65,7 @@ def handle_order(order_dir: dir, author: None | User) -> Order:
         items = order_dir.get(key_name)
         handle_items_order(items, order=order)
     order.status = order_dir.get('status', order.status)
+    order.comment = order_dir.get('comment', order.comment)
     if changed:
         order.save()
     return order

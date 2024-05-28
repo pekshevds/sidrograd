@@ -9,26 +9,29 @@ from order_app.models import ItemOrder
 
 @admin.register(OrderStatus)
 class OrderStatusAdmin(admin.ModelAdmin):
-    list_display = ('name', 'value', 'id',)
+    list_display = ("name", "value", "id",)
 
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'inn', 'id',)
+    list_display = ("name", "inn", "id",)
+    ordering = ["-updated_at"]
 
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'inn', 'id',)
+    list_display = ("name", "inn", "id",)
+    ordering = ["-updated_at"]
 
 
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
-    list_display = ('name', 'number', 'date',
-                    'client', 'customer', 'organization', 'id',)
-    search_fields = ('number',)
-    list_filter = ('client', 'customer', 'organization',)
-    date_hierarchy = 'date'
+    list_display = ("name", "number", "date",
+                    "client", "customer", "organization", "id",)
+    search_fields = ("number",)
+    list_filter = ("client", "customer", "organization",)
+    date_hierarchy = "date"
+    ordering = ["-updated_at"]
 
 
 class ItemOrderInLine(admin.TabularInline):
@@ -38,9 +41,9 @@ class ItemOrderInLine(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [ItemOrderInLine]
-    list_display = ('__str__', 'number', 'date', 'contract',
-                    'client', 'customer', 'organization',
-                    'author', 'comment', 'id', 'status',)
-    search_fields = ('number',)
-    list_filter = ('client', 'customer', 'organization', 'author', 'status', )
-    # date_hierarchy = 'date'
+    list_display = ("__str__", "number", "date", "contract",
+                    "client", "customer", "organization",
+                    "author", "comment", "id", "status",)
+    search_fields = ("number",)
+    list_filter = ("client", "customer", "organization", "author", "status", )
+    # date_hierarchy = "date"
