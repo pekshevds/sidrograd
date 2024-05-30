@@ -12,3 +12,4 @@ class UserInLine(admin.TabularInline):
 class ClientAdmin(admin.ModelAdmin):
     inlines = [UserInLine]
     list_display = ('name', 'id',)
+    ordering = ["-updated_at"]
