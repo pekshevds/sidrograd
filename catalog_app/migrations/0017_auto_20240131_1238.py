@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='good',
             name='full_name',
-            field=models.CharField(blank=True, db_index=True, default='', max_length=1024, null=True, verbose_name='Наименование полное'),
+            field=models.CharField(blank=True, default='', max_length=1024, null=True, verbose_name='Наименование полное'),
         ),
     ]
