@@ -93,9 +93,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-TESTING = True
-
-if TESTING:
+if config.USE_SQLITE3:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -105,16 +103,11 @@ if TESTING:
 else:
     DATABASES = {
         'default': {
-            # 'ENGINE': os.environ.get("DB_ENGINE", ""),
-            'ENGINE': config.DB_ENGINE,
-            # 'HOST': os.environ.get("DB_HOST", ""),
-            'HOST': config.DB_HOST,
-            # 'NAME': os.environ.get("DB_NAME", ""),
+            'ENGINE': 'django.db.backends.mysql',
             'NAME': config.DB_NAME,
-            # 'USER': os.environ.get("DB_USER", ""),
             'USER': config.DB_USER,
-            # 'PASSWORD': os.environ.get("DB_PASSWORD", ""),
             'PASSWORD': config.DB_PASSWORD,
+            'HOST': 'localhost'
         }
     }
 
