@@ -126,12 +126,8 @@ class GoodAdmin(admin.ModelAdmin):
     search_fields = ("art", "full_name",)
 
     def preview(self, obj):
-        try:
-            return format_html(f"<img src={obj.image.image.url} style='max-height: 75px;'>")
-        except ValueError:
-            return ""
-        """if obj.image:
+        if obj.image:
             str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
-            return format_html(str)"""
+            return format_html(str)
 
     preview.short_description = "Изображение (превью)"
