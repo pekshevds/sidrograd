@@ -60,7 +60,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
     def preview(self, obj):
         if obj.image:
-            str = f"<img src={obj.image.url} style='max-height: 75px;'>"
+            str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
             return format_html(str)
 
     preview.short_description = "Изображение"
