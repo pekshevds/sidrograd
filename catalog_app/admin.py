@@ -61,7 +61,7 @@ class CategoryAdmin(admin.ModelAdmin):
     def preview(self, obj):
         try:
             return format_html(f"<img src={obj.image.image.url} style='max-height: 75px;'>")
-        except ValueError:
+        except (TypeError, ValueError):
             return ""
         """if obj.image:
             str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
