@@ -9,14 +9,10 @@ class CountrySerializer(serializers.Serializer):
         max_length=3, required=False, allow_blank=True)
 
 
-class CategoriesImageSerializer(serializers.Serializer):
-    image = ImageSerializer(required=False, allow_null=True)
-
-
 class CategorySerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
-    image = CategoriesImageSerializer()
+    image = ImageSerializer(required=False, allow_null=True)
 
 
 class TradeMarkSerializer(serializers.Serializer):
