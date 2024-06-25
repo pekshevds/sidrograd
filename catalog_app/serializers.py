@@ -12,7 +12,9 @@ class CountrySerializer(serializers.Serializer):
 class CategorySerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
-    image = ImageSerializer(required=False, allow_null=True)
+    # image = ImageSerializer(required=False, allow_null=True)
+    image = serializers.ImageField(
+        required=False, allow_null=True, use_url=True)
 
 
 class TradeMarkSerializer(serializers.Serializer):

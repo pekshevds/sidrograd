@@ -8,4 +8,6 @@ class ImageSerializer(serializers.Serializer):
 class CarouselSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
-    image = ImageSerializer(required=False, allow_null=True)
+    image = serializers.ImageField(
+        required=False, allow_null=True, use_url=True
+    )
