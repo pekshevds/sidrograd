@@ -17,10 +17,11 @@ class Image(Directory):
 
 
 class Carousel(Directory):
-    image = models.ForeignKey(
-        Image,
-        on_delete=models.PROTECT,
-        verbose_name="Изображение"
+    image = models.ImageField(
+        verbose_name="Файл изображения",
+        upload_to="carousel_images/",
+        blank=True,
+        null=True
     )
     order_by = models.SmallIntegerField(
         verbose_name="Порядок сортировки",

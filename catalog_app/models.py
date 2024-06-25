@@ -22,10 +22,9 @@ class Country(Directory):
 
 
 class Category(Directory):
-    image = models.ForeignKey(
-        Image,
-        on_delete=models.PROTECT,
-        verbose_name="Изображение",
+    image = models.ImageField(
+        verbose_name="Файл изображения",
+        upload_to="category_images/",
         blank=True,
         null=True
     )
