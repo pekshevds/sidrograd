@@ -32,7 +32,8 @@ from catalog_app.serializers import (
     # SimpleGoodSerializer,
     StyleSerializer,
     TypeOfFermentationSerializer,
-    CountrySerializer
+    CountrySerializer,
+    ObjectFilterSerializer
 )
 from catalog_app.services.good import (
     handle_good_list,
@@ -58,6 +59,7 @@ from catalog_app.services.type_of_fermentation import (
 
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
+from catalog_app.commons import query_set
 
 
 class CountryView(APIView):
@@ -469,38 +471,58 @@ class DataView(APIView):
         category = CategorySerializer(
             Category.objects.all(), many=True
             )
-        trade_mark = TradeMarkSerializer(
-            TradeMark.objects.all(), many=True
+        # trade_mark = TradeMarkSerializer(
+        #     TradeMark.objects.all(), many=True
+        trade_mark = ObjectFilterSerializer(
+            query_set(TradeMark), many=True
             )
-        gassing = GassingSerializer(
-            Gassing.objects.all(),  many=True
+        # gassing = GassingSerializer(
+        #     Gassing.objects.all(),  many=True
+        gassing = ObjectFilterSerializer(
+            query_set(Gassing),  many=True
             )
         """pasteurization = PasteurizationSerializer(
             Pasteurization.objects.all(), many=True
             )"""
-        filtering = FilteringSerializer(
-            Filtering.objects.all(), many=True
+        # filtering = FilteringSerializer(
+        #     Filtering.objects.all(), many=True
+        filtering = ObjectFilterSerializer(
+            query_set(Filtering),  many=True
             )
-        manufacturer = ManufacturerSerializer(
-            Manufacturer.objects.all(), many=True
+        # manufacturer = ManufacturerSerializer(
+        #     Manufacturer.objects.all(), many=True
+        manufacturer = ObjectFilterSerializer(
+            query_set(Manufacturer),  many=True
             )
-        unit = UnitSerializer(
-            Unit.objects.all(), many=True
+        # unit = UnitSerializer(
+        #     Unit.objects.all(), many=True
+        unit = ObjectFilterSerializer(
+            query_set(Unit),  many=True
             )
-        style = StyleSerializer(
-            Style.objects.all(), many=True
+        # style = StyleSerializer(
+        #     Style.objects.all(), many=True
+        style = ObjectFilterSerializer(
+            query_set(Style),  many=True
             )
-        type_of_fermentation = TypeOfFermentationSerializer(
-            TypeOfFermentation.objects.all(), many=True
+        # type_of_fermentation = TypeOfFermentationSerializer(
+        #     TypeOfFermentation.objects.all(), many=True
+        type_of_fermentation = ObjectFilterSerializer(
+            query_set(TypeOfFermentation),  many=True
             )
-        strength = StrengthSerializer(
-            Strength.objects.all(), many=True
+        # strength = StrengthSerializer(
+        #     Strength.objects.all(), many=True
+        strength = ObjectFilterSerializer(
+            query_set(Strength),  many=True
             )
-        volume = VolumeSerializer(
-            Volume.objects.all(), many=True
+        # volume = VolumeSerializer(
+        #     Volume.objects.all(), many=True
+        volume = ObjectFilterSerializer(
+            query_set(Volume),  many=True
             )
-        country = CountrySerializer(
-            Country.objects.all(), many=True
+        # country = CountrySerializer(
+        #     Country.objects.all(), many=True
+        country = ObjectFilterSerializer(
+            query_set(Country),  many=True
             )
         сarousel = CarouselSerializer(
             Carousel.objects.all(), many=True

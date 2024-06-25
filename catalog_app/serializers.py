@@ -17,6 +17,13 @@ class CategorySerializer(serializers.Serializer):
         required=False, allow_null=True, use_url=True)
 
 
+class ObjectFilterSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(
+        required=False, allow_null=True)
+
+
 class TradeMarkSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
