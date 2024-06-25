@@ -56,6 +56,9 @@ from catalog_app.services.type_of_fermentation import (
     type_of_fermentation_by_id_list
 )
 
+from image_app.models import Carousel
+from image_app.serializers import CarouselSerializer
+
 
 class CountryView(APIView):
 
@@ -499,6 +502,9 @@ class DataView(APIView):
         country = CountrySerializer(
             Country.objects.all(), many=True
             )
+        сarousel = CarouselSerializer(
+            Carousel.objects.all(), many=True
+            )
         # countryes = [good.country for good in Good.objects.exclude(country=None)]
         response = {
             "data": {
@@ -514,6 +520,7 @@ class DataView(APIView):
                 "strength": strength.data,
                 "volume": volume.data,
                 "country": country.data,
+                "сarousel": сarousel.data,
                 # "good": good.data
             },
             "params": request.GET,

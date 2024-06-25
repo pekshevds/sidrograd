@@ -160,6 +160,14 @@ class Good(Directory):
         null=True,
         default=0
     )
+    qnt = models.DecimalField(
+        verbose_name="Остаток",
+        max_digits=15,
+        decimal_places=3,
+        blank=True,
+        null=True,
+        default=0
+    )
     volume = models.ForeignKey(
         Volume,
         on_delete=models.PROTECT,

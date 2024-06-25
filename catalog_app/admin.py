@@ -110,6 +110,8 @@ class GoodsImageInLine(admin.TabularInline):
             str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
             return format_html(str)
 
+    preview.short_description = "Изображение (превью)"
+
 
 @admin.register(Good)
 class GoodAdmin(admin.ModelAdmin):
