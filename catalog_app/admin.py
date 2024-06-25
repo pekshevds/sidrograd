@@ -56,7 +56,12 @@ class StrengthAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("__str__", 'id',)
+    list_display = ("__str__", 'id', 'preview',)
+
+    def preview(self, obj):
+        if obj.image:
+            str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
+            return format_html(str)
 
 
 @admin.register(TradeMark)
