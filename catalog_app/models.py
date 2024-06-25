@@ -22,6 +22,13 @@ class Country(Directory):
 
 
 class Category(Directory):
+    image = models.ForeignKey(
+        Image,
+        on_delete=models.PROTECT,
+        verbose_name="Изображение",
+        blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = "Раздел каталога"
