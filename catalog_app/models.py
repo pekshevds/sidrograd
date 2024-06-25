@@ -28,10 +28,17 @@ class Category(Directory):
         blank=True,
         null=True
     )
+    order_by = models.SmallIntegerField(
+        verbose_name="Порядок сортировки",
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Раздел каталога"
         verbose_name_plural = "Разделы каталога"
+        ordering = ["order_by"]
 
 
 class TradeMark(Directory):
@@ -39,6 +46,7 @@ class TradeMark(Directory):
     class Meta:
         verbose_name = "Торговая марка"
         verbose_name_plural = "Торговые марки"
+        ordering = ["name"]
 
 
 class Gassing(Directory):
@@ -46,6 +54,7 @@ class Gassing(Directory):
     class Meta:
         verbose_name = "Газация"
         verbose_name_plural = "Виды газации"
+        ordering = ["name"]
 
 
 class Pasteurization(Directory):
@@ -53,6 +62,7 @@ class Pasteurization(Directory):
     class Meta:
         verbose_name = "Пастеризация"
         verbose_name_plural = "Виды пастеризации"
+        ordering = ["name"]
 
 
 class Filtering(Directory):
@@ -60,6 +70,7 @@ class Filtering(Directory):
     class Meta:
         verbose_name = "Фильрация"
         verbose_name_plural = "Виды фильтрации"
+        ordering = ["name"]
 
 
 class Manufacturer(Directory):
@@ -72,6 +83,7 @@ class Manufacturer(Directory):
     class Meta:
         verbose_name = "Производитель"
         verbose_name_plural = "Производители"
+        ordering = ["name"]
 
 
 class Unit(Directory):
@@ -79,6 +91,7 @@ class Unit(Directory):
     class Meta:
         verbose_name = "Единица измерения"
         verbose_name_plural = "Единицы измерения"
+        ordering = ["name"]
 
 
 class TypeOfFermentation(Directory):
@@ -86,6 +99,7 @@ class TypeOfFermentation(Directory):
     class Meta:
         verbose_name = "Тип ферментации"
         verbose_name_plural = "Типы ферментации"
+        ordering = ["name"]
 
 
 class Style(Directory):
@@ -93,6 +107,7 @@ class Style(Directory):
     class Meta:
         verbose_name = "Спиль"
         verbose_name_plural = "Стили"
+        ordering = ["name"]
 
 
 class Volume(Directory):
@@ -303,6 +318,7 @@ class Good(Directory):
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
+        ordering = ["name"]
 
 
 class GoodsImage(models.Model):
