@@ -64,7 +64,7 @@ class OrderSerializer(serializers.Serializer):
     contract = ContractSerializer()
     items = ItemOrderSerializer(many=True)
     status = OrderStatusSerializer(many=False, required=False)
-    comment = serializers.CharField(required=False)
+    comment = serializers.CharField(required=False, allow_blank=True)
 
 
 class SimpleOrderSerializer(serializers.Serializer):
@@ -75,4 +75,4 @@ class SimpleOrderSerializer(serializers.Serializer):
     )
     contract_id = serializers.UUIDField(required=False)
     items = SimpleItemOrderSerializer(many=True, required=False)
-    comment = serializers.CharField(required=False)
+    comment = serializers.CharField(required=False, allow_blank=True)
