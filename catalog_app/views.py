@@ -59,7 +59,11 @@ from catalog_app.services.type_of_fermentation import (
 
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
-from catalog_app.commons import query_set
+from catalog_app.commons import (
+    query_set,
+    fetch_goods_by_filters,
+    fetch_filters
+)
 
 
 class CountryView(APIView):
@@ -331,103 +335,8 @@ class GoodView(APIView):
             if search:
                 queryset = fetch_goods_queryset_by_name_or_article(search)
             else:
-                categories = None
-                category_id = request.GET.get("category_id")
-                if category_id:
-                    categories = category_by_id_list(category_id.split(","))
-
-                trade_marks = None
-                trade_mark_id = request.GET.get("trade_mark_id")
-                if trade_mark_id:
-                    trade_marks = trade_mark_by_id_list(
-                        trade_mark_id.split(",")
-                    )
-
-                manufacturers = None
-                manufacturer_id = request.GET.get("manufacturer_id")
-                if manufacturer_id:
-                    manufacturers = manufacturer_by_id_list(
-                        manufacturer_id.split(",")
-                    )
-
-                filterings = None
-                filtering_id = request.GET.get("filtering_id")
-                if filtering_id:
-                    filterings = filtering_by_id_list(
-                        filtering_id.split(",")
-                    )
-
-                gassings = None
-                gassing_id = request.GET.get("gassing_id")
-                if gassing_id:
-                    gassings = gassing_by_id_list(
-                        gassing_id.split(",")
-                    )
-
-                """pasteurizations = None
-                pasteurization_id = request.GET.get("pasteurization_id")
-                if pasteurization_id:
-                    pasteurizations = pasteurization_by_id_list(
-                        pasteurization_id.split(",")
-                    )"""
-
-                units = None
-                unit_id = request.GET.get("unit_id")
-                if unit_id:
-                    units = unit_by_id_list(
-                        unit_id.split(",")
-                    )
-
-                styles = None
-                style_id = request.GET.get("style_id")
-                if style_id:
-                    styles = style_by_id_list(
-                        style_id.split(",")
-                    )
-
-                types_of_fermentation = None
-                type_of_fermentation_id = \
-                    request.GET.get("type_of_fermentation_id")
-                if type_of_fermentation_id:
-                    types_of_fermentation = type_of_fermentation_by_id_list(
-                        type_of_fermentation_id.split(",")
-                    )
-
-                volumes = None
-                volume_id = request.GET.get("volume_id")
-                if volume_id:
-                    volumes = volume_by_id_list(
-                        volume_id.split(",")
-                    )
-
-                strengths = None
-                strength_id = request.GET.get("strength_id")
-                if strength_id:
-                    strengths = strength_by_id_list(
-                        strength_id.split(",")
-                    )
-
-                countryes = None
-                country_id = request.GET.get("country_id")
-                if country_id:
-                    countryes = country_by_id_list(
-                        country_id.split(",")
-                    )
-
-                queryset = fetch_goods_queryset_by_filters(
-                    categories,
-                    trade_marks,
-                    manufacturers,
-                    filterings,
-                    gassings,
-                    # pasteurizations,
-                    units,
-                    styles,
-                    types_of_fermentation,
-                    volumes,
-                    strengths,
-                    countryes
-                )
+                filters = fetch_filters(request=request)
+                queryset = fetch_goods_by_filters(filters)
 
             if queryset is None:
                 queryset = Good.objects.all()
@@ -468,6 +377,12 @@ class DataView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
+
+        filters = fetch_filters(request)
+        queryset = fetch_goods_by_filters(filters)
+        if queryset is None:
+            queryset = Good.objects.all()
+
         category = CategorySerializer(
             Category.objects.all(), many=True
             )

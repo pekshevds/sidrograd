@@ -163,7 +163,6 @@ def fetch_goods_queryset_by_filters(
         manufacturers: List[Manufacturer],
         filterings: List[Filtering],
         gassings: List[Gassing],
-        # pasteurizations: List[Pasteurization],
         units: List[Unit],
         styles: List[Style],
         types_of_fermentation: List[TypeOfFermentation],

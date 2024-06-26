@@ -1,3 +1,6 @@
+
+from typing import List
+from django.db.models import QuerySet
 from django.db import transaction
 from catalog_app.models import (
     Category
@@ -8,8 +11,8 @@ def category_by_id(id: str) -> Category:
     return Category.objects.filter(id=id).first()
 
 
-def category_by_id_list(id: [str]) -> [Category]:
-    return list(Category.objects.filter(id__in=id))
+def category_by_id_list(id: List[str]) -> QuerySet:
+    return Category.objects.filter(id__in=id)
 
 
 def handle_category(category_dir: dir) -> Category:
@@ -24,7 +27,7 @@ def handle_category(category_dir: dir) -> Category:
     return category
 
 
-def handle_category_list(category_list: None) -> [Category]:
+def handle_category_list(category_list: None) -> QuerySet:
     categories_id = []
     with transaction.atomic():
         for category_item in category_list:
