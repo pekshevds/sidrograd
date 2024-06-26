@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from collections import Counter
 from typing import Tuple, List
-import hashlib
 from django.http import HttpRequest
 from django.db.models import Count
 from django.db.models import QuerySet
+from django.db.models import Q
 
 from catalog_app.services.category import category_by_id_list
 from catalog_app.services.trade_mark import trade_mark_by_id_list
@@ -12,20 +12,15 @@ from catalog_app.services.manufacturer import manufacturer_by_id_list
 from catalog_app.services.filtering import filtering_by_id_list
 from catalog_app.services.gassing import gassing_by_id_list
 from catalog_app.services.unit import unit_by_id_list
+from catalog_app.services.style import style_by_id_list
+from catalog_app.services.type_of_fermentation import \
+    type_of_fermentation_by_id_list
 from catalog_app.services.volume import volume_by_id_list
 from catalog_app.services.strength import strength_by_id_list
-from catalog_app.services.style import style_by_id_list
 from catalog_app.services.country import country_by_id_list
-from catalog_app.services.type_of_fermentation import (
-    type_of_fermentation_by_id_list
-)
-from catalog_app.services.good import fetch_goods_queryset_by_filters
 
-
-def secret_from_string(string: str) -> str:
-    hash = hashlib.blake2s(digest_size=4)
-    hash.update(string.encode('utf-8'))
-    return hash.hexdigest()
+from catalog_app.models import Good
+# from catalog_app.services import object_by_id_list
 
 
 @dataclass
@@ -52,6 +47,59 @@ class Record:
     id: str
     name: str
     count: int
+
+
+def fetch_goods_queryset_by_filters(
+        categories: List[object],
+        trade_marks: List[object],
+        manufacturers: List[object],
+        filterings: List[object],
+        gassings: List[object],
+        units: List[object],
+        styles: List[object],
+        types_of_fermentation: List[object],
+        volumes: List[object],
+        strengths: List[object],
+        countryes: List[object],
+        ) -> QuerySet | None:
+
+    filters = Q()
+    if categories:
+        filters.add(Q(category__in=categories), Q.AND)
+
+    if trade_marks:
+        filters.add(Q(trade_mark__in=trade_marks), Q.AND)
+
+    if manufacturers:
+        filters.add(Q(manufacturer__in=manufacturers), Q.AND)
+
+    if filterings:
+        filters.add(Q(filtering__in=filterings), Q.AND)
+
+    if gassings:
+        filters.add(Q(gassing__in=gassings), Q.AND)
+
+    if units:
+        filters.add(Q(unit__in=units), Q.AND)
+
+    if styles:
+        filters.add(Q(style__in=styles), Q.AND)
+
+    if types_of_fermentation:
+        filters.add(Q(type_of_fermentation__in=types_of_fermentation), Q.AND)
+
+    if volumes:
+        filters.add(Q(volume__in=volumes), Q.AND)
+
+    if strengths:
+        filters.add(Q(strength__in=strengths), Q.AND)
+
+    if countryes:
+        filters.add(Q(country__in=countryes), Q.AND)
+
+    if len(filters) > 0:
+        return Good.objects.filter(filters)
+    return None
 
 
 def fetch_filters_by_goods(goods: QuerySet) -> Data:
@@ -87,94 +135,76 @@ def fetch_filters_by_goods(goods: QuerySet) -> Data:
 
 def prepare_query_set(data: Counter) -> Tuple[Record]:
     query_set = list()
-    for _ in data:
-        query_set.append(Record(_.id, _.name, _.count))
+    for key, value in data.items():
+        query_set.append(Record(key.id, key.name, value))
     return tuple(query_set)
 
 
-def fetch_filters(request: HttpRequest) -> tuple:
+def fetch_filters(request: HttpRequest) -> list:
     categories = None
-    category_id = request.GET.get("category_id")
-    if category_id:
-        categories = category_by_id_list(category_id.split(","))
+    obj_id = request.GET.get("category_id")
+    if obj_id:
+        categories = category_by_id_list(obj_id.split(","))
 
     trade_marks = None
-    trade_mark_id = request.GET.get("trade_mark_id")
-    if trade_mark_id:
-        trade_marks = trade_mark_by_id_list(
-            trade_mark_id.split(",")
-        )
+    obj_id = request.GET.get("trade_mark_id")
+    if obj_id:
+        trade_marks = trade_mark_by_id_list(obj_id.split(","))
 
     manufacturers = None
-    manufacturer_id = request.GET.get("manufacturer_id")
-    if manufacturer_id:
-        manufacturers = manufacturer_by_id_list(
-            manufacturer_id.split(",")
-        )
+    obj_id = request.GET.get("manufacturer_id")
+    if obj_id:
+        manufacturers = manufacturer_by_id_list(obj_id.split(","))
 
     filterings = None
-    filtering_id = request.GET.get("filtering_id")
-    if filtering_id:
-        filterings = filtering_by_id_list(
-            filtering_id.split(",")
-        )
+    obj_id = request.GET.get("filtering_id")
+    if obj_id:
+        filterings = filtering_by_id_list(obj_id.split(","))
 
     gassings = None
-    gassing_id = request.GET.get("gassing_id")
-    if gassing_id:
-        gassings = gassing_by_id_list(
-            gassing_id.split(",")
-        )
+    obj_id = request.GET.get("gassing_id")
+    if obj_id:
+        gassings = gassing_by_id_list(obj_id.split(","))
 
     units = None
-    unit_id = request.GET.get("unit_id")
-    if unit_id:
-        units = unit_by_id_list(
-            unit_id.split(",")
-        )
+    obj_id = request.GET.get("unit_id")
+    if obj_id:
+        units = unit_by_id_list(obj_id.split(","))
 
     styles = None
-    style_id = request.GET.get("style_id")
-    if style_id:
-        styles = style_by_id_list(
-            style_id.split(",")
-        )
+    obj_id = request.GET.get("style_id")
+    if obj_id:
+        styles = style_by_id_list(obj_id.split(","))
 
     types_of_fermentation = None
-    type_of_fermentation_id = \
-        request.GET.get("type_of_fermentation_id")
-    if type_of_fermentation_id:
-        types_of_fermentation = type_of_fermentation_by_id_list(
-            type_of_fermentation_id.split(",")
-        )
+    obj_id = request.GET.get("type_of_fermentation_id")
+    if obj_id:
+        types_of_fermentation = \
+            type_of_fermentation_by_id_list(obj_id.split(","))
 
     volumes = None
-    volume_id = request.GET.get("volume_id")
-    if volume_id:
-        volumes = volume_by_id_list(
-            volume_id.split(",")
-        )
+    obj_id = request.GET.get("volume_id")
+    if obj_id:
+        volumes = volume_by_id_list(obj_id.split(","))
 
     strengths = None
-    strength_id = request.GET.get("strength_id")
-    if strength_id:
-        strengths = strength_by_id_list(
-            strength_id.split(",")
-        )
+    obj_id = request.GET.get("strength_id")
+    if obj_id:
+        strengths = strength_by_id_list(obj_id.split(","))
 
     countryes = None
-    country_id = request.GET.get("country_id")
-    if country_id:
-        countryes = country_by_id_list(
-            country_id.split(",")
-        )
-    return categories, trade_marks, manufacturers, \
-        filterings, gassings, units, styles, \
-        types_of_fermentation, volumes, strengths, \
+    obj_id = request.GET.get("country_id")
+    if obj_id:
+        countryes = country_by_id_list(obj_id.split(","))
+    return [
+        categories, trade_marks, manufacturers,
+        filterings, gassings, units, styles,
+        types_of_fermentation, volumes, strengths,
         countryes
+    ]
 
 
-def fetch_goods_by_filters(*args) -> QuerySet:
+def fetch_goods_by_filters(args) -> QuerySet:
 
     queryset = fetch_goods_queryset_by_filters(
         args[0], args[1], args[2],

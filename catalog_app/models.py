@@ -1,8 +1,14 @@
+import hashlib
 from django.db import models
 from pytils.translit import slugify
 from server.base import Directory
 from image_app.models import Image
-from catalog_app.commons import secret_from_string
+
+
+def secret_from_string(string: str) -> str:
+    hash = hashlib.blake2s(digest_size=4)
+    hash.update(string.encode('utf-8'))
+    return hash.hexdigest()
 
 
 class Country(Directory):

@@ -1,4 +1,3 @@
-
 from typing import List
 from django.db.models import QuerySet
 from django.db import transaction
