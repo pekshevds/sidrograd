@@ -92,8 +92,6 @@ class GoodSerializer(serializers.Serializer):
         max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False)
-    qnt = serializers.DecimalField(
-        max_digits=15, decimal_places=3, required=False)
     in_package = serializers.DecimalField(
         max_digits=15, decimal_places=0, required=False)
     expiration_date = serializers.DecimalField(
@@ -130,8 +128,6 @@ class SimpleGoodSerializer(serializers.Serializer):
         max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False)
-    qnt = serializers.DecimalField(
-        max_digits=15, decimal_places=3, required=False)
     in_package = serializers.DecimalField(
         max_digits=15, decimal_places=0, required=False)
     expiration_date = serializers.DecimalField(

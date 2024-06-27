@@ -219,7 +219,7 @@ def update_prices(new_prices: list[dir]):
         good = Good.objects.filter(art=record["barcode"]).first()
         if good:
             good.price = record.get("price", good.price)
-            good.qnt = record.get("qnt", good.qnt)
+            good.balance = record.get("balance", good.balance)
             goods_for_update.append(good)
     Good.objects.bulk_update(
         goods_for_update,
