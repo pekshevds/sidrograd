@@ -1,34 +1,25 @@
-from django.db import transaction
-from catalog_app.models import (
-    Country
+from typing import List
+from django.db.models import QuerySet
+from catalog_app.models import Country
+from catalog_app.services import (
+    object_by_id,
+    object_by_id_list,
+    handle_object,
+    handle_object_list
 )
 
 
 def country_by_id(id: str) -> Country:
-    return Country.objects.filter(id=id).first()
+    return object_by_id(Country, id=id)
 
 
-def country_by_id_list(id: [str]) -> [Country]:
-    return list(Country.objects.filter(id__in=id))
+def country_by_id_list(id: List[str]) -> QuerySet:
+    return object_by_id_list(Country, ids=id)
 
 
-def handle_country(item_dir: dir) -> Country:
-    item_id = item_dir.get('id', "")
-    item = country_by_id(id=item_id)
-    if item is None:
-        item = Country.objects.create(
-            id=item_id
-        )
-    item.name = item_dir.get('name', item.name)
-    item.code = item_dir.get('code', "")
-    item.save()
-    return item
+def handle_country(country_dir: dir) -> Country:
+    return handle_object(Country, object_dir=country_dir)
 
 
-def handle_country_list(item_list: [dir]) -> [Country]:
-    items_id = []
-    with transaction.atomic():
-        for item_dir in item_list:
-            item = handle_country(item_dir=item_dir)
-            items_id.append(item.id)
-    return Country.objects.filter(id__in=items_id)
+def handle_country_list(country_list: None) -> QuerySet:
+    return handle_object_list(Country, object_list=country_list)

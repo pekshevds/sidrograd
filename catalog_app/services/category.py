@@ -1,35 +1,25 @@
 from typing import List
 from django.db.models import QuerySet
-from django.db import transaction
-from catalog_app.models import (
-    Category
+from catalog_app.models import Category
+from catalog_app.services import (
+    object_by_id,
+    object_by_id_list,
+    handle_object,
+    handle_object_list
 )
 
 
 def category_by_id(id: str) -> Category:
-    return Category.objects.filter(id=id).first()
+    return object_by_id(Category, id=id)
 
 
 def category_by_id_list(id: List[str]) -> QuerySet:
-    return Category.objects.filter(id__in=id)
+    return object_by_id_list(Category, ids=id)
 
 
 def handle_category(category_dir: dir) -> Category:
-    category_id = category_dir.get('id', "")
-    category_name = category_dir.get('name', "")
-    category = category_by_id(category_id)
-    if category is None:
-        category = Category.objects.create(
-            id=category_id,
-            name=category_name
-        )
-    return category
+    handle_object(Category, object_dir=category_dir)
 
 
 def handle_category_list(category_list: None) -> QuerySet:
-    categories_id = []
-    with transaction.atomic():
-        for category_item in category_list:
-            category = handle_category(category_dir=category_item)
-            categories_id.append(category.id)
-    return Category.objects.filter(id__in=categories_id)
+    handle_object_list(Category, object_list=category_list)

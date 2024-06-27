@@ -1,33 +1,25 @@
-from django.db import transaction
-from catalog_app.models import (
-    Filtering
+from typing import List
+from django.db.models import QuerySet
+from catalog_app.models import Filtering
+from catalog_app.services import (
+    object_by_id,
+    object_by_id_list,
+    handle_object,
+    handle_object_list
 )
 
 
-def filtering_by_id(filtering_id: str) -> Filtering:
-    return Filtering.objects.filter(id=filtering_id).first()
+def filtering_by_id(id: str) -> Filtering:
+    return object_by_id(Filtering, id=id)
 
 
-def filtering_by_id_list(id: [str]) -> [Filtering]:
-    return list(Filtering.objects.filter(id__in=id))
+def filtering_by_id_list(id: List[str]) -> QuerySet:
+    return object_by_id_list(Filtering, ids=id)
 
 
 def handle_filtering(filtering_dir: dir) -> Filtering:
-    filtering_id = filtering_dir.get('id', "")
-    filtering_name = filtering_dir.get('name', "")
-    filtering = filtering_by_id(filtering_id)
-    if filtering is None:
-        filtering = Filtering.objects.create(
-            id=filtering_id,
-            name=filtering_name
-        )
-    return filtering
+    return handle_object(Filtering, object_dir=filtering_dir)
 
 
-def handle_filtering_list(filtering_list: None) -> [Filtering]:
-    filtering_id = []
-    with transaction.atomic():
-        for filtering_item in filtering_list:
-            filtering = handle_filtering(filtering_dir=filtering_item)
-            filtering_id.append(filtering.id)
-    return Filtering.objects.filter(id__in=filtering_id)
+def handle_filtering_list(filtering_list: None) -> QuerySet:
+    return handle_object_list(Filtering, object_list=filtering_list)
