@@ -29,8 +29,7 @@ from catalog_app.serializers import (
     StrengthSerializer,
     StyleSerializer,
     TypeOfFermentationSerializer,
-    CountrySerializer,
-    ObjectFilterSerializer
+    CountrySerializer
 )
 from catalog_app.services.good import (
     handle_good_list,
@@ -40,13 +39,11 @@ from catalog_app.services.good import (
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
 from catalog_app.commons import (
-    prepare_query_set,
     fetch_goods_by_filters,
-    fetch_filters,
-    fetch_filters_by_goods
+    fetch_filters
 )
 from catalog_app.services.update_count_in_filters import (
-    fetch_filters_by_goods as fetch_filters_by_goods2
+    fetch_filters_by_goods
 )
 
 
@@ -346,7 +343,7 @@ class DataView(APIView):
         queryset = None
         if queryset is None:
             queryset = Good.objects.all()
-        filters = fetch_filters_by_goods2(queryset)
+        filters = fetch_filters_by_goods(queryset)
 
         category = CategorySerializer(Category.objects.all(), many=True)
         trade_mark = TradeMarkSerializer(filters.trade_mark, many=True)
@@ -361,61 +358,6 @@ class DataView(APIView):
         volume = VolumeSerializer(filters.volume,  many=True)
         country = CountrySerializer(filters.country,  many=True)
 
-        response = {
-            "data": {
-                "category": category.data,
-                "trade_mark": trade_mark.data,
-                "gassing": gassing.data,
-                "filtering": filtering.data,
-                "manufacturer": manufacturer.data,
-                "unit": unit.data,
-                "style": style.data,
-                "type_of_fermentation": type_of_fermentation.data,
-                "strength": strength.data,
-                "volume": volume.data,
-                "country": country.data,
-            },
-            "params": request.GET,
-            "success": True
-            }
-        return Response(response)
-
-
-class _DataView(APIView):
-
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, request: HttpRequest) -> Response:
-        # Вернуть, если нужно уменьшать количество фильтров
-        # filters = fetch_filters(request)
-        # queryset = fetch_goods_by_filters(filters)
-        queryset = None
-        if queryset is None:
-            queryset = Good.objects.all()
-        filters = fetch_filters_by_goods(queryset)
-        category = CategorySerializer(
-            Category.objects.all(), many=True
-            )
-        trade_mark = ObjectFilterSerializer(
-            prepare_query_set(filters.trade_mark.most_common()), many=True)
-        gassing = ObjectFilterSerializer(
-            prepare_query_set(filters.gassing.most_common()),  many=True)
-        filtering = ObjectFilterSerializer(
-            prepare_query_set(filters.filtering.most_common()),  many=True)
-        manufacturer = ObjectFilterSerializer(
-            prepare_query_set(filters.manufacturer.most_common()),  many=True)
-        unit = ObjectFilterSerializer(
-            prepare_query_set(filters.unit.most_common()),  many=True)
-        style = ObjectFilterSerializer(
-            prepare_query_set(filters.style.most_common()),  many=True)
-        type_of_fermentation = ObjectFilterSerializer(
-            prepare_query_set(filters.type_of_fermentation.most_common()),  many=True)
-        strength = ObjectFilterSerializer(
-            prepare_query_set(filters.strength.most_common()),  many=True)
-        volume = ObjectFilterSerializer(
-            prepare_query_set(filters.volume.most_common()),  many=True)
-        country = ObjectFilterSerializer(
-            prepare_query_set(filters.country.most_common()),  many=True)
         response = {
             "data": {
                 "category": category.data,

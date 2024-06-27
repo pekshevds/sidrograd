@@ -3,6 +3,7 @@ from django.db import models
 from pytils.translit import slugify
 from server.base import Directory
 from image_app.models import Image
+from catalog_app.services.good_events import after_save
 
 
 def secret_from_string(string: str) -> str:
@@ -383,7 +384,9 @@ class Good(Directory):
                 f"{self.name}-{secret_from_string(str(self.id))}"
             )
         self.full_name = f"{self.category} {self.trade_mark} {self.name}"
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+        if kwargs.get("update_count", True):
+            after_save(self)
 
     class Meta:
         verbose_name = "Товар"
