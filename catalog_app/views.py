@@ -337,9 +337,10 @@ class DataView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
-
-        filters = fetch_filters(request)
-        queryset = fetch_goods_by_filters(filters)
+        # Вернуть, если нужно уменьшать количество фильтров
+        # filters = fetch_filters(request)
+        # queryset = fetch_goods_by_filters(filters)
+        queryset = None
         if queryset is None:
             queryset = Good.objects.all()
         filters = fetch_filters_by_goods(queryset)
