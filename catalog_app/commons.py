@@ -135,7 +135,7 @@ def fetch_filters_by_goods(goods: QuerySet) -> Data:
 
 def prepare_query_set(data: Counter) -> Tuple[Record]:
     query_set = list()
-    for key, value in data.items():
+    for key, value in data:
         query_set.append(Record(key.id, key.name, value))
     return tuple(query_set)
 

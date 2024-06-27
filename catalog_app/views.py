@@ -347,28 +347,25 @@ class DataView(APIView):
             Category.objects.all(), many=True
             )
         trade_mark = ObjectFilterSerializer(
-            prepare_query_set(filters.trade_mark), many=True)
+            prepare_query_set(filters.trade_mark.most_common()), many=True)
         gassing = ObjectFilterSerializer(
-            prepare_query_set(filters.gassing),  many=True)
+            prepare_query_set(filters.gassing.most_common()),  many=True)
         filtering = ObjectFilterSerializer(
-            prepare_query_set(filters.filtering),  many=True)
+            prepare_query_set(filters.filtering.most_common()),  many=True)
         manufacturer = ObjectFilterSerializer(
-            prepare_query_set(filters.manufacturer),  many=True)
+            prepare_query_set(filters.manufacturer.most_common()),  many=True)
         unit = ObjectFilterSerializer(
-            prepare_query_set(filters.unit),  many=True)
+            prepare_query_set(filters.unit.most_common()),  many=True)
         style = ObjectFilterSerializer(
-            prepare_query_set(filters.style),  many=True)
+            prepare_query_set(filters.style.most_common()),  many=True)
         type_of_fermentation = ObjectFilterSerializer(
-            prepare_query_set(filters.type_of_fermentation),  many=True)
+            prepare_query_set(filters.type_of_fermentation.most_common()),  many=True)
         strength = ObjectFilterSerializer(
-            prepare_query_set(filters.strength),  many=True)
+            prepare_query_set(filters.strength.most_common()),  many=True)
         volume = ObjectFilterSerializer(
-            prepare_query_set(filters.volume),  many=True)
+            prepare_query_set(filters.volume.most_common()),  many=True)
         country = ObjectFilterSerializer(
-            prepare_query_set(filters.country),  many=True)
-        сarousel = CarouselSerializer(
-            Carousel.objects.all(), many=True
-            )
+            prepare_query_set(filters.country.most_common()),  many=True)
         response = {
             "data": {
                 "category": category.data,
@@ -382,7 +379,6 @@ class DataView(APIView):
                 "strength": strength.data,
                 "volume": volume.data,
                 "country": country.data,
-                "сarousel": сarousel.data
             },
             "params": request.GET,
             "success": True
