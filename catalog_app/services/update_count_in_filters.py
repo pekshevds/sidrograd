@@ -65,7 +65,7 @@ def fetch_filters_by_goods(goods: QuerySet) -> object:
         trade_mark=TradeMark.objects.filter(count__gt=0).order_by("-count"),
         gassing=Gassing.objects.filter(count__gt=0).order_by("-count"),
         filtering=Filtering.objects.filter(count__gt=0).order_by("-count"),
-        manufacturer=Filtering.objects.filter(count__gt=0).order_by("-count"),
+        manufacturer=Manufacturer.objects.filter(count__gt=0).order_by("-count"),
         unit=Unit.objects.filter(count__gt=0).order_by("-count"),
         style=Style.objects.filter(count__gt=0).order_by("-count"),
         type_of_fermentation=TypeOfFermentation.objects.filter(count__gt=0).order_by("-count"),
