@@ -45,6 +45,9 @@ from catalog_app.commons import (
     fetch_filters,
     fetch_filters_by_goods
 )
+from catalog_app.services.update_count_in_filters import (
+    fetch_filters_by_goods as fetch_filters_by_goods2
+)
 
 
 class CountryView(APIView):
@@ -333,6 +336,52 @@ class GoodView(APIView):
 
 
 class DataView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request: HttpRequest) -> Response:
+        # Вернуть, если нужно уменьшать количество фильтров
+        # filters = fetch_filters(request)
+        # queryset = fetch_goods_by_filters(filters)
+        queryset = None
+        if queryset is None:
+            queryset = Good.objects.all()
+        filters = fetch_filters_by_goods2(queryset)
+
+        category = CategorySerializer(Category.objects.all(), many=True)
+        trade_mark = TradeMarkSerializer(filters.trade_mark, many=True)
+        gassing = GassingSerializer(filters.gassing,  many=True)
+        filtering = FilteringSerializer(filters.filtering,  many=True)
+        manufacturer = ManufacturerSerializer(filters.manufacturer,  many=True)
+        unit = UnitSerializer(filters.unit,  many=True)
+        style = StyleSerializer(filters.style,  many=True)
+        type_of_fermentation = TypeOfFermentationSerializer(
+            filters.type_of_fermentation,  many=True)
+        strength = StrengthSerializer(filters.strength,  many=True)
+        volume = VolumeSerializer(filters.volume,  many=True)
+        country = CountrySerializer(filters.country,  many=True)
+
+        response = {
+            "data": {
+                "category": category.data,
+                "trade_mark": trade_mark.data,
+                "gassing": gassing.data,
+                "filtering": filtering.data,
+                "manufacturer": manufacturer.data,
+                "unit": unit.data,
+                "style": style.data,
+                "type_of_fermentation": type_of_fermentation.data,
+                "strength": strength.data,
+                "volume": volume.data,
+                "country": country.data,
+            },
+            "params": request.GET,
+            "success": True
+            }
+        return Response(response)
+
+
+class _DataView(APIView):
 
     permission_classes = [permissions.AllowAny]
 

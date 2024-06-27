@@ -19,7 +19,9 @@ from catalog_app.services.volume import volume_by_id_list
 from catalog_app.services.strength import strength_by_id_list
 from catalog_app.services.country import country_by_id_list
 
-from catalog_app.models import Good
+from catalog_app.models import (
+    Good
+)
 # from catalog_app.services import object_by_id_list
 
 

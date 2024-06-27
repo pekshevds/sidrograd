@@ -20,6 +20,11 @@ class Country(Directory):
         default="",
         db_index=True
     )
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Страна"
@@ -40,6 +45,11 @@ class Category(Directory):
         blank=True,
         default=0
     )
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Раздел каталога"
@@ -48,6 +58,11 @@ class Category(Directory):
 
 
 class TradeMark(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Торговая марка"
@@ -56,6 +71,11 @@ class TradeMark(Directory):
 
 
 class Gassing(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Газация"
@@ -64,6 +84,11 @@ class Gassing(Directory):
 
 
 class Pasteurization(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Пастеризация"
@@ -72,6 +97,11 @@ class Pasteurization(Directory):
 
 
 class Filtering(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Фильрация"
@@ -80,6 +110,12 @@ class Filtering(Directory):
 
 
 class Manufacturer(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
+
     description = models.TextField(
         verbose_name="Описание",
         null=True,
@@ -93,6 +129,11 @@ class Manufacturer(Directory):
 
 
 class Unit(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Единица измерения"
@@ -101,6 +142,11 @@ class Unit(Directory):
 
 
 class TypeOfFermentation(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Тип ферментации"
@@ -109,6 +155,11 @@ class TypeOfFermentation(Directory):
 
 
 class Style(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
 
     class Meta:
         verbose_name = "Спиль"
@@ -117,6 +168,11 @@ class Style(Directory):
 
 
 class Volume(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
     value = models.DecimalField(
         verbose_name="Значение",
         max_digits=15,
@@ -133,6 +189,11 @@ class Volume(Directory):
 
 
 class Strength(Directory):
+    count = models.IntegerField(
+        null=True,
+        blank=True,
+        default=0
+    )
     value = models.DecimalField(
         verbose_name="Значение",
         max_digits=15,
@@ -184,6 +245,7 @@ class Good(Directory):
         Volume,
         on_delete=models.PROTECT,
         verbose_name="Объем, л",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -191,6 +253,7 @@ class Good(Directory):
         Strength,
         on_delete=models.PROTECT,
         verbose_name="Крепость, %",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -239,6 +302,7 @@ class Good(Directory):
         TradeMark,
         on_delete=models.PROTECT,
         verbose_name="Торговая марка",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -246,6 +310,7 @@ class Good(Directory):
         Gassing,
         on_delete=models.PROTECT,
         verbose_name="Газация",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -253,6 +318,7 @@ class Good(Directory):
         Pasteurization,
         on_delete=models.PROTECT,
         verbose_name="Пастеризация",
+        related_name="goods",
         blank=True,
         null=True,
         editable=False
@@ -261,6 +327,7 @@ class Good(Directory):
         Filtering,
         on_delete=models.PROTECT,
         verbose_name="Фильтрация",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -268,6 +335,7 @@ class Good(Directory):
         Manufacturer,
         on_delete=models.PROTECT,
         verbose_name="Производитель",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -275,6 +343,7 @@ class Good(Directory):
         Unit,
         on_delete=models.PROTECT,
         verbose_name="Единица измерения",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -282,6 +351,7 @@ class Good(Directory):
         TypeOfFermentation,
         on_delete=models.PROTECT,
         verbose_name="Тип ферментации",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -289,6 +359,7 @@ class Good(Directory):
         Style,
         on_delete=models.PROTECT,
         verbose_name="Стиль",
+        related_name="goods",
         blank=True,
         null=True
     )
@@ -296,6 +367,7 @@ class Good(Directory):
         Country,
         on_delete=models.PROTECT,
         verbose_name="Страна",
+        related_name="goods",
         blank=True,
         null=True
     )

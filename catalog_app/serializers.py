@@ -7,6 +7,7 @@ class CountrySerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
     code = serializers.CharField(
         max_length=3, required=False, allow_blank=True)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class CategorySerializer(serializers.Serializer):
@@ -15,6 +16,7 @@ class CategorySerializer(serializers.Serializer):
     # image = ImageSerializer(required=False, allow_null=True)
     image = serializers.ImageField(
         required=False, allow_null=True, use_url=True)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class ObjectFilterSerializer(serializers.Serializer):
@@ -27,6 +29,7 @@ class ObjectFilterSerializer(serializers.Serializer):
 class TradeMarkSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 """class PasteurizationSerializer(serializers.Serializer):
@@ -37,44 +40,52 @@ class TradeMarkSerializer(serializers.Serializer):
 class FilteringSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class GassingSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class ManufacturerSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
     description = serializers.CharField(required=False, allow_blank=True)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class UnitSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class TypeOfFermentationSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class StyleSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class VolumeSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
     value = serializers.DecimalField(max_digits=15, decimal_places=3)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class StrengthSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
     value = serializers.DecimalField(max_digits=15, decimal_places=3)
+    count = serializers.IntegerField(required=False, allow_null=True)
 
 
 class GoodsImageSerializer(serializers.Serializer):
