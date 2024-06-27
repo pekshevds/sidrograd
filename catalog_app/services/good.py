@@ -223,7 +223,7 @@ def update_prices(new_prices: list[dir]):
             goods_for_update.append(good)
     Good.objects.bulk_update(
         goods_for_update,
-        ["price", "qnt"],
+        ["price", "balance"],
         batch_size=100
     )
     return True
