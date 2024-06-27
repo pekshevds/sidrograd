@@ -390,6 +390,22 @@ class DataView(APIView):
         return Response(response)
 
 
+class CouruselView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request: HttpRequest) -> Response:
+        сarousel = CarouselSerializer(
+            Carousel.objects.all(), many=True
+        )
+        response = {
+            "data": сarousel.data,
+            "count": len(сarousel.data),
+            "params": request.GET,
+            "success": True
+            }
+        return Response(response)
+
+
 class PricesView(APIView):
 
     authentication_classes = [authentication.TokenAuthentication]

@@ -14,7 +14,8 @@ from catalog_app.views import (
     StyleView,
     TypeOfFermentationView,
     CountryView,
-    PricesView
+    PricesView,
+    CouruselView
 )
 
 
@@ -37,5 +38,6 @@ urlpatterns = [
     path('category/', CategoryView.as_view(), name="category"),
     path('good/', GoodView.as_view(), name="good"),
     path('data/', DataView.as_view(), name="data"),
+    path('courusel/', CouruselView.as_view(), name="courusel"),
     path('prices/', PricesView.as_view(), name="prices"),
 ]
