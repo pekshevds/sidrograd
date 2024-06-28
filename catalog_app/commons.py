@@ -70,7 +70,7 @@ def fetch_goods_queryset_by_filters(
     countryes: List[object],
 ) -> QuerySet | None:
     filters = Q()
-    condition = Q.OR
+    condition = Q.AND
     if categories:
         filters.add(Q(category__in=categories), condition)
 
