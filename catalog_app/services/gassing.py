@@ -5,7 +5,7 @@ from catalog_app.services import (
     object_by_id,
     object_by_id_list,
     handle_object,
-    handle_object_list
+    handle_object_list,
 )
 
 
@@ -17,9 +17,9 @@ def gassing_by_id_list(id: List[str]) -> QuerySet:
     return object_by_id_list(Gassing, ids=id)
 
 
-def handle_gassing(gassing_dir: dir) -> Gassing:
+def handle_gassing(gassing_dir: dict) -> Gassing:
     return handle_object(Gassing, object_dir=gassing_dir)
 
 
-def handle_gassing_list(gassing_list: None) -> QuerySet:
+def handle_gassing_list(gassing_list: list[dict]) -> QuerySet:
     return handle_object_list(Gassing, object_list=gassing_list)

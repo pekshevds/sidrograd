@@ -11,7 +11,7 @@ def object_by_id_list(_class, ids: List[str]) -> QuerySet:
     return _class.objects.filter(id__in=ids)
 
 
-def handle_object(_class, object_dir: dir) -> Model:
+def handle_object(_class, object_dir: dict) -> Model:
     key_list = ["name", "comment"]
     obj, created = _class.objects.get_or_create(id=object_dir.get("id"))
     for key in key_list:
@@ -21,7 +21,7 @@ def handle_object(_class, object_dir: dir) -> Model:
     return obj
 
 
-def handle_object_list(_class, object_list: List[dir]) -> QuerySet:
+def handle_object_list(_class, object_list: List[dict]) -> QuerySet:
     ids = []
     with transaction.atomic():
         for object_item in object_list:

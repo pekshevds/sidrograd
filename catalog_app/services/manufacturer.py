@@ -1,35 +1,24 @@
-from django.db import transaction
-from catalog_app.models import (
-    Manufacturer
+from django.db.models import QuerySet
+from catalog_app.models import Manufacturer
+from catalog_app.services import (
+    object_by_id,
+    object_by_id_list,
+    handle_object,
+    handle_object_list,
 )
 
 
 def manufacturer_by_id(manufacturer_id: str) -> Manufacturer:
-    return Manufacturer.objects.filter(id=manufacturer_id).first()
+    return object_by_id(Manufacturer, id=manufacturer_id)
 
 
-def manufacturer_by_id_list(id: [str]) -> [Manufacturer]:
-    return list(Manufacturer.objects.filter(id__in=id))
+def manufacturer_by_id_list(id: list[str]) -> QuerySet:
+    return object_by_id_list(Manufacturer, ids=id)
 
 
-def handle_manufacturer(manufacturer_dir: dir) -> Manufacturer:
-    manufacturer_id = manufacturer_dir.get('id', "")
-    manufacturer_name = manufacturer_dir.get('name', "")
-    manufacturer = manufacturer_by_id(manufacturer_id)
-    if manufacturer is None:
-        manufacturer = Manufacturer.objects.create(
-            id=manufacturer_id,
-            name=manufacturer_name
-        )
-    return manufacturer
+def handle_manufacturer(manufacturer_dir: dict) -> Manufacturer:
+    return handle_object(Manufacturer, object_dir=manufacturer_dir)
 
 
-def handle_manufacturer_list(manufacturer_list: None) -> [Manufacturer]:
-    manufacturer_id = []
-    with transaction.atomic():
-        for manufacturer_item in manufacturer_list:
-            manufacturer = handle_manufacturer(
-                manufacturer_dir=manufacturer_item
-            )
-            manufacturer_id.append(manufacturer.id)
-    return Manufacturer.objects.filter(id__in=manufacturer_id)
+def handle_manufacturer_list(manufacturer_list: list[dict]) -> QuerySet:
+    return handle_object_list(Manufacturer, object_list=manufacturer_list)
