@@ -4,10 +4,7 @@ from server.base import Directory
 
 class Image(Directory):
     image = models.ImageField(
-        verbose_name="Файл изображения",
-        upload_to="images/",
-        blank=True,
-        null=True
+        verbose_name="Файл изображения", upload_to="images/", blank=True, null=True
     )
 
     class Meta:
@@ -21,13 +18,10 @@ class Carousel(Directory):
         verbose_name="Файл изображения",
         upload_to="carousel_images/",
         blank=True,
-        null=True
+        null=True,
     )
     order_by = models.SmallIntegerField(
-        verbose_name="Порядок сортировки",
-        null=True,
-        blank=True,
-        default=0
+        verbose_name="Порядок сортировки", null=True, blank=True, default=0
     )
 
     class Meta:

@@ -5,8 +5,16 @@ from image_app.models import Image, Carousel
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    fields = ("name", "image", "preview",)
-    list_display = ("name", "id", "preview",)
+    fields = (
+        "name",
+        "image",
+        "preview",
+    )
+    list_display = (
+        "name",
+        "id",
+        "preview",
+    )
     readonly_fields = ("preview",)
 
     def preview(self, obj):
@@ -20,8 +28,18 @@ class ImageAdmin(admin.ModelAdmin):
 
 @admin.register(Carousel)
 class CarouselAdmin(admin.ModelAdmin):
-    fields = ("name", "image", "preview", "order_by", )
-    list_display = ("name", "id", "preview", "order_by",)
+    fields = (
+        "name",
+        "image",
+        "preview",
+        "order_by",
+    )
+    list_display = (
+        "name",
+        "id",
+        "preview",
+        "order_by",
+    )
     readonly_fields = ("preview",)
 
     def preview(self, obj):

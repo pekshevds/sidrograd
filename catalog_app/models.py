@@ -8,7 +8,7 @@ from catalog_app.services.good_events import after_save
 
 def secret_from_string(string: str) -> str:
     hash = hashlib.blake2s(digest_size=4)
-    hash.update(string.encode('utf-8'))
+    hash.update(string.encode("utf-8"))
     return hash.hexdigest()
 
 
@@ -19,13 +19,9 @@ class Country(Directory):
         blank=True,
         null=True,
         default="",
-        db_index=True
+        db_index=True,
     )
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Страна"
@@ -35,22 +31,15 @@ class Country(Directory):
 
 class Category(Directory):
     image = models.ImageField(
-        verbose_name="Файл изображения",
+        verbose_name="Файл изображения 570х287",
         upload_to="category_images/",
         blank=True,
-        null=True
+        null=True,
     )
     order_by = models.SmallIntegerField(
-        verbose_name="Порядок сортировки",
-        null=True,
-        blank=True,
-        default=0
+        verbose_name="Порядок сортировки", null=True, blank=True, default=0
     )
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Раздел каталога"
@@ -59,11 +48,7 @@ class Category(Directory):
 
 
 class TradeMark(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Торговая марка"
@@ -72,11 +57,7 @@ class TradeMark(Directory):
 
 
 class Gassing(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Газация"
@@ -85,11 +66,7 @@ class Gassing(Directory):
 
 
 class Pasteurization(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Пастеризация"
@@ -98,11 +75,7 @@ class Pasteurization(Directory):
 
 
 class Filtering(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Фильрация"
@@ -111,17 +84,9 @@ class Filtering(Directory):
 
 
 class Manufacturer(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
-    description = models.TextField(
-        verbose_name="Описание",
-        null=True,
-        blank=True
-    )
+    description = models.TextField(verbose_name="Описание", null=True, blank=True)
 
     class Meta:
         verbose_name = "Производитель"
@@ -130,11 +95,7 @@ class Manufacturer(Directory):
 
 
 class Unit(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Единица измерения"
@@ -143,11 +104,7 @@ class Unit(Directory):
 
 
 class TypeOfFermentation(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Тип ферментации"
@@ -156,11 +113,7 @@ class TypeOfFermentation(Directory):
 
 
 class Style(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
 
     class Meta:
         verbose_name = "Спиль"
@@ -169,18 +122,14 @@ class Style(Directory):
 
 
 class Volume(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
     value = models.DecimalField(
         verbose_name="Значение",
         max_digits=15,
         decimal_places=3,
         blank=True,
         null=True,
-        default=0
+        default=0,
     )
 
     class Meta:
@@ -190,18 +139,14 @@ class Volume(Directory):
 
 
 class Strength(Directory):
-    count = models.IntegerField(
-        null=True,
-        blank=True,
-        default=0
-    )
+    count = models.IntegerField(null=True, blank=True, default=0)
     value = models.DecimalField(
         verbose_name="Значение",
         max_digits=15,
         decimal_places=3,
         blank=True,
         null=True,
-        default=0
+        default=0,
     )
 
     class Meta:
@@ -216,7 +161,7 @@ class Good(Directory):
         max_length=1024,
         blank=True,
         null=True,
-        default=""
+        default="",
     )
     art = models.CharField(
         verbose_name="Артикул",
@@ -224,7 +169,7 @@ class Good(Directory):
         blank=True,
         null=True,
         default="",
-        db_index=True
+        db_index=True,
     )
     balance = models.DecimalField(
         verbose_name="Остаток",
@@ -232,7 +177,7 @@ class Good(Directory):
         decimal_places=3,
         blank=True,
         null=True,
-        default=0
+        default=0,
     )
     price = models.DecimalField(
         verbose_name="Цена",
@@ -240,7 +185,7 @@ class Good(Directory):
         decimal_places=2,
         blank=True,
         null=True,
-        default=0
+        default=0,
     )
     volume = models.ForeignKey(
         Volume,
@@ -248,7 +193,7 @@ class Good(Directory):
         verbose_name="Объем, л",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     strength = models.ForeignKey(
         Strength,
@@ -256,7 +201,7 @@ class Good(Directory):
         verbose_name="Крепость, %",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     in_package = models.DecimalField(
         verbose_name="В упаковке, шт",
@@ -264,7 +209,7 @@ class Good(Directory):
         decimal_places=0,
         blank=True,
         null=True,
-        default=0
+        default=0,
     )
     expiration_date = models.DecimalField(
         verbose_name="Срок годности, мес",
@@ -272,20 +217,15 @@ class Good(Directory):
         decimal_places=0,
         blank=True,
         null=True,
-        default=0
+        default=0,
     )
-    slug = models.SlugField(
-        max_length=250,
-        null=True,
-        blank=True,
-        unique=True
-    )
+    slug = models.SlugField(max_length=250, null=True, blank=True, unique=True)
     image = models.ForeignKey(
         Image,
         on_delete=models.PROTECT,
         verbose_name="Изображение (превью)",
         blank=True,
-        null=True
+        null=True,
     )
     category = models.ForeignKey(
         Category,
@@ -293,19 +233,16 @@ class Good(Directory):
         verbose_name="Раздел каталога",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
-    is_active = models.BooleanField(
-        verbose_name="Активен",
-        default=False
-    )
+    is_active = models.BooleanField(verbose_name="Активен", default=False)
     trade_mark = models.ForeignKey(
         TradeMark,
         on_delete=models.PROTECT,
         verbose_name="Торговая марка",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     gassing = models.ForeignKey(
         Gassing,
@@ -313,7 +250,7 @@ class Good(Directory):
         verbose_name="Газация",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     pasteurization = models.ForeignKey(
         Pasteurization,
@@ -322,7 +259,7 @@ class Good(Directory):
         related_name="goods",
         blank=True,
         null=True,
-        editable=False
+        editable=False,
     )
     filtering = models.ForeignKey(
         Filtering,
@@ -330,7 +267,7 @@ class Good(Directory):
         verbose_name="Фильтрация",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     manufacturer = models.ForeignKey(
         Manufacturer,
@@ -338,7 +275,7 @@ class Good(Directory):
         verbose_name="Производитель",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     unit = models.ForeignKey(
         Unit,
@@ -346,7 +283,7 @@ class Good(Directory):
         verbose_name="Единица измерения",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     type_of_fermentation = models.ForeignKey(
         TypeOfFermentation,
@@ -354,7 +291,7 @@ class Good(Directory):
         verbose_name="Тип ферментации",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     style = models.ForeignKey(
         Style,
@@ -362,7 +299,7 @@ class Good(Directory):
         verbose_name="Стиль",
         related_name="goods",
         blank=True,
-        null=True
+        null=True,
     )
     country = models.ForeignKey(
         Country,
@@ -370,19 +307,13 @@ class Good(Directory):
         verbose_name="Страна",
         related_name="goods",
         blank=True,
-        null=True
-    )
-    description = models.TextField(
-        verbose_name="Описание",
         null=True,
-        blank=True
     )
+    description = models.TextField(verbose_name="Описание", null=True, blank=True)
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
-            self.slug = slugify(
-                f"{self.name}-{secret_from_string(str(self.id))}"
-            )
+            self.slug = slugify(f"{self.name}-{secret_from_string(str(self.id))}")
         self.full_name = f"{self.category} {self.trade_mark} {self.name}"
         super().save(*args, **kwargs)
         if kwargs.get("update_count", True):
@@ -399,12 +330,10 @@ class GoodsImage(models.Model):
         Good,
         on_delete=models.PROTECT,
         verbose_name="Номенклатура",
-        related_name="images"
+        related_name="images",
     )
     image = models.ForeignKey(
-        Image,
-        on_delete=models.PROTECT,
-        verbose_name="Изображение"
+        Image, on_delete=models.PROTECT, verbose_name="Изображение"
     )
 
     class Meta:
