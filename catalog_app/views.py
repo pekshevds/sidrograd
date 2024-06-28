@@ -15,7 +15,7 @@ from catalog_app.models import (
     Strength,
     Style,
     TypeOfFermentation,
-    Country
+    Country,
 )
 from catalog_app.serializers import (
     ManufacturerSerializer,
@@ -29,26 +29,20 @@ from catalog_app.serializers import (
     StrengthSerializer,
     StyleSerializer,
     TypeOfFermentationSerializer,
-    CountrySerializer
+    CountrySerializer,
 )
 from catalog_app.services.good import (
     handle_good_list,
     fetch_goods_queryset_by_name_or_article,
-    update_prices
+    update_prices,
 )
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
-from catalog_app.commons import (
-    fetch_goods_by_filters,
-    fetch_filters
-)
-from catalog_app.services.update_count_in_filters import (
-    fetch_filters_by_goods
-)
+from catalog_app.commons import fetch_goods_by_filters, fetch_filters
+from catalog_app.services.update_count_in_filters import fetch_filters_by_goods
 
 
 class CountryView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -63,13 +57,12 @@ class CountryView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class StyleView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -84,13 +77,12 @@ class StyleView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class TypeOfFermentationView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -105,13 +97,12 @@ class TypeOfFermentationView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class StrengthView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -126,13 +117,12 @@ class StrengthView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class VolumeView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -147,13 +137,12 @@ class VolumeView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class ManufacturerView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -168,13 +157,12 @@ class ManufacturerView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class UnitView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -189,13 +177,12 @@ class UnitView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class FilteringView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -210,13 +197,12 @@ class FilteringView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class GassingView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -231,13 +217,12 @@ class GassingView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class TradeMarkView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -252,13 +237,12 @@ class TradeMarkView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class CategoryView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
@@ -273,13 +257,12 @@ class CategoryView(APIView):
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class GoodView(APIView):
-
     authentication_classes = [authentication.BasicAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -302,24 +285,17 @@ class GoodView(APIView):
             if queryset is None:
                 queryset = Good.objects.all()
             paginator = Paginator(queryset, count)
-            serializer = GoodSerializer(
-                paginator.get_page(page_number), many=True
-            )
+            serializer = GoodSerializer(paginator.get_page(page_number), many=True)
         response = {
             "data": serializer.data,
             "count": len(queryset),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
     def post(self, request: HttpRequest) -> Response:
-        response = {
-            "data": [],
-            "count": 0,
-            "params": {},
-            "success": True
-            }
+        response = {"data": [], "count": 0, "params": {}, "success": True}
         data = request.data.get("data", None)
         if not data:
             return Response(response)
@@ -333,30 +309,29 @@ class GoodView(APIView):
 
 
 class DataView(APIView):
-
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
         # Вернуть, если нужно уменьшать количество фильтров
         # filters = fetch_filters(request)
         # queryset = fetch_goods_by_filters(filters)
-        queryset = None
-        if queryset is None:
-            queryset = Good.objects.all()
-        filters = fetch_filters_by_goods(queryset)
+        # if queryset is None:
+        #     queryset = Good.objects.all()
+        filters = fetch_filters_by_goods()
 
         category = CategorySerializer(Category.objects.all(), many=True)
         trade_mark = TradeMarkSerializer(filters.trade_mark, many=True)
-        gassing = GassingSerializer(filters.gassing,  many=True)
-        filtering = FilteringSerializer(filters.filtering,  many=True)
-        manufacturer = ManufacturerSerializer(filters.manufacturer,  many=True)
-        unit = UnitSerializer(filters.unit,  many=True)
-        style = StyleSerializer(filters.style,  many=True)
+        gassing = GassingSerializer(filters.gassing, many=True)
+        filtering = FilteringSerializer(filters.filtering, many=True)
+        manufacturer = ManufacturerSerializer(filters.manufacturer, many=True)
+        unit = UnitSerializer(filters.unit, many=True)
+        style = StyleSerializer(filters.style, many=True)
         type_of_fermentation = TypeOfFermentationSerializer(
-            filters.type_of_fermentation,  many=True)
-        strength = StrengthSerializer(filters.strength,  many=True)
-        volume = VolumeSerializer(filters.volume,  many=True)
-        country = CountrySerializer(filters.country,  many=True)
+            filters.type_of_fermentation, many=True
+        )
+        strength = StrengthSerializer(filters.strength, many=True)
+        volume = VolumeSerializer(filters.volume, many=True)
+        country = CountrySerializer(filters.country, many=True)
 
         response = {
             "data": {
@@ -373,8 +348,8 @@ class DataView(APIView):
                 "country": country.data,
             },
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
@@ -382,20 +357,17 @@ class CouruselView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
-        сarousel = CarouselSerializer(
-            Carousel.objects.all(), many=True
-        )
+        сarousel = CarouselSerializer(Carousel.objects.all(), many=True)
         response = {
             "data": сarousel.data,
             "count": len(сarousel.data),
             "params": request.GET,
-            "success": True
-            }
+            "success": True,
+        }
         return Response(response)
 
 
 class PricesView(APIView):
-
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
