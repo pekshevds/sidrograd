@@ -34,7 +34,7 @@ from catalog_app.serializers import (
 from catalog_app.services.good import (
     handle_good_list,
     fetch_goods_queryset_by_name_or_article,
-    update_prices,
+    run_update_prices,
 )
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
@@ -376,4 +376,4 @@ class PricesView(APIView):
         data = request.data.get("data", None)
         if not data:
             return Response(response)
-        return Response({"success": update_prices(data)})
+        return Response({"success": run_update_prices(data)})
