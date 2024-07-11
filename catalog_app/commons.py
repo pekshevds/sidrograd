@@ -158,8 +158,6 @@ def prepare_query_set(data: Counter) -> tuple:
         )
         for key, value in data.items()
     ]
-    # for key, value in data:
-    #     query_set.append(Record(key.id, key.name, value))
     query_set.sort(key=lambda x: x.count, reverse=True)
     return tuple(query_set)
 
