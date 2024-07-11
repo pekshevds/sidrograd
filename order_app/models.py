@@ -5,7 +5,7 @@ from django.utils.dateformat import format
 from server.base import Directory
 from server.base import Document
 from catalog_app.models import Good
-from client_app.models import Client
+from client_app.models import Client, Point
 from auth_app.models import User
 from order_app.services import ganerate_new_number
 
@@ -17,7 +17,7 @@ class Customer(Directory):
         null=True,
         blank=True,
         default="",
-        db_index=True
+        db_index=True,
     )
 
     class Meta:
@@ -32,7 +32,7 @@ class Organization(Directory):
         null=True,
         blank=True,
         default="",
-        db_index=True
+        db_index=True,
     )
 
     class Meta:
@@ -42,31 +42,17 @@ class Organization(Directory):
 
 class Contract(Directory):
     number = models.CharField(
-        verbose_name="Номер",
-        max_length=25,
-        null=True,
-        blank=True
+        verbose_name="Номер", max_length=25, null=True, blank=True
     )
     date = models.DateField(
-        verbose_name="Дата",
-        null=True,
-        blank=True,
-        default=timezone.now
+        verbose_name="Дата", null=True, blank=True, default=timezone.now
     )
-    client = models.ForeignKey(
-        Client,
-        verbose_name="Клиент",
-        on_delete=models.PROTECT
-    )
+    client = models.ForeignKey(Client, verbose_name="Клиент", on_delete=models.PROTECT)
     customer = models.ForeignKey(
-        Customer,
-        verbose_name="Покупатель",
-        on_delete=models.PROTECT
+        Customer, verbose_name="Покупатель", on_delete=models.PROTECT
     )
     organization = models.ForeignKey(
-        Organization,
-        verbose_name="Организация",
-        on_delete=models.PROTECT
+        Organization, verbose_name="Организация", on_delete=models.PROTECT
     )
 
     def __str__(self) -> str:
@@ -79,11 +65,7 @@ class Contract(Directory):
 
 class OrderStatus(Directory):
     value = models.CharField(
-        verbose_name="Значение",
-        max_length=2,
-        null=True,
-        blank=True,
-        db_index=True
+        verbose_name="Значение", max_length=2, null=True, blank=True, db_index=True
     )
 
     def __str__(self) -> str:
@@ -100,39 +82,38 @@ class OrderStatus(Directory):
 
 class Order(Document):
     author = models.ForeignKey(
-        User,
-        verbose_name="Автор",
-        null=True,
-        blank=True,
-        on_delete=models.PROTECT
+        User, verbose_name="Автор", null=True, blank=True, on_delete=models.PROTECT
     )
     contract = models.ForeignKey(
         Contract,
         verbose_name="Договор",
         null=True,
         blank=True,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
     )
     client = models.ForeignKey(
-        Client,
-        verbose_name="Клиент",
+        Client, verbose_name="Клиент", null=True, blank=True, on_delete=models.PROTECT
+    )
+    address = models.ForeignKey(
+        Point,
+        verbose_name="Адрес доставки",
         null=True,
         blank=True,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
     )
     customer = models.ForeignKey(
         Customer,
         verbose_name="Покупатель",
         null=True,
         blank=True,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
     )
     organization = models.ForeignKey(
         Organization,
         verbose_name="Организация",
         null=True,
         blank=True,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
     )
     status = models.ForeignKey(
         OrderStatus,
@@ -140,7 +121,7 @@ class Order(Document):
         null=True,
         blank=True,
         on_delete=models.PROTECT,
-        default=OrderStatus.default_order_status
+        default=OrderStatus.default_order_status,
     )
 
     def save(self, *args, **kwargs) -> None:
@@ -167,42 +148,21 @@ class Order(Document):
 
 
 class ItemOrder(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="items"
+        Order, on_delete=models.CASCADE, null=True, blank=True, related_name="items"
     )
-    good = models.ForeignKey(
-        Good,
-        on_delete=models.PROTECT,
-        null=True,
-        blank=True
-    )
+    good = models.ForeignKey(Good, on_delete=models.PROTECT, null=True, blank=True)
     quantity = models.DecimalField(
         verbose_name="Количество",
         max_digits=15,
         decimal_places=3,
         null=True,
-        blank=True
+        blank=True,
     )
     price = models.DecimalField(
-        verbose_name="Цена",
-        max_digits=15,
-        decimal_places=2,
-        null=True,
-        blank=True
+        verbose_name="Цена", max_digits=15, decimal_places=2, null=True, blank=True
     )
     summ = models.DecimalField(
-        verbose_name="Сумма",
-        max_digits=15,
-        decimal_places=2,
-        null=True,
-        blank=True
+        verbose_name="Сумма", max_digits=15, decimal_places=2, null=True, blank=True
     )
