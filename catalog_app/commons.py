@@ -53,7 +53,8 @@ class Data:
 class Record:
     id: str
     name: str
-    count: int
+    value: int = 0
+    count: int = 0
 
 
 def fetch_goods_queryset_by_filters(
@@ -148,9 +149,18 @@ def fetch_filters_by_goods(goods: QuerySet) -> Data:
 
 
 def prepare_query_set(data: Counter) -> tuple:
-    query_set = [Record(key.id, key.name, value) for key, value in data]
+    query_set = [
+        Record(
+            id=key.id,
+            name=key.name,
+            value=getattr(key, "value") if hasattr(key, "value") else 0,
+            count=value,
+        )
+        for key, value in data.items()
+    ]
     # for key, value in data:
     #     query_set.append(Record(key.id, key.name, value))
+    query_set.sort(key=lambda x: x.count, reverse=True)
     return tuple(query_set)
 
 

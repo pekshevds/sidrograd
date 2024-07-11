@@ -42,6 +42,7 @@ from catalog_app.commons import (
     fetch_goods_by_filters,
     fetch_filters,
     fetch_filters_by_goods,
+    prepare_query_set,
 )
 # from catalog_app.services.update_count_in_filters import fetch_filters_by_goods
 
@@ -320,23 +321,27 @@ class DataView(APIView):
         queryset = fetch_goods_by_filters(fetch_filters(request))
         if queryset is None:
             queryset = Good.objects.all()
-        filters = fetch_filters_by_goods(queryset)
 
+        filters = fetch_filters_by_goods(queryset)
         # filters = fetch_filters_by_goods()
 
         category = CategorySerializer(Category.objects.all(), many=True)
-        trade_mark = TradeMarkSerializer(filters.trade_mark, many=True)
-        gassing = GassingSerializer(filters.gassing, many=True)
-        filtering = FilteringSerializer(filters.filtering, many=True)
-        manufacturer = ManufacturerSerializer(filters.manufacturer, many=True)
-        unit = UnitSerializer(filters.unit, many=True)
-        style = StyleSerializer(filters.style, many=True)
-        type_of_fermentation = TypeOfFermentationSerializer(
-            filters.type_of_fermentation, many=True
+        trade_mark = TradeMarkSerializer(
+            prepare_query_set(filters.trade_mark), many=True
         )
-        strength = StrengthSerializer(filters.strength, many=True)
-        volume = VolumeSerializer(filters.volume, many=True)
-        country = CountrySerializer(filters.country, many=True)
+        gassing = GassingSerializer(prepare_query_set(filters.gassing), many=True)
+        filtering = FilteringSerializer(prepare_query_set(filters.filtering), many=True)
+        manufacturer = ManufacturerSerializer(
+            prepare_query_set(filters.manufacturer), many=True
+        )
+        unit = UnitSerializer(prepare_query_set(filters.unit), many=True)
+        style = StyleSerializer(prepare_query_set(filters.style), many=True)
+        type_of_fermentation = TypeOfFermentationSerializer(
+            prepare_query_set(filters.type_of_fermentation), many=True
+        )
+        strength = StrengthSerializer(prepare_query_set(filters.strength), many=True)
+        volume = VolumeSerializer(prepare_query_set(filters.volume), many=True)
+        country = CountrySerializer(prepare_query_set(filters.country), many=True)
 
         response = {
             "data": {
