@@ -38,8 +38,12 @@ from catalog_app.services.good import (
 )
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
-from catalog_app.commons import fetch_goods_by_filters, fetch_filters
-from catalog_app.services.update_count_in_filters import fetch_filters_by_goods
+from catalog_app.commons import (
+    fetch_goods_by_filters,
+    fetch_filters,
+    fetch_filters_by_goods,
+)
+# from catalog_app.services.update_count_in_filters import fetch_filters_by_goods
 
 
 class CountryView(APIView):
@@ -313,11 +317,12 @@ class DataView(APIView):
 
     def get(self, request: HttpRequest) -> Response:
         # Вернуть, если нужно уменьшать количество фильтров
-        # filters = fetch_filters(request)
-        # queryset = fetch_goods_by_filters(filters)
-        # if queryset is None:
-        #     queryset = Good.objects.all()
-        filters = fetch_filters_by_goods()
+        queryset = fetch_goods_by_filters(fetch_filters(request))
+        if queryset is None:
+            queryset = Good.objects.all()
+        filters = fetch_filters_by_goods(queryset)
+
+        # filters = fetch_filters_by_goods()
 
         category = CategorySerializer(Category.objects.all(), many=True)
         trade_mark = TradeMarkSerializer(filters.trade_mark, many=True)
