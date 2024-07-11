@@ -318,10 +318,15 @@ class DataView(APIView):
 
     def get(self, request: HttpRequest) -> Response:
         # Вернуть, если нужно уменьшать количество фильтров
-        filters = fetch_filters(request)
-        if any(filters):
-            queryset = fetch_goods_by_filters(filters)
+        queryset = None
+        search = request.GET.get("search")
+        if search:
+            queryset = fetch_goods_queryset_by_name_or_article(search)
         else:
+            filters = fetch_filters(request)
+            if any(filters):
+                queryset = fetch_goods_by_filters(filters)
+        if queryset is None:
             queryset = Good.objects.all()
         prepared_data = fetch_filters_by_goods(queryset)
         # filters = fetch_filters_by_goods()
