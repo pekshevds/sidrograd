@@ -1,34 +1,29 @@
 from django.db import transaction
-from catalog_app.models import (
-    Volume
-)
+from django.db.models import QuerySet
+from catalog_app.models import Volume
 
 
 def volume_by_id(item_id: str) -> Volume:
     return Volume.objects.filter(id=item_id).first()
 
 
-def volume_by_id_list(id: [str]) -> [Volume]:
-    return list(Volume.objects.filter(id__in=id))
+def volume_by_id_list(id: list[str]) -> QuerySet[Volume]:
+    return Volume.objects.filter(id__in=id)
 
 
-def handle_volume(item_dir: dir) -> Volume:
-    item_id = item_dir.get('id', "")
-    item = volume_by_id(item_id)
-    if item is None:
-        item = Volume.objects.create(
-            id=item_id
-        )
-    item.name = item_dir.get('name', "")
-    item.value = item_dir.get('value', 0)
+def handle_volume(item_dict: dict) -> Volume:
+    item_id = item_dict.get("id", "")
+    item, _ = Volume.objects.get_or_create(id=item_id)
+    item.name = item_dict.get("name", item.name)
+    item.value = item_dict.get("value", item.value)
     item.save()
     return item
 
 
-def handle_volume_list(item_list: None) -> [Volume]:
+def handle_volume_list(item_list: list) -> QuerySet[Volume]:
     item_id = []
     with transaction.atomic():
-        for item_dir in item_list:
-            item = handle_volume(item_dir=item_dir)
+        for item_dict in item_list:
+            item = handle_volume(item_dict=item_dict)
             item_id.append(item.id)
     return Volume.objects.filter(id__in=item_id)

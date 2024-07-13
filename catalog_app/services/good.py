@@ -39,10 +39,8 @@ def good_by_id(good_id: str) -> Good:
 
 
 def handle_good(good_dir: dict) -> Good:
-    good_id = good_dir.get("id", None)
-    good = good_by_id(good_id)
-    if good is None:
-        good = Good.objects.create(id=good_id)
+    good_id = good_dir.get("id")
+    good, _ = Good.objects.get_or_create(id=good_id)
     good.full_name = good_dir.get("full_name", good.full_name)
     good.price = good_dir.get("price", good.price)
     good.balance = good_dir.get("balance", good.balance)
