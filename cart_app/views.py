@@ -10,7 +10,8 @@ from cart_app.services import (
     fetch_users_cart,
     add_to_cart,
     delete_from_cart,
-    clear_cart
+    clear_cart,
+    set_quantity_into_cart,
 )
 
 
@@ -21,9 +22,7 @@ class CartView(APIView):
     def get(self, request: HttpRequest) -> Response:
         queryset = fetch_users_cart(request.user)
         serializer = CartSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
 
@@ -37,14 +36,11 @@ class CartAddView(APIView):
 
         queryset = fetch_users_cart(request.user)
         serializer = CartSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
     def post(self, request: HttpRequest) -> Response:
-        response = {"data": [],
-                    "success": False}
+        response = {"data": [], "success": False}
         data = request.data.get("data", None)
         if not data:
             return Response(response)
@@ -56,9 +52,40 @@ class CartAddView(APIView):
 
         queryset = fetch_users_cart(request.user)
         serializer = CartSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
+        return Response(response)
+
+
+class CartSetView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request: HttpRequest) -> Response:
+        good_id = request.GET.get("good_id")
+        quantity = float(request.GET.get("quantity", 0))
+
+        good = get_object_or_404(Good, id=good_id)
+        set_quantity_into_cart(user=request.user, good=good, quantity=quantity)
+
+        queryset = fetch_users_cart(request.user)
+        serializer = CartSerializer(queryset, many=True)
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
+        return Response(response)
+
+    def post(self, request: HttpRequest) -> Response:
+        response = {"data": [], "success": False}
+        data = request.data.get("data")
+        if not data:
+            return Response(response)
+        for item in data:
+            good_id = item.get("good_id")
+            quantity = float(item.get("quantity", 0))
+            good = get_object_or_404(Good, id=good_id)
+            set_quantity_into_cart(user=request.user, good=good, quantity=quantity)
+
+        queryset = fetch_users_cart(request.user)
+        serializer = CartSerializer(queryset, many=True)
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
 
@@ -72,14 +99,11 @@ class CartDeleteView(APIView):
 
         queryset = fetch_users_cart(request.user)
         serializer = CartSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
     def post(self, request: HttpRequest) -> Response:
-        response = {"data": [],
-                    "success": False}
+        response = {"data": [], "success": False}
         data = request.data.get("data", None)
         if not data:
             return Response(response)
@@ -91,9 +115,7 @@ class CartDeleteView(APIView):
 
         queryset = fetch_users_cart(request.user)
         serializer = CartSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
 
@@ -106,7 +128,5 @@ class CartClearView(APIView):
 
         queryset = fetch_users_cart(request.user)
         serializer = CartSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)

@@ -28,6 +28,14 @@ def delete_from_cart(user: Model, good: Model, quantity: float = 1) -> None:
             record.save()
 
 
+def set_quantity_into_cart(user: Model, good: Model, quantity: float = 1) -> None:
+    """Удаляет из корзины пользователя user элемент good"""
+    record = Cart.objects.filter(user=user, good=good).first()
+    if record:
+        record.quantity = quantity
+        record.save()
+
+
 def clear_cart(user: Model) -> None:
     """Очищает корзину пользователя user"""
     queryset = Cart.objects.filter(user=user)
