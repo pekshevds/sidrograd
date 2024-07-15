@@ -1,10 +1,6 @@
 from rest_framework import serializers
 from catalog_app.serializers import GoodSerializer
-from client_app.serializers import (
-    ClientSerializer,
-    PointSerializer,
-    SimplePointSerializer,
-)
+from client_app.serializers import ClientSerializer, PointSerializer
 
 
 class CustomerSerializer(serializers.Serializer):
@@ -77,6 +73,6 @@ class SimpleOrderSerializer(serializers.Serializer):
     number = serializers.IntegerField(read_only=True, required=False)
     date = serializers.DateTimeField(format="%Y-%m-%d", read_only=True, required=False)
     contract_id = serializers.UUIDField(required=False)
-    address = SimplePointSerializer(required=False)
+    address_id = serializers.UUIDField(required=False)
     items = SimpleItemOrderSerializer(many=True, required=False)
     comment = serializers.CharField(required=False, allow_blank=True)

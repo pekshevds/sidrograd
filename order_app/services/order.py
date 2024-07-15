@@ -3,7 +3,7 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 from order_app.models import OrderStatus, Order, ItemOrder
 from auth_app.models import User
-from order_app.services.contract import contract_by_id
+from order_app.services.contract import contract_by_id, address_by_id
 from catalog_app.services.good import good_by_id
 
 
@@ -39,9 +39,8 @@ def item_order_by_id(item_order_id: str) -> ItemOrder:
 
 def handle_order(order_dict: dict, author: None | User) -> Order:
     changed = False
-    order_id = order_dict.get("id", None)
+    order_id = order_dict.get("id")
     order, _ = Order.objects.get_or_create(id=order_id)
-    order = order_by_id(order_id)
     if _:
         order.author = author
         changed = True
@@ -53,6 +52,15 @@ def handle_order(order_dict: dict, author: None | User) -> Order:
         )
         if not order.contract:
             raise ObjectDoesNotExist("contract does't exist")
+        changed = True
+    key_name = "address_id"
+    if key_name in order_dict:
+        address_id = order_dict.get(key_name)
+        order.address = (
+            None if address_id is None else address_by_id(address_id=address_id)
+        )
+        if not order.address:
+            raise ObjectDoesNotExist("address does't exist")
         changed = True
     key_name = "items"
     if key_name in order_dict:

@@ -8,8 +8,7 @@ class PointSerializer(serializers.Serializer):
 
 
 class SimplePointSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=150)
-    address = serializers.CharField(required=False)
+    id = serializers.UUIDField()
 
 
 class ClientSerializer(serializers.Serializer):
