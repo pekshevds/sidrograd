@@ -10,5 +10,5 @@ def process_call_back_data(data: dict) -> None:
         subject=subject,
         message=message,
         from_email=None,
-        recipient_list=["pekshev.ds@gmail.com"],
+        recipient_list=["cidercity@yandex.ru"],
     )
