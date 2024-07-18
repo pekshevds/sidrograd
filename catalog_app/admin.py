@@ -159,6 +159,11 @@ class GoodsImageInLine(admin.TabularInline):
 @admin.register(Good)
 class GoodAdmin(admin.ModelAdmin):
     inlines = [GoodsImageInLine]
+    list_display_links = (
+        "name",
+        "full_name",
+        "art",
+    )
     list_display = (
         "name",
         "full_name",
