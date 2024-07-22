@@ -82,12 +82,12 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
     def preview(self, obj) -> str | None:
-        if obj.image:
-            try:
+        try:
+            if obj.image:
                 str = f"<img src={obj.image.url} style='max-height: 75px;'>"
                 return format_html(str)
-            except ValueError:
-                return None
+        except ValueError:
+            return None
         return None
 
     preview.short_description = "Изображение 570х287"
@@ -153,12 +153,12 @@ class GoodsImageInLine(admin.TabularInline):
     readonly_fields = ("preview",)
 
     def preview(self, obj) -> None:
-        if obj.image:
-            try:
+        try:
+            if obj.image:
                 str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
                 return format_html(str)
-            except ValueError:
-                return None
+        except ValueError:
+            return None
         return None
 
     preview.short_description = "Изображение (превью)"
@@ -190,12 +190,12 @@ class GoodAdmin(admin.ModelAdmin):
     )
 
     def preview(self, obj):
-        if obj.image:
-            try:
+        try:
+            if obj.image:
                 str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
                 return format_html(str)
-            except ValueError:
-                return None
+        except ValueError:
+            return None
         return None
 
     preview.short_description = "Изображение (превью)"
