@@ -373,7 +373,7 @@ class DataView(APIView):
         return Response(response)
 
 
-class CouruselView(APIView):
+class СarouselView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request: HttpRequest) -> Response:
