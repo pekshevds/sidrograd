@@ -123,21 +123,35 @@ def handle_good_list(good_list=None) -> list[Good]:
     return Good.objects.filter(id__in=goods_id)
 
 
-def fetch_goods_queryset_by_name_or_article(search: str):
-    queryset = Good.objects.filter(
-        # Q(name__icontains=search) |
-        Q(art__icontains=search) | Q(full_name__icontains=search)
-    )
+def fetch_goods_queryset_by_name_or_article(search: str, only_active: bool = False):
+    if only_active:
+        queryset = Good.active_goods.filter(
+            Q(art__icontains=search) | Q(full_name__icontains=search)
+        )
+    else:
+        queryset = Good.objects.filter(
+            Q(art__icontains=search) | Q(full_name__icontains=search)
+        )
     return queryset
 
 
-def fetch_goods_queryset_by_category(categories: List[Category]):
-    queryset = Good.objects.filter(category__in=categories)
+def fetch_goods_queryset_by_category(
+    categories: List[Category], only_active: bool = False
+):
+    if only_active:
+        queryset = Good.active_goods.filter(category__in=categories)
+    else:
+        queryset = Good.objects.filter(category__in=categories)
     return queryset
 
 
-def fetch_goods_queryset_by_trade_mark(trade_marks: List[TradeMark]):
-    queryset = Good.objects.filter(trade_mark__in=trade_marks)
+def fetch_goods_queryset_by_trade_mark(
+    trade_marks: List[TradeMark], only_active: bool = False
+):
+    if only_active:
+        queryset = Good.active_goods.filter(trade_mark__in=trade_marks)
+    else:
+        queryset = Good.objects.filter(trade_mark__in=trade_marks)
     return queryset
 
 
@@ -153,6 +167,7 @@ def fetch_goods_queryset_by_filters(
     volumes: List[Volume],
     strengths: List[Strength],
     countryes: List[Country],
+    only_active: bool = False,
 ) -> QuerySet | None:
     filters = Q()
     if categories:
@@ -192,7 +207,10 @@ def fetch_goods_queryset_by_filters(
         filters.add(Q(country__in=countryes), Q.AND)
 
     if len(filters) > 0:
-        return Good.objects.filter(filters)
+        if only_active:
+            return Good.active_goods.filter(filters)
+        else:
+            return Good.objects.filter(filters)
     return None
 
 

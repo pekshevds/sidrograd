@@ -155,6 +155,11 @@ class Strength(Directory):
         ordering = ["value"]
 
 
+class ActeveGoodManaget(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
+
 class Good(Directory):
     full_name = models.CharField(
         verbose_name="Наименование полное",
@@ -310,6 +315,9 @@ class Good(Directory):
         null=True,
     )
     description = models.TextField(verbose_name="Описание", null=True, blank=True)
+
+    objects = models.Manager()
+    active_goods = ActeveGoodManaget()
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:

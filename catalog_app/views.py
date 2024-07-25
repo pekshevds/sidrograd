@@ -36,6 +36,7 @@ from catalog_app.services.good import (
     fetch_goods_queryset_by_name_or_article,
     run_update_prices,
 )
+from catalog_app.services.token import user_by_token_exist
 from image_app.models import Carousel
 from image_app.serializers import CarouselSerializer
 from catalog_app.commons import (
@@ -280,15 +281,18 @@ class GoodView(APIView):
             page_number = request.GET.get("page", 1)
             count = request.GET.get("count", 25)
             queryset = None
-
+            only_active = not user_by_token_exist(request)
             search = request.GET.get("search")
             if search:
-                queryset = fetch_goods_queryset_by_name_or_article(search)
+                queryset = fetch_goods_queryset_by_name_or_article(search, only_active)
             else:
                 filters = fetch_filters(request=request)
-                queryset = fetch_goods_by_filters(filters)
+                queryset = fetch_goods_by_filters(filters, only_active)
             if queryset is None:
-                queryset = Good.objects.all()
+                if only_active:
+                    queryset = Good.active_goods.all()
+                else:
+                    queryset = Good.objects.all()
             paginator = Paginator(queryset, count)
             serializer = GoodSerializer(paginator.get_page(page_number), many=True)
         response = {
@@ -314,20 +318,25 @@ class GoodView(APIView):
 
 
 class DataView(APIView):
-    permission_classes = [permissions.AllowAny]
+    authentication_classes = [authentication.BasicAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request: HttpRequest) -> Response:
         # Вернуть, если нужно уменьшать количество фильтров
         queryset = None
         search = request.GET.get("search")
+        only_active = not user_by_token_exist(request)
         if search:
-            queryset = fetch_goods_queryset_by_name_or_article(search)
+            queryset = fetch_goods_queryset_by_name_or_article(search, only_active)
         else:
             filters = fetch_filters(request)
             if any(filters):
-                queryset = fetch_goods_by_filters(filters)
+                queryset = fetch_goods_by_filters(filters, only_active)
         if queryset is None:
-            queryset = Good.objects.all()
+            if only_active:
+                queryset = Good.active_goods.all()
+            else:
+                queryset = Good.objects.all()
         prepared_data = fetch_filters_by_goods(queryset)
         # filters = fetch_filters_by_goods()
 

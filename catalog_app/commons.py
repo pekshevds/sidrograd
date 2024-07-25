@@ -70,6 +70,7 @@ def fetch_goods_queryset_by_filters(
     volumes: List[object],
     strengths: List[object],
     countryes: List[object],
+    only_active: bool = False,
 ) -> QuerySet | None:
     filters = Q()
     condition = Q.AND
@@ -107,7 +108,10 @@ def fetch_goods_queryset_by_filters(
         filters.add(Q(country__in=countryes), condition)
 
     if len(filters) > 0:
-        return Good.objects.filter(filters)
+        if only_active:
+            return Good.active_goods.filter(filters)
+        else:
+            return Good.objects.filter(filters)
     return None
 
 
@@ -236,7 +240,7 @@ def fetch_filters(request: HttpRequest) -> list:
     ]
 
 
-def fetch_goods_by_filters(args) -> QuerySet:
+def fetch_goods_by_filters(args, only_active: bool = False) -> QuerySet:
     queryset = fetch_goods_queryset_by_filters(
         args[0],
         args[1],
@@ -249,6 +253,7 @@ def fetch_goods_by_filters(args) -> QuerySet:
         args[8],
         args[9],
         args[10],
+        only_active,
     )
     return queryset
 
