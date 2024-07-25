@@ -156,6 +156,9 @@ def prepare_query_set(data: Counter) -> tuple:
             name=key.name,
             value=getattr(key, "value") if hasattr(key, "value") else 0,
             count=value,
+            description=getattr(key, "description")
+            if hasattr(key, "description")
+            else "",
         )
         for key, value in data.items()
     ]
