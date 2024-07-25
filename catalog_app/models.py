@@ -31,7 +31,7 @@ class Country(Directory):
 
 class Category(Directory):
     image = models.ImageField(
-        verbose_name="Файл изображения 570х287",
+        verbose_name="Файл изображения 570х570",
         upload_to="category_images/",
         blank=True,
         null=True,

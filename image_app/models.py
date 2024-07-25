@@ -25,6 +25,6 @@ class Carousel(Directory):
     )
 
     class Meta:
-        verbose_name = "Элемент"
+        verbose_name = "Элемент 1200х680"
         verbose_name_plural = "Карусель"
         ordering = ["order_by"]
