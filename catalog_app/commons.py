@@ -54,6 +54,7 @@ class Record:
     id: str
     name: str
     value: int = 0
+    description: str = ""
     count: int = 0
 
 
