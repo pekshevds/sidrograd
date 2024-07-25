@@ -40,6 +40,6 @@ urlpatterns = [
     path("category/", CategoryView.as_view(), name="category"),
     path("good/", GoodView.as_view(), name="good"),
     path("data/", DataView.as_view(), name="data"),
-    path("сarousel/", СarouselView.as_view(), name="сarousel"),
+    path("carousel/", СarouselView.as_view(), name="carousel"),
     path("prices/", PricesView.as_view(), name="prices"),
 ]
