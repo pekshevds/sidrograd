@@ -129,7 +129,7 @@ LOGGING = {
         },
     },
     "handlers": {
-        "catalog": {
+        "catalog_app": {
             "level": "INFO",
             "class": "logging.FileHandler",
             "filename": logging_path / "catalog.log",
@@ -137,8 +137,8 @@ LOGGING = {
         },
     },
     "loggers": {
-        "catalog.views": {
-            "handlers": ["catalog"],
+        "catalog_app.views": {
+            "handlers": ["catalog_app"],
             "level": "INFO",
             "propagate": True,
         },
