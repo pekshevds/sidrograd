@@ -1,3 +1,4 @@
+import logging
 from django.http import HttpRequest
 from django.core.paginator import Paginator
 from rest_framework import permissions, authentication
@@ -46,6 +47,8 @@ from catalog_app.commons import (
     prepare_query_set,
 )
 # from catalog_app.services.update_count_in_filters import fetch_filters_by_goods
+
+logger = logging.getLogger(__name__)
 
 
 class CountryView(APIView):
@@ -282,6 +285,9 @@ class GoodView(APIView):
             count = request.GET.get("count", 25)
             queryset = None
             only_active = not user_by_token_exist(request)
+
+            logger.info({"only_active": only_active, "headers": request.headers})
+
             search = request.GET.get("search")
             if search:
                 queryset = fetch_goods_queryset_by_name_or_article(search, only_active)
