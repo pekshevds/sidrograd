@@ -32,8 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "back.sidrograd.annasoft.site",
-    "www.back.sidrograd.annasoft.site",
+    "back.sidrograd.ru",
+    "www.back.sidrograd.ru",
 ]
 
 
