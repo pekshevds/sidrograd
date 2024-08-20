@@ -1,4 +1,5 @@
 from django.core.mail import send_mail
+from index_app.models import ContactInfo
 
 
 def process_call_back_data(data: dict) -> None:
@@ -10,5 +11,6 @@ def process_call_back_data(data: dict) -> None:
         subject=subject,
         message=message,
         from_email=None,
-        recipient_list=["cidercity@yandex.ru"],
+        # recipient_list=["cidercity@yandex.ru"],
+        recipient_list=[item.value for item in ContactInfo.available_emails.all()],
     )
