@@ -330,7 +330,7 @@ class Good(Directory):
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
-        ordering = ["name"]
+        ordering = ["trade_mark", "name"]
 
 
 class GoodsImage(models.Model):

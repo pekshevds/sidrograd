@@ -178,6 +178,7 @@ class GoodAdmin(admin.ModelAdmin):
         "art",
         "category",
         "country",
+        "trade_mark",
         "is_active",
         "balance",
         "price",
