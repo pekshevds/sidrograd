@@ -5,10 +5,7 @@ from order_app.models import OrderStatus, Order, ItemOrder
 from auth_app.models import User
 from order_app.services.contract import contract_by_id, address_by_id
 from catalog_app.services.good import good_by_id
-
-
-def default_order_status() -> OrderStatus:
-    return status_by_value("CR")
+from order_app.models import default_order_status
 
 
 def status_by_value(value: str) -> OrderStatus:

@@ -71,13 +71,14 @@ class OrderStatus(Directory):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    @classmethod
-    def default_order_status(cls):
-        return cls.objects.filter(value="CR").first()
-
     class Meta:
         verbose_name = "Статус заказ покупателя"
         verbose_name_plural = "Статусы заказов покупателей"
+
+
+def default_order_status() -> OrderStatus:
+    default_order_status, _ = OrderStatus.objects.get_or_create(value="CR")
+    return default_order_status
 
 
 class Order(Document):
@@ -121,7 +122,6 @@ class Order(Document):
         null=True,
         blank=True,
         on_delete=models.PROTECT,
-        default=OrderStatus.default_order_status,
     )
 
     def save(self, *args, **kwargs) -> None:
@@ -134,6 +134,8 @@ class Order(Document):
                 self.customer = self.contract.customer
             if not self.organization:
                 self.organization = self.contract.organization
+        if not self.status:
+            self.status = default_order_status()
         return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
