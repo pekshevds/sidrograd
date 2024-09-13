@@ -136,10 +136,21 @@ LOGGING = {
             "filename": logging_path / "catalog.log",
             "formatter": "simple",
         },
+        "order_app": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": logging_path / "order.log",
+            "formatter": "simple",
+        },
     },
     "loggers": {
         "catalog_app.views": {
             "handlers": ["catalog_app"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "order_app.views": {
+            "handlers": ["order_app"],
             "level": "INFO",
             "propagate": True,
         },

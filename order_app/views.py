@@ -1,22 +1,18 @@
+import logging
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, authentication
-from order_app.models import (
-    Contract,
-    Order,
-    ItemOrder,
-    OrderStatus
-)
+from order_app.models import Contract, Order, ItemOrder, OrderStatus
 from order_app.serializers import (
     ContractSerializer,
     SimpleOrderSerializer,
     OrderSerializer,
     ItemOrderSerializer,
     SimpleItemOrderSerializer,
-    OrderStatusSerializer
+    OrderStatusSerializer,
 )
 from order_app.services.order import (
     handle_order_list,
@@ -24,11 +20,12 @@ from order_app.services.order import (
     status_by_value,
     put_order_status,
     new_orders,
-    handle_order_status_list
+    handle_order_status_list,
 )
 
 default_number_of_page = 1
 item_count_per_page = 5
+logger = logging.getLogger(__name__)
 
 
 class OrderStatusView(APIView):
@@ -38,9 +35,7 @@ class OrderStatusView(APIView):
     def get(self, request: HttpRequest) -> Response:
         queryset = OrderStatus.objects.all()
         serializer = OrderStatusSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
 
@@ -52,9 +47,7 @@ class ContractView(APIView):
         client = request.user.client
         queryset = Contract.objects.filter(client=client)
         serializer = ContractSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
 
@@ -68,15 +61,11 @@ class PutOrderStatusView(APIView):
         success = False
         if order and status:
             success = put_order_status(order, status)
-        response = {"data": [],
-                    "count": 0,
-                    "success": success}
+        response = {"data": [], "count": 0, "success": success}
         return Response(response)
 
     def post(self, request: HttpRequest) -> Response:
-        response = {"data": [],
-                    "count": 0,
-                    "success": False}
+        response = {"data": [], "count": 0, "success": False}
         data = request.data.get("data")
         if not data:
             return Response(response)
@@ -92,9 +81,7 @@ class NewOrdersView(APIView):
     def get(self, request: HttpRequest) -> Response:
         queryset = new_orders()
         serializer = OrderSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "success": True}
+        response = {"data": serializer.data, "count": len(queryset), "success": True}
         return Response(response)
 
 
@@ -119,18 +106,22 @@ class OrderView(APIView):
             paginator = Paginator(queryset, count)
             queryset = paginator.get_page(page_number)
         serializer = OrderSerializer(queryset, many=True)
-        response = {"data": serializer.data,
-                    "count": len(queryset),
-                    "total": total,
-                    "success": True}
+        response = {
+            "data": serializer.data,
+            "count": len(queryset),
+            "total": total,
+            "success": True,
+        }
         return Response(response)
 
     def post(self, request: HttpRequest) -> Response:
-        response = {"data": [],
-                    "success": False}
+        response = {"data": [], "success": False}
         data = request.data.get("data")
         if not data:
             return Response(response)
+
+        logger.info({"order_data": data})
+
         serializer = SimpleOrderSerializer(data=data, many=True)
         if serializer.is_valid(raise_exception=True):
             queryset = handle_order_list(order_list=data, author=request.user)
@@ -147,8 +138,7 @@ class OrderDeleteView(APIView):
     def get(self, request: HttpRequest) -> Response:
         order = get_object_or_404(Order, id=request.GET.get("id"))
         order.delete()
-        response = {"data": [],
-                    "success": True}
+        response = {"data": [], "success": True}
         return Response(response)
 
 
@@ -159,8 +149,7 @@ class OrderItemView(APIView):
     def get(self, request: HttpRequest) -> Response:
         order = get_object_or_404(Order, id=request.GET.get("id"))
         serializer = SimpleItemOrderSerializer(order.items, many=True)
-        response = {"data": serializer.data,
-                    "success": True}
+        response = {"data": serializer.data, "success": True}
         return Response(response)
 
 
@@ -173,6 +162,5 @@ class OrderItemDeleteView(APIView):
         order = item.order
         item.delete()
         serializer = ItemOrderSerializer(order.items, many=True)
-        response = {"data": serializer.data,
-                    "success": True}
+        response = {"data": serializer.data, "success": True}
         return Response(response)
