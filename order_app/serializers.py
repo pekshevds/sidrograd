@@ -73,6 +73,6 @@ class SimpleOrderSerializer(serializers.Serializer):
     number = serializers.IntegerField(read_only=True, required=False)
     date = serializers.DateTimeField(format="%Y-%m-%d", read_only=True, required=False)
     contract_id = serializers.UUIDField(required=False)
-    address_id = serializers.UUIDField(required=False, allow_blank=True)
+    address_id = serializers.UUIDField(required=False)
     items = SimpleItemOrderSerializer(many=True, required=False)
     comment = serializers.CharField(required=False, allow_blank=True)
