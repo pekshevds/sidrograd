@@ -62,7 +62,7 @@ class OrderSerializer(serializers.Serializer):
     number = serializers.IntegerField(read_only=True)
     date = serializers.DateTimeField(format="%Y-%m-%d")
     contract = ContractSerializer()
-    address = PointSerializer(required=False, allow_blank=True)
+    address = PointSerializer(required=False)
     items = ItemOrderSerializer(many=True)
     status = OrderStatusSerializer(many=False, required=False)
     comment = serializers.CharField(required=False, allow_blank=True)
