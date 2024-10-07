@@ -1,5 +1,6 @@
 import hashlib
 from django.db import models
+from django.db.models.query import QuerySet
 from pytils.translit import slugify
 from server.base import Directory
 from image_app.models import Image
@@ -156,7 +157,7 @@ class Strength(Directory):
 
 
 class ActeveGoodManaget(models.Manager):
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         return super().get_queryset().filter(is_active=True)
 
 
