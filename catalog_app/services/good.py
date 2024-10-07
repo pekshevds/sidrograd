@@ -1,5 +1,5 @@
 from threading import Thread
-from typing import List
+from typing import Any
 from django.db.models.query import QuerySet
 from django.db.models import Q
 from django.db import transaction
@@ -113,7 +113,7 @@ def handle_good(good_dir: dict) -> Good:
     return good
 
 
-def handle_good_list(good_list=None) -> list[Good]:
+def handle_good_list(good_list: list[dict[str, Any]]) -> list[Good]:
     goods_id = []
     with transaction.atomic():
         for good_item in good_list:
@@ -123,7 +123,9 @@ def handle_good_list(good_list=None) -> list[Good]:
     return Good.objects.filter(id__in=goods_id)
 
 
-def fetch_goods_queryset_by_name_or_article(search: str, only_active: bool = False):
+def fetch_goods_queryset_by_name_or_article(
+    search: str, only_active: bool = False
+) -> QuerySet:
     if only_active:
         queryset = Good.active_goods.filter(
             Q(art__icontains=search) | Q(full_name__icontains=search)
@@ -136,8 +138,8 @@ def fetch_goods_queryset_by_name_or_article(search: str, only_active: bool = Fal
 
 
 def fetch_goods_queryset_by_category(
-    categories: List[Category], only_active: bool = False
-):
+    categories: list[Category], only_active: bool = False
+) -> QuerySet:
     if only_active:
         queryset = Good.active_goods.filter(category__in=categories)
     else:
@@ -146,8 +148,8 @@ def fetch_goods_queryset_by_category(
 
 
 def fetch_goods_queryset_by_trade_mark(
-    trade_marks: List[TradeMark], only_active: bool = False
-):
+    trade_marks: list[TradeMark], only_active: bool = False
+) -> QuerySet:
     if only_active:
         queryset = Good.active_goods.filter(trade_mark__in=trade_marks)
     else:
@@ -156,17 +158,17 @@ def fetch_goods_queryset_by_trade_mark(
 
 
 def fetch_goods_queryset_by_filters(
-    categories: List[Category],
-    trade_marks: List[TradeMark],
-    manufacturers: List[Manufacturer],
-    filterings: List[Filtering],
-    gassings: List[Gassing],
-    units: List[Unit],
-    styles: List[Style],
-    types_of_fermentation: List[TypeOfFermentation],
-    volumes: List[Volume],
-    strengths: List[Strength],
-    countryes: List[Country],
+    categories: list[Category],
+    trade_marks: list[TradeMark],
+    manufacturers: list[Manufacturer],
+    filterings: list[Filtering],
+    gassings: list[Gassing],
+    units: list[Unit],
+    styles: list[Style],
+    types_of_fermentation: list[TypeOfFermentation],
+    volumes: list[Volume],
+    strengths: list[Strength],
+    countryes: list[Country],
     only_active: bool = False,
 ) -> QuerySet | None:
     filters = Q()
@@ -214,14 +216,14 @@ def fetch_goods_queryset_by_filters(
     return None
 
 
-def run_update_prices(new_prices: list[dict]) -> True:
+def run_update_prices(new_prices: list[dict]) -> bool:
     thread = Thread(target=update_prices, kwargs={"new_prices": new_prices})
     thread.start()
     thread.join()
     return True
 
 
-def update_prices(new_prices: list[dict]) -> True:
+def update_prices(new_prices: list[dict]) -> bool:
     goods_for_update = []
     for record in new_prices:
         good = Good.objects.filter(art=record.get("barcode")).first()
@@ -231,3 +233,7 @@ def update_prices(new_prices: list[dict]) -> True:
             goods_for_update.append(good)
     Good.objects.bulk_update(goods_for_update, ["price", "balance"], batch_size=100)
     return True
+
+
+def handle_new_goods(data: list[dict[str, Any]]) -> None:
+    pass

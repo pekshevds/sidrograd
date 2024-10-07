@@ -36,6 +36,7 @@ from catalog_app.services.good import (
     handle_good_list,
     fetch_goods_queryset_by_name_or_article,
     run_update_prices,
+    handle_new_goods,
 )
 from catalog_app.services.token import user_by_token_exist
 from image_app.models import Carousel
@@ -412,3 +413,17 @@ class PricesView(APIView):
         if not data:
             return Response(response)
         return Response({"success": run_update_prices(data)})
+
+
+class LoadGoodsView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request: HttpRequest) -> Response:
+        response = {"data": [], "count": 0, "success": False}
+        data = request.data.get("data")
+        if not data:
+            return Response(response)
+        handle_new_goods(data)
+        response["success"] = True
+        return Response(response)

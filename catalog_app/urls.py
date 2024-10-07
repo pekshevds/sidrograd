@@ -16,6 +16,7 @@ from catalog_app.views import (
     CountryView,
     PricesView,
     СarouselView,
+    LoadGoodsView,
 )
 
 
@@ -42,4 +43,5 @@ urlpatterns = [
     path("data/", DataView.as_view(), name="data"),
     path("carousel/", СarouselView.as_view(), name="carousel"),
     path("prices/", PricesView.as_view(), name="prices"),
+    path("upload-goods/", LoadGoodsView.as_view(), name="upload-goods"),
 ]
