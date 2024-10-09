@@ -240,22 +240,14 @@ def handle_new_goods(data: list[dict[str, Any]]) -> None:
     for record in data:
         good, _ = Good.objects.get_or_create(art=record.get("art"))
         good.name = record.get("name", good.name)
-        good.unit = Unit.objects.filter(name=record.get("unit", good.unit.name)).first()
-        good.country = Country.objects.filter(
-            name=record.get("country", good.country.name)
-        ).first()
-        good.volume = Volume.objects.filter(
-            name=record.get("volume", good.volume.name)
-        ).first()
+        good.unit = Unit.objects.filter(name=record.get("unit")).first()
+        good.country = Country.objects.filter(name=record.get("country")).first()
+        good.volume = Volume.objects.filter(name=record.get("volume")).first()
         good.trade_mark = TradeMark.objects.filter(
-            name=record.get("trade_mark", good.trade_mark.name)
+            name=record.get("trade_mark")
         ).first()
-        good.strength = Strength.objects.filter(
-            name=record.get("strength", good.strength.name)
-        ).first()
-        good.category = Category.objects.filter(
-            name=record.get("category", good.category.name)
-        ).first()
+        good.strength = Strength.objects.filter(name=record.get("strength")).first()
+        good.category = Category.objects.filter(name=record.get("category")).first()
         goods_for_update.append(good)
     Good.objects.bulk_update(
         goods_for_update,
