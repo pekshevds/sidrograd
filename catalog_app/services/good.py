@@ -248,6 +248,7 @@ def handle_new_goods(data: list[dict[str, Any]]) -> None:
         ).first()
         good.strength = Strength.objects.filter(name=record.get("strength")).first()
         good.category = Category.objects.filter(name=record.get("category")).first()
+        good.full_name = f"{good.category} {good.trade_mark} {good.name}"
         goods_for_update.append(good)
     Good.objects.bulk_update(
         goods_for_update,
