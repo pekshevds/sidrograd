@@ -1,3 +1,5 @@
+from typing import Any
+from decimal import Decimal
 from django.utils.html import format_html
 from django.contrib import admin
 from catalog_app.models import (
@@ -81,7 +83,7 @@ class CategoryAdmin(admin.ModelAdmin):
         "preview",
     )
 
-    def preview(self, obj) -> str | None:
+    def preview(self, obj: Any) -> str | None:
         try:
             if obj.image:
                 str = f"<img src={obj.image.url} style='max-height: 75px;'>"
@@ -152,7 +154,7 @@ class GoodsImageInLine(admin.TabularInline):
     )
     readonly_fields = ("preview",)
 
-    def preview(self, obj) -> None:
+    def preview(self, obj: Any) -> str | None:
         try:
             if obj.image:
                 str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
@@ -182,6 +184,7 @@ class GoodAdmin(admin.ModelAdmin):
         "is_active",
         "balance",
         "price",
+        "price_by_liter",
         "preview",
     )
     exclude = ("full_name",)
@@ -190,7 +193,7 @@ class GoodAdmin(admin.ModelAdmin):
         "full_name",
     )
 
-    def preview(self, obj):
+    def preview(self, obj: Any) -> str | None:
         try:
             if obj.image:
                 str = f"<img src={obj.image.image.url} style='max-height: 75px;'>"
@@ -199,4 +202,8 @@ class GoodAdmin(admin.ModelAdmin):
             return None
         return None
 
+    def price_by_liter(self, obj: Any) -> Decimal:
+        return obj.price_by_liter
+
     preview.short_description = "Изображение (превью)"
+    price_by_liter.short_description = "Цена за литр"

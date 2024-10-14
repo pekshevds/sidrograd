@@ -1,8 +1,11 @@
-def before_save(good):
+from typing import Any
+
+
+def before_save(good: Any) -> None:
     pass
 
 
-def after_save(good):
+def after_save(good: Any) -> None:
     if good.category:
         good.category.count = good.category.goods.count()
         good.category.save()
