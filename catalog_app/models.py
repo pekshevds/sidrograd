@@ -321,8 +321,13 @@ class Good(Directory):
     @property
     def price_by_liter(self) -> Decimal:
         if self.volume:
-            return round(self.price / self.volume.value, 2)
+            if self.volume.value > 0:
+                return round(self.price / self.volume.value, 2)
         return Decimal("0")
+
+    show_price_by_liter = models.BooleanField(
+        verbose_name="Показывать цену за литр", default=False
+    )
 
     objects = models.Manager()
     active_goods = ActeveGoodManaget()

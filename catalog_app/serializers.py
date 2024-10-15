@@ -103,6 +103,7 @@ class GoodSerializer(serializers.Serializer):
     price_by_liter = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False
     )
+    show_price_by_liter = serializers.BooleanField(required=False)
     in_package = serializers.DecimalField(
         max_digits=15, decimal_places=0, required=False
     )
@@ -140,6 +141,7 @@ class SimpleGoodSerializer(serializers.Serializer):
     price_by_liter = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False
     )
+    show_price_by_liter = serializers.BooleanField(required=False)
     in_package = serializers.DecimalField(
         max_digits=15, decimal_places=0, required=False
     )
