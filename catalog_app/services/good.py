@@ -240,14 +240,37 @@ def handle_new_goods(data: list[dict[str, Any]]) -> None:
     for record in data:
         good, _ = Good.objects.get_or_create(art=record.get("art"))
         good.name = record.get("name", good.name)
-        good.unit = Unit.objects.filter(name=record.get("unit")).first()
-        good.country = Country.objects.filter(name=record.get("country")).first()
-        good.volume = Volume.objects.filter(name=record.get("volume")).first()
-        good.trade_mark = TradeMark.objects.filter(
-            name=record.get("trade_mark")
-        ).first()
-        good.strength = Strength.objects.filter(name=record.get("strength")).first()
-        good.category = Category.objects.filter(name=record.get("category")).first()
+
+        unit_name = record.get("unit")
+        if unit_name:
+            unit, _ = Unit.objects.get_or_create(name=unit_name)
+            good.unit = unit
+
+        country_name = record.get("country")
+        if country_name:
+            country, _ = Country.objects.get_or_create(name=country_name)
+            good.country = country
+
+        volume_name = record.get("volume")
+        if volume_name:
+            volume, _ = Volume.objects.get_or_create(name=volume_name)
+            good.volume = volume
+
+        trade_mark_name = record.get("trade_mark")
+        if trade_mark_name:
+            trade_mark, _ = TradeMark.objects.get_or_create(name=trade_mark_name)
+            good.trade_mark = trade_mark
+
+        strength_name = record.get("strength")
+        if strength_name:
+            strength, _ = Strength.objects.get_or_create(name=strength_name)
+            good.strength = strength
+
+        category_name = record.get("category")
+        if category_name:
+            category, _ = Category.objects.get_or_create(name=category_name)
+            good.category = category
+
         good.full_name = f"{good.category} {good.trade_mark} {good.name}"
         goods_for_update.append(good)
     Good.objects.bulk_update(
