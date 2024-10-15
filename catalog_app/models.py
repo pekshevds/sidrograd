@@ -1,5 +1,4 @@
 import hashlib
-from decimal import Decimal
 from django.db import models
 from django.db.models.query import QuerySet
 from pytils.translit import slugify
@@ -318,12 +317,14 @@ class Good(Directory):
     )
     description = models.TextField(verbose_name="Описание", null=True, blank=True)
 
-    @property
-    def price_by_liter(self) -> Decimal:
-        if self.volume:
-            if self.volume.value > 0:
-                return round(self.price / self.volume.value, 2)
-        return Decimal("0")
+    price_by_liter = models.DecimalField(
+        verbose_name="Цена за литр",
+        max_digits=15,
+        decimal_places=2,
+        blank=True,
+        null=False,
+        default=0,
+    )
 
     show_price_by_liter = models.BooleanField(
         verbose_name="Показывать цену за литр", default=False

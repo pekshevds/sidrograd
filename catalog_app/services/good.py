@@ -229,9 +229,12 @@ def update_prices(new_prices: list[dict]) -> bool:
         good = Good.objects.filter(art=record.get("barcode")).first()
         if good:
             good.price = record.get("price", good.price)
+            good.price_by_liter = record.get("price_by_liter", good.price_by_liter)
             good.balance = record.get("balance", good.balance)
             goods_for_update.append(good)
-    Good.objects.bulk_update(goods_for_update, ["price", "balance"], batch_size=100)
+    Good.objects.bulk_update(
+        goods_for_update, ["price", "balance", "price_by_liter"], batch_size=100
+    )
     return True
 
 
