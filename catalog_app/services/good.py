@@ -239,7 +239,6 @@ def update_prices(new_prices: list[dict]) -> bool:
 
 
 def handle_new_goods(data: list[dict[str, Any]]) -> None:
-    goods_for_update = []
     for record in data:
         good, _ = Good.objects.get_or_create(art=record.get("art"))
         good.name = record.get("name", good.name)
@@ -275,9 +274,4 @@ def handle_new_goods(data: list[dict[str, Any]]) -> None:
             good.category = category
 
         good.full_name = f"{good.category} {good.trade_mark} {good.name}"
-        goods_for_update.append(good)
-    Good.objects.bulk_update(
-        goods_for_update,
-        ["name", "unit", "country", "volume", "trade_mark", "strength", "category"],
-        batch_size=100,
-    )
+        good.save()
