@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from collections import Counter
-from typing import List
+from typing import Any
 from django.http import HttpRequest
 from django.db.models import Count
 from django.db.models import QuerySet
@@ -59,17 +59,18 @@ class Record:
 
 
 def fetch_goods_queryset_by_filters(
-    categories: List[object],
-    trade_marks: List[object],
-    manufacturers: List[object],
-    filterings: List[object],
-    gassings: List[object],
-    units: List[object],
-    styles: List[object],
-    types_of_fermentation: List[object],
-    volumes: List[object],
-    strengths: List[object],
-    countryes: List[object],
+    categories: list[Any],
+    trade_marks: list[Any],
+    manufacturers: list[Any],
+    filterings: list[Any],
+    gassings: list[Any],
+    units: list[Any],
+    styles: list[Any],
+    types_of_fermentation: list[Any],
+    volumes: list[Any],
+    strengths: list[Any],
+    countryes: list[Any],
+    more_than_zero: bool = False,
     only_active: bool = False,
 ) -> QuerySet | None:
     filters = Q()
@@ -106,6 +107,9 @@ def fetch_goods_queryset_by_filters(
 
     if countryes:
         filters.add(Q(country__in=countryes), condition)
+
+    if more_than_zero:
+        filters.add(Q(balance__gt=0), condition)
 
     if len(filters) > 0:
         if only_active:
@@ -225,6 +229,9 @@ def fetch_filters(request: HttpRequest) -> list:
     obj_id = request.GET.get("country_id")
     if obj_id:
         countryes = country_by_id_list(obj_id.split(","))
+
+    more_than_zero = False if request.GET.get("more_than_zero") is None else True
+
     return [
         categories,
         trade_marks,
@@ -237,10 +244,11 @@ def fetch_filters(request: HttpRequest) -> list:
         volumes,
         strengths,
         countryes,
+        more_than_zero,
     ]
 
 
-def fetch_goods_by_filters(args, only_active: bool = False) -> QuerySet:
+def fetch_goods_by_filters(args: list[Any], only_active: bool = False) -> QuerySet:
     queryset = fetch_goods_queryset_by_filters(
         args[0],
         args[1],
@@ -253,12 +261,13 @@ def fetch_goods_by_filters(args, only_active: bool = False) -> QuerySet:
         args[8],
         args[9],
         args[10],
+        args[11],
         only_active,
     )
     return queryset
 
 
-def query_set(Class) -> List[Record]:
+def query_set(Class: Any) -> list[Any]:
     categories = []
     qs = Class.objects.annotate(num_cat=Count("good", distinct=True))
     for _ in qs:
