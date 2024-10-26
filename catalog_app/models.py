@@ -1,4 +1,5 @@
 import hashlib
+from typing import Any
 from django.db import models
 from django.db.models.query import QuerySet
 from pytils.translit import slugify
@@ -50,6 +51,14 @@ class Category(Directory):
 
 class TradeMark(Directory):
     count = models.IntegerField(null=True, blank=True, default=0)
+    tags = models.CharField(
+        verbose_name="Теги",
+        max_length=256,
+        blank=True,
+        null=True,
+        default="",
+        db_index=True,
+    )
 
     class Meta:
         verbose_name = "Торговая марка"
@@ -172,6 +181,14 @@ class Good(Directory):
     art = models.CharField(
         verbose_name="Артикул",
         max_length=25,
+        blank=True,
+        null=True,
+        default="",
+        db_index=True,
+    )
+    tags = models.CharField(
+        verbose_name="Теги",
+        max_length=256,
         blank=True,
         null=True,
         default="",
@@ -333,7 +350,7 @@ class Good(Directory):
     objects = models.Manager()
     active_goods = ActeveGoodManaget()
 
-    def save(self, *args, **kwargs) -> None:
+    def save(self, *args: list[Any], **kwargs: dict[str, Any]) -> None:
         if not self.slug:
             self.slug = slugify(f"{self.name}-{secret_from_string(str(self.id))}")
         self.full_name = f"{self.category} {self.trade_mark} {self.name}"

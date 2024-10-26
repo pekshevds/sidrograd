@@ -128,11 +128,17 @@ def fetch_goods_queryset_by_name_or_article(
 ) -> QuerySet:
     if only_active:
         queryset = Good.active_goods.filter(
-            Q(art__icontains=search) | Q(full_name__icontains=search)
+            Q(art__icontains=search)
+            | Q(full_name__icontains=search)
+            | Q(tags__icontains=search)
+            | Q(trade_mark__tags__icontains=search)
         )
     else:
         queryset = Good.objects.filter(
-            Q(art__icontains=search) | Q(full_name__icontains=search)
+            Q(art__icontains=search)
+            | Q(full_name__icontains=search)
+            | Q(tags__icontains=search)
+            | Q(trade_mark__tags__icontains=search)
         )
     return queryset
 

@@ -101,6 +101,7 @@ class TradeMarkAdmin(admin.ModelAdmin):
         "__str__",
         "id",
     )
+    search_fields = ("tags",)
     ordering = ("-created_at",)
 
 
@@ -170,14 +171,12 @@ class GoodsImageInLine(admin.TabularInline):
 class GoodAdmin(admin.ModelAdmin):
     inlines = [GoodsImageInLine]
     list_display_links = (
-        "name",
-        "full_name",
         "art",
+        "full_name",
     )
     list_display = (
-        "name",
-        "full_name",
         "art",
+        "full_name",
         "category",
         "country",
         "trade_mark",
@@ -186,11 +185,14 @@ class GoodAdmin(admin.ModelAdmin):
         "price",
         "price_by_liter",
         "preview",
+        "comment",
     )
     exclude = ("full_name",)
     search_fields = (
         "art",
         "full_name",
+        "tags",
+        "trade_mark__tags",
     )
 
     def preview(self, obj: Any) -> str | None:

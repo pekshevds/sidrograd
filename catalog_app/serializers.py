@@ -27,6 +27,7 @@ class TradeMarkSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField(max_length=150)
     count = serializers.IntegerField(required=False, allow_null=True)
+    tags = serializers.CharField(max_length=256, required=False, allow_null=True)
 
 
 """class PasteurizationSerializer(serializers.Serializer):
@@ -98,6 +99,7 @@ class GoodSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
     full_name = serializers.CharField(max_length=1024, required=False)
     art = serializers.CharField(max_length=25, required=False, allow_blank=True)
+    tags = serializers.CharField(max_length=256, required=False, allow_null=True)
     balance = serializers.DecimalField(max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
     price_by_liter = serializers.DecimalField(
@@ -136,6 +138,7 @@ class SimpleGoodSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
     full_name = serializers.CharField(max_length=1024, required=False)
     art = serializers.CharField(max_length=25, required=False, allow_blank=True)
+    tags = serializers.CharField(max_length=256, required=False, allow_null=True)
     balance = serializers.DecimalField(max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
     price_by_liter = serializers.DecimalField(

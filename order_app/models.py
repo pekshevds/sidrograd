@@ -1,4 +1,5 @@
 import uuid
+from typing import Any
 from django.db import models
 from django.utils import timezone
 from django.utils.dateformat import format
@@ -124,7 +125,7 @@ class Order(Document):
         on_delete=models.PROTECT,
     )
 
-    def save(self, *args, **kwargs) -> None:
+    def save(self, *args: list[Any], **kwargs: dict[str, Any]) -> None:
         if not self.number:
             self.number = ganerate_new_number(model=Order)
         if self.contract:
