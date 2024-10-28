@@ -382,6 +382,9 @@ class DataView(APIView):
                 "strength": strength.data,
                 "volume": volume.data,
                 "country": country.data,
+                "more_than_zero": False
+                if request.GET.get("more_than_zero") is None
+                else True,
             },
             "params": request.GET,
             "success": True,
