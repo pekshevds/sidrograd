@@ -21,6 +21,8 @@ from catalog_app.services.country import country_by_id_list
 from catalog_app.models import Good
 # from catalog_app.services import object_by_id_list
 
+str_to_bool = {"true": True, "false": False, "True": True, "False": False, "": False}
+
 
 @dataclass
 class Data:
@@ -230,7 +232,7 @@ def fetch_filters(request: HttpRequest) -> list:
     if obj_id:
         countryes = country_by_id_list(obj_id.split(","))
 
-    more_than_zero = False if request.GET.get("more_than_zero") is None else True
+    more_than_zero = str_to_bool.get(request.GET.get("more_than_zero", ""), False)
 
     return [
         categories,

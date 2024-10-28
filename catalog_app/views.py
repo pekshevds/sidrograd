@@ -46,6 +46,7 @@ from catalog_app.commons import (
     fetch_filters,
     fetch_filters_by_goods,
     prepare_query_set,
+    str_to_bool,
 )
 # from catalog_app.services.update_count_in_filters import fetch_filters_by_goods
 
@@ -382,9 +383,9 @@ class DataView(APIView):
                 "strength": strength.data,
                 "volume": volume.data,
                 "country": country.data,
-                "more_than_zero": False
-                if request.GET.get("more_than_zero") is None
-                else True,
+                "more_than_zero": str_to_bool.get(
+                    request.GET.get("more_than_zero", ""), False
+                ),
             },
             "params": request.GET,
             "success": True,
