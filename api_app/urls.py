@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.authtoken import views
-from api_app.views import CallBackView
+from api_app.views import CallBackView, CheckMarkView
 
 
 app_name = "api_app"
@@ -13,4 +13,5 @@ urlpatterns = [
     path("order/", include("order_app.urls", namespace="order_app")),
     path("call-back/", CallBackView.as_view(), name="call-back"),
     path("api-token-auth/", views.obtain_auth_token),
+    path("check-mark/", CheckMarkView.as_view(), name="check-mark"),
 ]
