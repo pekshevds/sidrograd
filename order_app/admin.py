@@ -75,6 +75,7 @@ class OrderAdmin(admin.ModelAdmin):
         "organization",
         "author",
         "comment",
+        "address",
         "id",
         "status",
     )

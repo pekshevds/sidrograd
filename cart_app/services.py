@@ -4,7 +4,7 @@ from cart_app.models import Cart
 
 def fetch_users_cart(user: Model) -> QuerySet:
     """Возвращает выборку элементов корзины пользователя user"""
-    return Cart.objects.filter(user=user)
+    return user.cart_items.order_by("good__trade_mark__name", "good__volume__value")
 
 
 def add_to_cart(user: Model, good: Model, quantity: float = 1) -> None:
