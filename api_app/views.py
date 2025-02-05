@@ -1,4 +1,5 @@
 import requests
+import base64
 from django.http import HttpRequest
 from rest_framework.views import APIView
 from rest_framework import permissions  # , authentication
@@ -12,7 +13,7 @@ class CheckMarkView(APIView):
 
     def get(self, request: HttpRequest) -> Response:
         response = {"data": None, "count": 0, "success": False}
-        code = request.GET.get("code")
+        code = base64.b64decode(request.GET.get("code")).decode("utf-8")
         if code:
             result = requests.get(
                 f"https://mobile.api.crpt.ru/mobile/check?code={code}&codeType=datamatrix"
