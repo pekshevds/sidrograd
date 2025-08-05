@@ -1,6 +1,6 @@
 from django.urls import path
 from catalog_app.views import (
-    ManufacturerView,
+    # ManufacturerView,
     UnitView,
     FilteringView,
     # PasteurizationView,
@@ -33,7 +33,7 @@ urlpatterns = [
     path("volume/", VolumeView.as_view(), name="volume"),
     path("strength/", StrengthView.as_view(), name="strength"),
     path("unit/", UnitView.as_view(), name="init"),
-    path("manufacturer/", ManufacturerView.as_view(), name="manufacturer"),
+    # path("manufacturer/", ManufacturerView.as_view(), name="manufacturer"),
     path("filtering/", FilteringView.as_view(), name="filtering"),
     # path('pasteurization/', PasteurizationView.as_view(), name="pasteurization"),
     path("gassing/", GassingView.as_view(), name="gassing"),

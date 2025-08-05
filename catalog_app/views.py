@@ -356,9 +356,9 @@ class DataView(APIView):
         filtering = FilteringSerializer(
             prepare_query_set(prepared_data.filtering), many=True
         )
-        manufacturer = ManufacturerSerializer(
-            prepare_query_set(prepared_data.manufacturer), many=True
-        )
+        # manufacturer = ManufacturerSerializer(
+        #     prepare_query_set(prepared_data.manufacturer), many=True
+        # )
         unit = UnitSerializer(prepare_query_set(prepared_data.unit), many=True)
         style = StyleSerializer(prepare_query_set(prepared_data.style), many=True)
         type_of_fermentation = TypeOfFermentationSerializer(
@@ -376,7 +376,7 @@ class DataView(APIView):
                 "trade_mark": trade_mark.data,
                 "gassing": gassing.data,
                 "filtering": filtering.data,
-                "manufacturer": manufacturer.data,
+                # "manufacturer": manufacturer.data,
                 "unit": unit.data,
                 "style": style.data,
                 "type_of_fermentation": type_of_fermentation.data,
