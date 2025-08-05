@@ -102,6 +102,9 @@ class GoodSerializer(serializers.Serializer):
     tags = serializers.CharField(max_length=256, required=False, allow_null=True)
     balance = serializers.DecimalField(max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
+    old_price = serializers.DecimalField(
+        max_digits=15, decimal_places=2, required=False
+    )
     price_by_liter = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False
     )
@@ -141,6 +144,9 @@ class SimpleGoodSerializer(serializers.Serializer):
     tags = serializers.CharField(max_length=256, required=False, allow_null=True)
     balance = serializers.DecimalField(max_digits=15, decimal_places=3, required=False)
     price = serializers.DecimalField(max_digits=15, decimal_places=2, required=False)
+    old_price = serializers.DecimalField(
+        max_digits=15, decimal_places=2, required=False
+    )
     price_by_liter = serializers.DecimalField(
         max_digits=15, decimal_places=2, required=False
     )

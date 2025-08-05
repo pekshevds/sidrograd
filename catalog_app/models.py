@@ -210,6 +210,14 @@ class Good(Directory):
         null=True,
         default=0,
     )
+    old_price = models.DecimalField(
+        verbose_name="Цена за единицу (старая)",
+        max_digits=15,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        default=0,
+    )
     volume = models.ForeignKey(
         Volume,
         on_delete=models.PROTECT,

@@ -183,6 +183,7 @@ class GoodAdmin(admin.ModelAdmin):
         "is_active",
         "balance",
         "price",
+        "old_price",
         "price_by_liter",
         "preview",
         "comment",
