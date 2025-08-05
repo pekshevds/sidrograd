@@ -20,6 +20,9 @@ class Carousel(Directory):
         blank=True,
         null=True,
     )
+    link = models.CharField(
+        verbose_name="Ссылка", max_length=512, blank=True, null=True, default=""
+    )
     order_by = models.SmallIntegerField(
         verbose_name="Порядок сортировки", null=True, blank=True, default=0
     )

@@ -17,7 +17,7 @@ class ImageAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("preview",)
 
-    def preview(self, obj):
+    def preview(self, obj: Image) -> str:
         if obj.image:
             str = f"<img src={obj.image.url} style='max-height: 75px;'>"
             return format_html(str)
@@ -31,18 +31,20 @@ class CarouselAdmin(admin.ModelAdmin):
     fields = (
         "name",
         "image",
+        "link",
         "preview",
         "order_by",
     )
     list_display = (
         "name",
         "id",
+        "link",
         "preview",
         "order_by",
     )
     readonly_fields = ("preview",)
 
-    def preview(self, obj):
+    def preview(self, obj: Carousel) -> str:
         if obj.image:
             str = f"<img src={obj.image.url} style='max-height: 75px;'>"
             return format_html(str)
