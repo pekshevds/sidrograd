@@ -279,5 +279,6 @@ def handle_new_goods(data: list[dict[str, Any]]) -> None:
             category, _ = Category.objects.get_or_create(name=category_name)
             good.category = category
 
+        good.is_new = record.get("is_new", False)
         good.full_name = f"{good.category} {good.trade_mark} {good.name}"
         good.save()

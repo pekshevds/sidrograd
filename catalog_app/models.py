@@ -267,6 +267,7 @@ class Good(Directory):
         null=True,
     )
     is_active = models.BooleanField(verbose_name="Активен", default=False)
+    is_new = models.BooleanField(verbose_name="Новинка", default=False)
     trade_mark = models.ForeignKey(
         TradeMark,
         on_delete=models.PROTECT,

@@ -18,11 +18,30 @@ from catalog_app.models import (
     Style,
     Country,
 )
+from django.db import models
+from django.db.models.query import QuerySet
+from django.http import HttpRequest
+
+from server.admin import make_active, make_inactive
 
 
 admin.site.site_header = "Панель администрирования Сидроград"
 admin.site.site_title = "Панель администрирования Сидроград"
 admin.site.index_title = "Добро пожаловать!"
+
+
+@admin.action(description="Установить отметку новинка")
+def make_new(
+    modeladmin: models.Model, request: HttpRequest, queryset: QuerySet
+) -> None:
+    queryset.update(is_new=True)
+
+
+@admin.action(description="Снять отметку новинка")
+def make_old(
+    modeladmin: models.Model, request: HttpRequest, queryset: QuerySet
+) -> None:
+    queryset.update(is_new=False)
 
 
 @admin.register(Country)
@@ -92,7 +111,8 @@ class CategoryAdmin(admin.ModelAdmin):
             return None
         return None
 
-    preview.short_description = "Изображение 570х287"
+    # preview.short_description = "Изображение 570х287"
+    setattr(preview, "short_description", "Изображение 570х287")
 
 
 @admin.register(TradeMark)
@@ -164,7 +184,8 @@ class GoodsImageInLine(admin.TabularInline):
             return None
         return None
 
-    preview.short_description = "Изображение (превью)"
+    # preview.short_description = "Изображение (превью)"
+    setattr(preview, "short_description", "Изображение (превью)")
 
 
 @admin.register(Good)
@@ -181,6 +202,7 @@ class GoodAdmin(admin.ModelAdmin):
         "country",
         "trade_mark",
         "is_active",
+        "is_new",
         "balance",
         "price",
         "old_price",
@@ -195,6 +217,11 @@ class GoodAdmin(admin.ModelAdmin):
         "tags",
         "trade_mark__tags",
     )
+    list_filter = (
+        "is_active",
+        "is_new",
+    )
+    actions = [make_active, make_inactive, make_new, make_old]
 
     def preview(self, obj: Any) -> str | None:
         try:
@@ -208,5 +235,7 @@ class GoodAdmin(admin.ModelAdmin):
     def price_by_liter(self, obj: Any) -> Decimal:
         return obj.price_by_liter
 
-    preview.short_description = "Изображение (превью)"
-    price_by_liter.short_description = "Цена за литр"
+    # preview.short_description = "Изображение (превью)"
+    setattr(preview, "short_description", "Изображение (превью)")
+    # price_by_liter.short_description = "Цена за литр"
+    setattr(price_by_liter, "price_by_liter", "Цена за литр")
