@@ -286,7 +286,8 @@ class GoodView(APIView):
             page_number = request.GET.get("page", 1)
             count = request.GET.get("count", 25)
             queryset = None
-            only_active = not user_by_token_exist(request)
+            # only_active = not user_by_token_exist(request)
+            only_active = True
 
             logger.info({"only_active": only_active, "headers": request.headers})
 
