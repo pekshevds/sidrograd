@@ -337,10 +337,10 @@ class DataView(APIView):
         only_active = not user_by_token_exist(request)
         if search:
             queryset = fetch_goods_queryset_by_name_or_article(search, only_active)
-        else:
-            filters = fetch_filters(request)
-            if any(filters):
-                queryset = fetch_goods_by_filters(filters, only_active)
+        # else:
+        # filters = fetch_filters(request)
+        # if any(filters):
+        #     queryset = fetch_goods_by_filters(filters, only_active)
         if queryset is None:
             if only_active:
                 queryset = Good.active_goods.all()
