@@ -1,6 +1,8 @@
 from typing import Any
 from decimal import Decimal
 from django.utils.html import format_html
+from django.urls import path
+from django.http import HttpResponse
 from django.contrib import admin
 from catalog_app.models import (
     Category,
@@ -21,7 +23,7 @@ from catalog_app.models import (
 from django.db import models
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
-
+from services import download_goods_to_file
 from server.admin import make_active, make_inactive
 
 
@@ -222,6 +224,21 @@ class GoodAdmin(admin.ModelAdmin):
         "is_new",
     )
     actions = [make_active, make_inactive, make_new, make_old]
+
+    def get_urls(self) -> list[Any]:
+        urls = super().get_urls()
+        custom_urls = [
+            path("download-excel/", self.download_excel, name="download-to-excel"),
+        ]
+        return custom_urls + urls
+
+    def download_excel(self, request: HttpRequest) -> HttpResponse:
+        response_content = download_goods_to_file.fetch_goods_to_xlsx_data()
+        response = HttpResponse(
+            response_content, content_type="application/octet-stream"
+        )
+        response["Content-Disposition"] = 'attachment; filename="goods.xlsx"'
+        return response
 
     def preview(self, obj: Any) -> str | None:
         try:

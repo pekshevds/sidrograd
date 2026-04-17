@@ -1,0 +1,7 @@
+{% extends "admin/change_list.html" %}
+{% block object-tools-items %}
+    <li>
+        <a href="{% url 'admin:download-to-excel' %}" class="addlink">Сохранить номенклатуру в excel</a>
+    </li>
+    {{ block.super }}
+{% endblock %}
